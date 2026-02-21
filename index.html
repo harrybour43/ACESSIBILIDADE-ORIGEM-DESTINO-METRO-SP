@@ -83,6 +83,23 @@
             color: #FFB74D;
             margin-top: 10px;
         }
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+        .slogan {
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        .signature {
+            font-weight: bold;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -110,10 +127,14 @@
     <div class="result-box" id="resultado-box">
         <div class="info-text">Selecione as estações para ver a porta de embarque.</div>
     </div>
+
+    <div class="footer">
+        <div class="slogan">"Autonomia em cada embarque. O direito à cidade sem barreiras."</div>
+        <div class="signature">Criador: Harry Bour | 2026</div>
+    </div>
 </div>
 
 <script>
-    // Base de dados com elevadores, escadas rolantes e escadas fixas
     const estacoes = {
         1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
         2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
@@ -179,11 +200,11 @@
             else portaAlvo = estacoes[idDestino].fixaIT;
         }
 
-        if (portaAlvo.includes("Pendente") || portaAlvo.includes("Sem rolante")) {
+        if (portaAlvo.includes("Pendente") || portaAlvo.includes("Sem rolante") || portaAlvo === "-") {
             box.innerHTML = `
                 <div class="info-text">Sentido: ${sentido}</div>
-                <div class="result-door" style="font-size: 1.2rem; color: #FFB74D;">${portaAlvo}</div>
-                <div class="info-text">Você pode atualizar esse dado no código assim que mapear.</div>
+                <div class="result-door" style="font-size: 1.2rem; color: #FFB74D;">${portaAlvo === "-" ? "Não disponível" : portaAlvo}</div>
+                <div class="info-text">Dado pendente de mapeamento ou indisponível na estação.</div>
             `;
             return;
         }
