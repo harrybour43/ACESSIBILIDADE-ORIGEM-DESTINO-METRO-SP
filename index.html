@@ -7,10 +7,10 @@
     <style>
         :root {
             --red-line: #EE3E34;
-            --bg-color: #000000; /* Preto puro para maior contraste */
-            --card-bg: #1A1A1A; /* Cinza escuro profundo */
-            --text-main: #FFFFFF; /* Branco puro */
-            --text-muted: #CCCCCC; /* Cinza claro bem legível */
+            --bg-color: #000000;
+            --card-bg: #1A1A1A;
+            --text-main: #FFFFFF;
+            --text-muted: #CCCCCC;
             --border-color: #444444;
         }
         body {
@@ -165,14 +165,10 @@
     </select>
 
     <label for="origem" id="lbl-origem">Onde você vai embarcar?</label>
-    <select id="origem" onchange="calcularRota()">
-        <option value="0" disabled selected id="opt-origem-default">Selecione a origem</option>
-    </select>
+    <select id="origem" onchange="calcularRota()"></select>
 
     <label for="destino" id="lbl-destino">Onde você vai descer?</label>
-    <select id="destino" onchange="calcularRota()">
-        <option value="0" disabled selected id="opt-destino-default">Selecione o destino</option>
-    </select>
+    <select id="destino" onchange="calcularRota()"></select>
 
     <div class="result-box" id="resultado-box">
         <div class="info-text" id="initial-msg">Selecione as estações para ver a porta de embarque.</div>
@@ -255,4 +251,145 @@
         12: { nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
         13: { nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
         14: { nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
-        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT:
+        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
+        16: { nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        17: { nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
+        18: { nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" }
+    };
+
+    function carregarEstacoes() {
+        const selectOrigem = document.getElementById('origem');
+        const selectDestino = document.getElementById('destino');
+        
+        // Zera as opções com segurança para evitar bugs em navegadores de celular
+        selectOrigem.options.length = 0;
+        selectDestino.options.length = 0;
+
+        // Cria a opção padrão Origem
+        let defaultOrigem = document.createElement("option");
+        defaultOrigem.text = dicionario[currentLang].optDefaultOrigem;
+        defaultOrigem.value = "0";
+        defaultOrigem.disabled = true;
+        defaultOrigem.selected = true;
+        selectOrigem.add(defaultOrigem);
+
+        // Cria a opção padrão Destino
+        let defaultDestino = document.createElement("option");
+        defaultDestino.text = dicionario[currentLang].optDefaultDestino;
+        defaultDestino.value = "0";
+        defaultDestino.disabled = true;
+        defaultDestino.selected = true;
+        selectDestino.add(defaultDestino);
+
+        // Preenche com as estações
+        for (let id = 1; id <= 18; id++) {
+            selectOrigem.add(new Option(estacoes[id].nome, id));
+            selectDestino.add(new Option(estacoes[id].nome, id));
+        }
+    }
+
+    function toggleLanguage() {
+        currentLang = currentLang === 'pt' ? 'en' : 'pt';
+        
+        // Atualiza estilo das bandeiras
+        document.getElementById('lang-pt').classList.toggle('active', currentLang === 'pt');
+        document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
+
+        // Atualiza textos estáticos
+        document.getElementById('app-title').innerHTML = dicionario[currentLang].title;
+        document.getElementById('lbl-pref').innerText = dicionario[currentLang].lblPref;
+        document.getElementById('opt-elevador').innerText = dicionario[currentLang].optElevador;
+        document.getElementById('opt-rolante').innerText = dicionario[currentLang].optRolante;
+        document.getElementById('opt-fixa').innerText = dicionario[currentLang].optFixa;
+        document.getElementById('lbl-origem').innerText = dicionario[currentLang].lblOrigem;
+        document.getElementById('lbl-destino').innerText = dicionario[currentLang].lblDestino;
+        document.getElementById('btn-report').innerText = dicionario[currentLang].btnReport;
+        document.getElementById('slogan-text').innerText = dicionario[currentLang].slogan;
+
+        // Salva a escolha atual do usuário para não resetar o que ele já clicou
+        const origemVal = document.getElementById('origem').value;
+        const destinoVal = document.getElementById('destino').value;
+        
+        // Recarrega os menus suspensos traduzidos
+        carregarEstacoes();
+        
+        // Devolve os valores selecionados
+        document.getElementById('origem').value = origemVal;
+        document.getElementById('destino').value = destinoVal;
+        
+        if(origemVal != 0 && destinoVal != 0) {
+            calcularRota();
+        } else {
+            document.getElementById('resultado-box').innerHTML = `<div class="info-text" id="initial-msg">${dicionario[currentLang].initialMsg}</div>`;
+        }
+    }
+
+    function calcularRota() {
+        const idOrigem = parseInt(document.getElementById('origem').value);
+        const idDestino = parseInt(document.getElementById('destino').value);
+        const preferencia = document.getElementById('preferencia').value;
+        const box = document.getElementById('resultado-box');
+        const t = dicionario[currentLang];
+
+        if (!idOrigem || !idDestino) return;
+
+        if (idOrigem === idDestino) {
+            box.innerHTML = `<div class="info-text">${t.mesmaEstacao}</div>`;
+            return;
+        }
+
+        let sentido = idOrigem < idDestino ? "BF" : "IT";
+        let portaAlvo = "";
+        let portaAlternativaElevador = "";
+
+        if (preferencia === "elevador") {
+            portaAlvo = sentido === "BF" ? estacoes[idDestino].elevadorBF : estacoes[idDestino].elevadorIT;
+        } else if (preferencia === "rolante") {
+            portaAlvo = sentido === "BF" ? estacoes[idDestino].rolanteBF : estacoes[idDestino].rolanteIT;
+            portaAlternativaElevador = sentido === "BF" ? estacoes[idDestino].elevadorBF : estacoes[idDestino].elevadorIT;
+        } else {
+            portaAlvo = sentido === "BF" ? estacoes[idDestino].fixaBF : estacoes[idDestino].fixaIT;
+        }
+
+        if (portaAlvo.includes("Pendente") || portaAlvo === "-") {
+            box.innerHTML = `
+                <div class="info-text">${t.pendente}</div>
+                <div class="result-door" style="font-size: 1.2rem; color: #FFB74D;">${portaAlvo === "-" ? "N/A" : portaAlvo}</div>
+            `;
+            return;
+        }
+
+        if (portaAlvo.includes("Sem rolante")) {
+            box.innerHTML = `
+                <div class="info-text" style="color: #FFB74D; margin-bottom: 10px;">⚠️ ${t.faltaRolante}</div>
+                <div class="info-text">${t.sugestaoElevador}</div>
+                <div class="result-door">${portaAlternativaElevador}</div>
+                <div class="info-text">${t.saidaFrente.replace('{tipo}', t.tipoElevador).replace('{destino}', estacoes[idDestino].nome)}</div>
+            `;
+            return;
+        }
+
+        let tipoSaidaTexto = preferencia === 'elevador' ? t.tipoElevador : (preferencia === 'rolante' ? t.tipoRolante : t.tipoFixa);
+        let textoEmbarque = t.embarqueNa.replace('{origem}', estacoes[idOrigem].nome);
+        let textoSaida = t.saidaFrente.replace('{tipo}', tipoSaidaTexto).replace('{destino}', estacoes[idDestino].nome);
+
+        let htmlBaldeacao = "";
+        if (idDestino === 13) {
+            // Estrutura reservada para integração da Linha 1 no futuro
+        }
+
+        box.innerHTML = `
+            <div class="info-text">${textoEmbarque}</div>
+            <div class="result-door">${portaAlvo}</div>
+            <div class="info-text">${textoSaida}</div>
+            ${portaAlvo.includes("Vagão") || portaAlvo.includes("Vagão") ? `<div class="alert">${t.avisoVagao}</div>` : ''}
+            ${htmlBaldeacao}
+        `;
+    }
+
+    // Inicializa a página
+    carregarEstacoes();
+</script>
+
+</body>
+</html>
