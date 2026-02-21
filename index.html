@@ -7,17 +7,18 @@
     <style>
         :root {
             --red-line: #EE3E34;
-            --bg-color: #121212;
-            --card-bg: #1E1E1E;
-            --text-main: #FFFFFF;
-            --text-muted: #A0A0A0;
+            --bg-color: #000000; /* Preto puro para maior contraste */
+            --card-bg: #1A1A1A; /* Cinza escuro profundo */
+            --text-main: #FFFFFF; /* Branco puro */
+            --text-muted: #CCCCCC; /* Cinza claro bem legível */
+            --border-color: #444444;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             justify-content: center;
         }
@@ -25,32 +26,55 @@
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 24px;
-            max-width: 400px;
+            max-width: 420px;
             width: 100%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            border-top: 5px solid var(--red-line);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.8);
+            border-top: 6px solid var(--red-line);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .lang-switch {
+            font-size: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+        .lang-switch span {
+            margin-left: 5px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .lang-switch span.active {
+            opacity: 1;
         }
         h1 {
-            font-size: 1.5rem;
-            margin-top: 0;
-            margin-bottom: 20px;
-            text-align: center;
+            font-size: 1.6rem;
+            margin: 0;
+            text-align: left;
+            color: var(--text-main);
         }
         label {
             display: block;
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 600;
             color: var(--text-muted);
         }
         select {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin-bottom: 20px;
             border-radius: 6px;
-            border: 1px solid #333;
-            background-color: #2A2A2A;
+            border: 2px solid var(--border-color);
+            background-color: #000000;
             color: var(--text-main);
-            font-size: 1rem;
+            font-size: 1.05rem;
             appearance: none;
         }
         select:focus {
@@ -58,46 +82,66 @@
             border-color: var(--red-line);
         }
         .result-box {
-            background-color: #2A2A2A;
+            background-color: #0A0A0A;
             border-radius: 8px;
             padding: 20px;
             text-align: center;
-            margin-top: 10px;
-            min-height: 120px;
+            margin-top: 5px;
+            border: 1px solid var(--border-color);
+            min-height: 140px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
         .result-door {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 2.2rem;
+            font-weight: 900;
             color: var(--red-line);
             margin: 10px 0;
         }
         .info-text {
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 1rem;
+            line-height: 1.5;
         }
         .alert {
-            font-size: 0.8rem;
-            color: #FFB74D;
-            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #FFC107;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(255, 193, 7, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+        .report-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
         .footer {
             margin-top: 25px;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            border-top: 1px solid #333;
+            border-top: 1px solid var(--border-color);
             padding-top: 15px;
         }
         .slogan {
             font-style: italic;
             margin-bottom: 8px;
+            color: var(--text-main);
         }
         .signature {
             font-weight: bold;
-            color: var(--text-main);
+            color: var(--text-muted);
             letter-spacing: 0.5px;
         }
     </style>
@@ -105,36 +149,97 @@
 <body>
 
 <div class="container">
-    <h1>Rotas de Acesso - Linha 3</h1>
+    <div class="header-top">
+        <h1 id="app-title">Rotas de Acesso<br><span style="color: #EE3E34; font-size: 1.2rem;">Linha 3 Vermelha</span></h1>
+        <div class="lang-switch" onclick="toggleLanguage()">
+            <span id="lang-pt" class="active">🇧🇷</span>
+            <span id="lang-en">🇺🇸</span>
+        </div>
+    </div>
     
-    <label for="preferencia">Qual a sua preferência de saída?</label>
+    <label for="preferencia" id="lbl-pref">Qual a sua preferência de saída?</label>
     <select id="preferencia" onchange="calcularRota()">
-        <option value="elevador" selected>Elevador</option>
-        <option value="rolante">Escada Rolante</option>
-        <option value="fixa">Escada Fixa</option>
+        <option value="elevador" id="opt-elevador" selected>Elevador</option>
+        <option value="rolante" id="opt-rolante">Escada Rolante</option>
+        <option value="fixa" id="opt-fixa">Escada Fixa</option>
     </select>
 
-    <label for="origem">Onde você vai embarcar?</label>
+    <label for="origem" id="lbl-origem">Onde você vai embarcar?</label>
     <select id="origem" onchange="calcularRota()">
-        <option value="0" disabled selected>Selecione a origem</option>
+        <option value="0" disabled selected id="opt-origem-default">Selecione a origem</option>
     </select>
 
-    <label for="destino">Onde você vai descer?</label>
+    <label for="destino" id="lbl-destino">Onde você vai descer?</label>
     <select id="destino" onchange="calcularRota()">
-        <option value="0" disabled selected>Selecione o destino</option>
+        <option value="0" disabled selected id="opt-destino-default">Selecione o destino</option>
     </select>
 
     <div class="result-box" id="resultado-box">
-        <div class="info-text">Selecione as estações para ver a porta de embarque.</div>
+        <div class="info-text" id="initial-msg">Selecione as estações para ver a porta de embarque.</div>
     </div>
 
+    <button class="report-btn" id="btn-report">⚠️ Reportar alteração (Em breve)</button>
+
     <div class="footer">
-        <div class="slogan">"Autonomia em cada embarque. O direito à cidade sem barreiras."</div>
+        <div class="slogan" id="slogan-text">"Autonomia em cada embarque. O direito à cidade sem barreiras."</div>
         <div class="signature">Criador: Harry Bour | 2026</div>
     </div>
 </div>
 
 <script>
+    let currentLang = 'pt';
+
+    const dicionario = {
+        'pt': {
+            title: 'Rotas de Acesso<br><span style="color: #EE3E34; font-size: 1.2rem;">Linha 3 Vermelha</span>',
+            lblPref: 'Qual a sua preferência de saída?',
+            optElevador: 'Elevador',
+            optRolante: 'Escada Rolante',
+            optFixa: 'Escada Fixa',
+            lblOrigem: 'Onde você vai embarcar?',
+            lblDestino: 'Onde você vai descer?',
+            optDefaultOrigem: 'Selecione a origem',
+            optDefaultDestino: 'Selecione o destino',
+            initialMsg: 'Selecione as estações para ver a porta de embarque.',
+            btnReport: '⚠️ Reportar alteração (Em breve)',
+            slogan: '"Autonomia em cada embarque. O direito à cidade sem barreiras."',
+            mesmaEstacao: 'Origem e destino são a mesma estação.',
+            embarqueNa: 'Na estação <b>{origem}</b>,<br>embarque exatamente na:',
+            saidaFrente: 'Você sairá de frente para a <b>{tipo}</b> em <b>{destino}</b>.',
+            tipoElevador: 'porta do elevador',
+            tipoRolante: 'escada rolante',
+            tipoFixa: 'escada fixa',
+            avisoVagao: '*Estação sem portas de plataforma. Baseie-se no vagão.',
+            faltaRolante: 'Opção indisponível nesta estação.',
+            sugestaoElevador: 'Sugerimos utilizar o <b>Elevador</b> na:',
+            pendente: 'Dado pendente de mapeamento.'
+        },
+        'en': {
+            title: 'Access Routes<br><span style="color: #EE3E34; font-size: 1.2rem;">Red Line 3</span>',
+            lblPref: 'What is your exit preference?',
+            optElevador: 'Elevator',
+            optRolante: 'Escalator',
+            optFixa: 'Stairs',
+            lblOrigem: 'Where will you board?',
+            lblDestino: 'Where will you get off?',
+            optDefaultOrigem: 'Select origin',
+            optDefaultDestino: 'Select destination',
+            initialMsg: 'Select stations to see the boarding door.',
+            btnReport: '⚠️ Report change (Coming soon)',
+            slogan: '"Autonomy in every boarding. The right to the city without barriers."',
+            mesmaEstacao: 'Origin and destination are the same.',
+            embarqueNa: 'At <b>{origem}</b> station,<br>board exactly at:',
+            saidaFrente: 'You will exit facing the <b>{tipo}</b> at <b>{destino}</b>.',
+            tipoElevador: 'elevator door',
+            tipoRolante: 'escalator',
+            tipoFixa: 'stairs',
+            avisoVagao: '*Station without platform doors. Use wagon number.',
+            faltaRolante: 'Option unavailable at this station.',
+            sugestaoElevador: 'We suggest using the <b>Elevator</b> at:',
+            pendente: 'Data pending mapping.'
+        }
+    };
+
     const estacoes = {
         1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
         2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
@@ -150,78 +255,4 @@
         12: { nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
         13: { nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
         14: { nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
-        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
-        16: { nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
-        17: { nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
-        18: { nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" }
-    };
-
-    const selectOrigem = document.getElementById('origem');
-    const selectDestino = document.getElementById('destino');
-    const selectPreferencia = document.getElementById('preferencia');
-
-    for (let id = 1; id <= 18; id++) {
-        let optOrigem = document.createElement('option');
-        optOrigem.value = id;
-        optOrigem.text = estacoes[id].nome;
-        selectOrigem.appendChild(optOrigem);
-
-        let optDestino = document.createElement('option');
-        optDestino.value = id;
-        optDestino.text = estacoes[id].nome;
-        selectDestino.appendChild(optDestino);
-    }
-
-    function calcularRota() {
-        const idOrigem = parseInt(selectOrigem.value);
-        const idDestino = parseInt(selectDestino.value);
-        const preferencia = selectPreferencia.value;
-        const box = document.getElementById('resultado-box');
-
-        if (!idOrigem || !idDestino) return;
-
-        if (idOrigem === idDestino) {
-            box.innerHTML = `<div class="info-text">Origem e destino são a mesma estação.</div>`;
-            return;
-        }
-
-        let sentido = "";
-        let portaAlvo = "";
-
-        if (idOrigem < idDestino) {
-            sentido = "Barra Funda";
-            if (preferencia === "elevador") portaAlvo = estacoes[idDestino].elevadorBF;
-            else if (preferencia === "rolante") portaAlvo = estacoes[idDestino].rolanteBF;
-            else portaAlvo = estacoes[idDestino].fixaBF;
-        } else {
-            sentido = "Itaquera";
-            if (preferencia === "elevador") portaAlvo = estacoes[idDestino].elevadorIT;
-            else if (preferencia === "rolante") portaAlvo = estacoes[idDestino].rolanteIT;
-            else portaAlvo = estacoes[idDestino].fixaIT;
-        }
-
-        if (portaAlvo.includes("Pendente") || portaAlvo.includes("Sem rolante") || portaAlvo === "-") {
-            box.innerHTML = `
-                <div class="info-text">Sentido: ${sentido}</div>
-                <div class="result-door" style="font-size: 1.2rem; color: #FFB74D;">${portaAlvo === "-" ? "Não disponível" : portaAlvo}</div>
-                <div class="info-text">Dado pendente de mapeamento ou indisponível na estação.</div>
-            `;
-            return;
-        }
-
-        let tipoSaidaTexto = "";
-        if (preferencia === 'elevador') tipoSaidaTexto = 'porta do elevador';
-        else if (preferencia === 'rolante') tipoSaidaTexto = 'escada rolante';
-        else tipoSaidaTexto = 'escada fixa';
-
-        box.innerHTML = `
-            <div class="info-text">Na estação <b>${estacoes[idOrigem].nome}</b>,<br>embarque exatamente na:</div>
-            <div class="result-door">${portaAlvo}</div>
-            <div class="info-text">Você sairá de frente para a ${tipoSaidaTexto} em <b>${estacoes[idDestino].nome}</b>.</div>
-            ${portaAlvo.includes("Vagão") ? '<div class="alert">*Estação sem portas na plataforma. Baseie-se no número do vagão.</div>' : ''}
-        `;
-    }
-</script>
-
-</body>
-</html>
+        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT:
