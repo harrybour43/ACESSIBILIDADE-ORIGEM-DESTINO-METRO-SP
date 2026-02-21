@@ -92,78 +92,121 @@
             font-size: 0.95rem;
             color: var(--text-muted);
             line-height: 1.5;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px dashed var(--border-color);
         }
+        .selection-group {
+            background-color: #111;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 15px;
+        }
+        .selection-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #FFF;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--border-color);
+            padding-left: 8px;
+        }
+        .selection-title.origem { border-color: #4CAF50; }
+        .selection-title.destino { border-color: #E91E63; }
+
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-muted);
         }
         select {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
             border-radius: 6px;
             border: 2px solid var(--border-color);
             background-color: #000000;
             color: var(--text-main);
-            font-size: 1.05rem;
+            font-size: 1rem;
             appearance: none;
         }
-        select:focus {
-            outline: none;
-            border-color: var(--red-line);
-        }
-        optgroup {
-            background-color: #1A1A1A;
-            color: var(--text-muted);
-            font-style: normal;
-            font-weight: bold;
-        }
-        option {
-            background-color: #000;
-            color: #FFF;
-        }
+        select:last-child { margin-bottom: 0; }
+        select:focus { outline: none; border-color: #888; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* Cores dinâmicas para os selects de linha */
+        select.linha-3:focus { border-color: var(--red-line); }
+        select.linha-1:focus { border-color: var(--blue-line); }
+
         .result-box {
             background-color: #0A0A0A;
             border-radius: 8px;
             padding: 20px;
-            text-align: center;
             margin-top: 5px;
             border: 1px solid var(--border-color);
-            min-height: 140px;
+            min-height: 100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        .result-door {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--red-line);
-            margin: 10px 0;
+        
+        /* Estilos dos Trechos da Rota */
+        .route-step {
+            border-left: 4px solid var(--border-color);
+            padding-left: 15px;
+            margin-bottom: 25px;
+            position: relative;
         }
-        .door-blue {
-            color: var(--blue-line);
+        .route-step:last-child { margin-bottom: 0; }
+        .route-step::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            border: 4px solid var(--border-color);
         }
-        .info-extra {
+        .step-l3 { border-color: var(--red-line); }
+        .step-l3::before { border-color: var(--red-line); }
+        .step-l1 { border-color: var(--blue-line); }
+        .step-l1::before { border-color: var(--blue-line); }
+        
+        .step-title {
+            font-size: 0.9rem;
+            font-weight: bold;
             color: var(--text-muted);
-            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-door {
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 5px 0;
+            color: #FFF;
+        }
+        .door-l3 { color: var(--red-line); }
+        .door-l1 { color: var(--blue-line); }
+        .info-extra {
+            color: #999;
+            font-size: 1rem;
             font-weight: 600;
             margin-top: -5px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .info-text {
             font-size: 1rem;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .alert {
             font-size: 0.9rem;
             color: #FFC107;
-            margin-top: 15px;
+            margin-top: 10px;
             padding: 10px;
             background-color: rgba(255, 193, 7, 0.1);
             border-radius: 6px;
@@ -174,6 +217,7 @@
             border-color: rgba(100, 181, 246, 0.3);
             background-color: rgba(100, 181, 246, 0.1);
         }
+
         .report-btn {
             display: block;
             width: 100%;
@@ -196,35 +240,28 @@
             border-top: 1px solid var(--border-color);
             padding-top: 15px;
         }
-        .slogan {
-            font-style: italic;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-        .signature {
-            font-weight: bold;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
-        }
+        .slogan { font-style: italic; margin-bottom: 8px; color: var(--text-main); }
+        .signature { font-weight: bold; color: var(--text-muted); letter-spacing: 0.5px; }
 
         /* ACESSIBILIDADE VISUAL */
         body.large-font h1 { font-size: 2.2rem; }
         body.large-font .subtitle { font-size: 1.3rem; }
         body.large-font .tutorial-text { font-size: 1.15rem; }
-        body.large-font label { font-size: 1.15rem; color: #FFF; }
-        body.large-font select { font-size: 1.25rem; padding: 16px; }
-        body.large-font .result-door { font-size: 2.8rem; }
+        body.large-font .selection-title { font-size: 1.2rem; }
+        body.large-font label { font-size: 1.1rem; color: #FFF; }
+        body.large-font select { font-size: 1.2rem; padding: 14px; }
+        body.large-font .result-door { font-size: 2.5rem; }
         body.large-font .info-text { font-size: 1.2rem; }
-        body.large-font .info-extra { font-size: 1.3rem; }
+        body.large-font .info-extra { font-size: 1.2rem; }
+        body.large-font .step-title { font-size: 1.05rem; }
         body.large-font .alert { font-size: 1.05rem; }
-        body.large-font .slogan { font-size: 1rem; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-top">
-        <h1 id="app-title">PORTA CERTA SP<br><span class="subtitle"><span class="dot-red">■</span> Linha 3 <span class="dot-blue">■</span> Linha 1</span></h1>
+        <h1 id="app-title">PORTA CERTA SP<br><span class="subtitle"><span class="dot-red">■</span> L3 Vermelha <span class="dot-blue">■</span> L1 Azul</span></h1>
         <div class="header-actions">
             <span class="a11y-btn" id="btn-font" onclick="toggleFontSize()">A+</span>
             <div class="lang-switch" onclick="toggleLanguage()">
@@ -234,23 +271,33 @@
         </div>
     </div>
     
-    <p class="tutorial-text" id="tutorial-text">Escolha a sua acessibilidade favorita, diga a Estação de Origem e a Estação de Destino e nós te diremos a Porta Certa!</p>
+    <p class="tutorial-text" id="tutorial-text">Escolha a sua acessibilidade favorita, defina a Origem e o Destino e nós mapeamos a rota com a porta exata para você!</p>
     
-    <label for="preferencia" id="lbl-pref">Sua preferência de saída:</label>
+    <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
     <select id="preferencia" onchange="calcularRota()">
         <option value="elevador" id="opt-elevador" selected>Elevador</option>
         <option value="rolante" id="opt-rolante">Escada Rolante</option>
         <option value="fixa" id="opt-fixa">Escada Fixa</option>
     </select>
 
-    <label for="origem" id="lbl-origem">Onde você vai embarcar?</label>
-    <select id="origem" onchange="calcularRota()"></select>
+    <div class="selection-group">
+        <div class="selection-title origem" id="title-origem">📍 PONTO DE PARTIDA</div>
+        <select id="linha-origem" onchange="atualizarEstacoes('origem')"></select>
+        <select id="estacao-origem" disabled onchange="calcularRota()">
+            <option value="0" disabled selected id="opt-default-est-origem">Primeiro, escolha a linha acima</option>
+        </select>
+    </div>
 
-    <label for="destino" id="lbl-destino">Onde você vai descer?</label>
-    <select id="destino" onchange="calcularRota()"></select>
+    <div class="selection-group">
+        <div class="selection-title destino" id="title-destino">🏁 DESTINO FINAL</div>
+        <select id="linha-destino" onchange="atualizarEstacoes('destino')"></select>
+        <select id="estacao-destino" disabled onchange="calcularRota()">
+            <option value="0" disabled selected id="opt-default-est-destino">Primeiro, escolha a linha acima</option>
+        </select>
+    </div>
 
     <div class="result-box" id="resultado-box">
-        <div class="info-text" id="initial-msg">Selecione as estações para ver a porta de embarque.</div>
+        <div class="info-text" style="text-align: center;" id="initial-msg">Preencha os campos acima para gerar a rota.</div>
     </div>
 
     <button class="report-btn" id="btn-report">⚠️ Reportar alteração (Em breve)</button>
@@ -268,22 +315,27 @@
     const dicionario = {
         'pt': {
             title: 'PORTA CERTA SP<br><span class="subtitle"><span class="dot-red">■</span> L3 Vermelha <span class="dot-blue">■</span> L1 Azul</span>',
-            tutorial: 'Escolha a sua acessibilidade favorita, diga a Estação de Origem e a Estação de Destino e nós te diremos a Porta Certa!',
-            lblPref: 'Sua preferência de saída:',
+            tutorial: 'Escolha a sua acessibilidade favorita, defina a Origem e o Destino e nós mapeamos a rota com a porta exata para você!',
+            lblPref: 'Sua preferência de saída no destino final:',
             optElevador: 'Elevador',
             optRolante: 'Escada Rolante',
             optFixa: 'Escada Fixa',
-            lblOrigem: 'Onde você vai embarcar?',
-            lblDestino: 'Onde você vai descer?',
-            optDefaultOrigem: 'Selecione a origem',
-            optDefaultDestino: 'Selecione o destino',
-            initialMsg: 'Selecione as estações para ver a porta de embarque.',
+            titleOrigem: '📍 PONTO DE PARTIDA',
+            titleDestino: '🏁 DESTINO FINAL',
+            selLinhaOr: 'Escolha a Linha de Origem',
+            selLinhaDest: 'Escolha a Linha de Destino',
+            selEstOr: 'Primeiro, escolha a linha',
+            selEstDest: 'Primeiro, escolha a linha',
+            initialMsg: 'Preencha os campos acima para gerar a rota.',
             btnReport: '⚠️ Reportar alteração (Em breve)',
             slogan: 'Autonomia. Precisão no embarque. Distâncias menores.',
-            mesmaEstacao: 'Origem e destino são a mesma estação.',
-            embarqueNa: 'Na estação <b>{origem}</b>,<br>embarque exatamente na:',
-            saidaFrente: 'Você sairá de frente para a <b>{tipo}</b> em <b>{destino}</b>.',
-            saidaBaldeacao: 'Você sairá na <b>Sé</b> de frente para a transferência da <b>Linha 1 - Azul</b> (Sentido {sentido}).',
+            mesmaEstacao: 'Você já está na estação de destino.',
+            trecho: 'Trecho',
+            linha3Nome: 'Linha 3 - Vermelha',
+            linha1Nome: 'Linha 1 - Azul',
+            embarqueTrecho: 'Em <b>{estacao}</b>, embarque na:',
+            saidaFinal: 'Saia em <b>{estacao}</b> de frente para a <b>{tipo}</b>.',
+            saidaTransf: 'Saia na <b>{estacao}</b> de frente para a transferência da <b>{linha}</b> (Sentido {sentido}).',
             tipoElevador: 'porta do elevador',
             tipoRolante: 'escada rolante',
             tipoFixa: 'escada fixa',
@@ -292,28 +344,31 @@
             sugestaoElevador: 'Sugerimos utilizar o <b>Elevador</b> na:',
             pendente: 'Dado pendente de mapeamento.',
             equivalente: '(Equivalente à Porta {num})',
-            emMapeamentoL1: 'O mapeamento das portas da Linha 1 - Azul está em andamento e será adicionado em breve!',
-            grupoL3: 'Linha 3 - Vermelha',
-            grupoL1: 'Linha 1 - Azul (Em breve)'
+            emMapeamento: 'As portas da {linha} estão sendo mapeadas e chegarão em breve!'
         },
         'en': {
             title: 'PORTA CERTA SP<br><span class="subtitle"><span class="dot-red">■</span> L3 Red <span class="dot-blue">■</span> L1 Blue</span>',
-            tutorial: 'Choose your favorite accessibility option, tell us the Origin and Destination stations and we will tell you the Right Door!',
-            lblPref: 'Your preferred exit:',
+            tutorial: 'Choose your favorite accessibility, define your Origin and Destination, and we will map the route with the exact door!',
+            lblPref: 'Your preferred exit at final destination:',
             optElevador: 'Elevator',
             optRolante: 'Escalator',
             optFixa: 'Stairs',
-            lblOrigem: 'Where will you board?',
-            lblDestino: 'Where will you get off?',
-            optDefaultOrigem: 'Select origin',
-            optDefaultDestino: 'Select destination',
-            initialMsg: 'Select stations to see the boarding door.',
+            titleOrigem: '📍 STARTING POINT',
+            titleDestino: '🏁 FINAL DESTINATION',
+            selLinhaOr: 'Select Origin Line',
+            selLinhaDest: 'Select Destination Line',
+            selEstOr: 'Select a line first',
+            selEstDest: 'Select a line first',
+            initialMsg: 'Fill in the fields above to generate the route.',
             btnReport: '⚠️ Report change (Coming soon)',
             slogan: 'Autonomy. Boarding precision. Shorter distances.',
-            mesmaEstacao: 'Origin and destination are the same.',
-            embarqueNa: 'At <b>{origem}</b> station,<br>board exactly at:',
-            saidaFrente: 'You will exit facing the <b>{tipo}</b> at <b>{destino}</b>.',
-            saidaBaldeacao: 'You will exit at <b>Sé</b> facing the transfer to <b>Blue Line 1</b> ({sentido} bound).',
+            mesmaEstacao: 'You are already at the destination station.',
+            trecho: 'Leg',
+            linha3Nome: 'Line 3 - Red',
+            linha1Nome: 'Line 1 - Blue',
+            embarqueTrecho: 'At <b>{estacao}</b>, board exactly at:',
+            saidaFinal: 'Exit at <b>{estacao}</b> facing the <b>{tipo}</b>.',
+            saidaTransf: 'Exit at <b>{estacao}</b> facing the transfer to <b>{linha}</b> ({sentido} bound).',
             tipoElevador: 'elevator door',
             tipoRolante: 'escalator',
             tipoFixa: 'stairs',
@@ -322,311 +377,294 @@
             sugestaoElevador: 'We suggest using the <b>Elevator</b> at:',
             pendente: 'Data pending mapping.',
             equivalente: '(Equivalent to Door {num})',
-            emMapeamentoL1: 'The mapping of the Blue Line 1 doors is in progress and will be added soon!',
-            grupoL3: 'Line 3 - Red',
-            grupoL1: 'Line 1 - Blue (Coming soon)'
+            emMapeamento: 'Doors for {linha} are being mapped and will arrive soon!'
         }
+    };
+
+    const linhas = {
+        3: { id: 3, keyName: 'linha3Nome', cssClass: 'l3' },
+        1: { id: 1, keyName: 'linha1Nome', cssClass: 'l1' }
     };
 
     const mapaPortas = {
-        "BF": {
-            "18": "Vagão 1, Porta 1", "17": "Vagão 1, Porta 2", "16": "Vagão 1, Porta 3", "15": "Vagão 1, Porta 4",
-            "28": "Vagão 2, Porta 1", "27": "Vagão 2, Porta 2", "26": "Vagão 2, Porta 3", "25": "Vagão 2, Porta 4",
-            "38": "Vagão 3, Porta 1", "37": "Vagão 3, Porta 2", "36": "Vagão 3, Porta 3", "35": "Vagão 3, Porta 4",
-            "48": "Vagão 4, Porta 1", "47": "Vagão 4, Porta 2", "46": "Vagão 4, Porta 3", "45": "Vagão 4, Porta 4",
-            "58": "Vagão 5, Porta 1", "57": "Vagão 5, Porta 2", "56": "Vagão 5, Porta 3", "55": "Vagão 5, Porta 4",
-            "68": "Vagão 6, Porta 1", "67": "Vagão 6, Porta 2", "66": "Vagão 6, Porta 3", "65": "Vagão 6, Porta 4"
-        },
-        "IT": {
-            "11": "Vagão 6, Porta 4", "12": "Vagão 6, Porta 3", "13": "Vagão 6, Porta 2", "14": "Vagão 6, Porta 1",
-            "21": "Vagão 5, Porta 4", "22": "Vagão 5, Porta 3", "23": "Vagão 5, Porta 2", "24": "Vagão 5, Porta 1",
-            "31": "Vagão 4, Porta 4", "32": "Vagão 4, Porta 3", "33": "Vagão 4, Porta 2", "34": "Vagão 4, Porta 1",
-            "41": "Vagão 3, Porta 4", "42": "Vagão 3, Porta 3", "43": "Vagão 3, Porta 2", "44": "Vagão 3, Porta 1",
-            "51": "Vagão 2, Porta 4", "52": "Vagão 2, Porta 3", "53": "Vagão 2, Porta 2", "54": "Vagão 2, Porta 1",
-            "61": "Vagão 1, Porta 4", "62": "Vagão 1, Porta 3", "63": "Vagão 1, Porta 2", "64": "Vagão 1, Porta 1"
-        }
+        "BF": { "18": "Vagão 1, Porta 1", "17": "Vagão 1, Porta 2", "16": "Vagão 1, Porta 3", "15": "Vagão 1, Porta 4", "28": "Vagão 2, Porta 1", "27": "Vagão 2, Porta 2", "26": "Vagão 2, Porta 3", "25": "Vagão 2, Porta 4", "38": "Vagão 3, Porta 1", "37": "Vagão 3, Porta 2", "36": "Vagão 3, Porta 3", "35": "Vagão 3, Porta 4", "48": "Vagão 4, Porta 1", "47": "Vagão 4, Porta 2", "46": "Vagão 4, Porta 3", "45": "Vagão 4, Porta 4", "58": "Vagão 5, Porta 1", "57": "Vagão 5, Porta 2", "56": "Vagão 5, Porta 3", "55": "Vagão 5, Porta 4", "68": "Vagão 6, Porta 1", "67": "Vagão 6, Porta 2", "66": "Vagão 6, Porta 3", "65": "Vagão 6, Porta 4" },
+        "IT": { "11": "Vagão 6, Porta 4", "12": "Vagão 6, Porta 3", "13": "Vagão 6, Porta 2", "14": "Vagão 6, Porta 1", "21": "Vagão 5, Porta 4", "22": "Vagão 5, Porta 3", "23": "Vagão 5, Porta 2", "24": "Vagão 5, Porta 1", "31": "Vagão 4, Porta 4", "32": "Vagão 4, Porta 3", "33": "Vagão 4, Porta 2", "34": "Vagão 4, Porta 1", "41": "Vagão 3, Porta 4", "42": "Vagão 3, Porta 3", "43": "Vagão 3, Porta 2", "44": "Vagão 3, Porta 1", "51": "Vagão 2, Porta 4", "52": "Vagão 2, Porta 3", "53": "Vagão 2, Porta 2", "54": "Vagão 2, Porta 1", "61": "Vagão 1, Porta 4", "62": "Vagão 1, Porta 3", "63": "Vagão 1, Porta 2", "64": "Vagão 1, Porta 1" }
     };
 
     const estacoes = {
-        // LINHA 3 VERMELHA
-        1: { linha: 3, nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
-        2: { linha: 3, nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
-        3: { linha: 3, nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
-        4: { linha: 3, nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
-        5: { linha: 3, nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 25", fixaIT: "Porta 24" },
-        6: { linha: 3, nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 47", fixaIT: "Porta 42" },
-        7: { linha: 3, nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
-        8: { linha: 3, nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
-        9: { linha: 3, nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
-        10: { linha: 3, nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
-        11: { linha: 3, nome: "Brás", semPortas: true, elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
-        12: { linha: 3, nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
-        13: { linha: 3, nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
-        14: { linha: 3, nome: "Anhangabaú", semPortas: true, elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
-        15: { linha: 3, nome: "República", semPortas: true, elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
-        16: { linha: 3, nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
-        17: { linha: 3, nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
-        18: { linha: 3, nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
+        1: { linha: 3, id: 1, nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
+        2: { linha: 3, id: 2, nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        3: { linha: 3, id: 3, nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        4: { linha: 3, id: 4, nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        5: { linha: 3, id: 5, nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        6: { linha: 3, id: 6, nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 47", fixaIT: "Porta 42" },
+        7: { linha: 3, id: 7, nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        8: { linha: 3, id: 8, nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        9: { linha: 3, id: 9, nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        10: { linha: 3, id: 10, nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        11: { linha: 3, id: 11, nome: "Brás", semPortas: true, elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
+        12: { linha: 3, id: 12, nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
+        13: { linha: 3, id: 13, nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52",
+              transferencias: { 1: { "Tucuruvi": { BF: "Porta 57", IT: "Porta 52" }, "Jabaquara": { BF: "Porta 15", IT: "Porta 13" } } }
+        },
+        14: { linha: 3, id: 14, nome: "Anhangabaú", semPortas: true, elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
+        15: { linha: 3, id: 15, nome: "República", semPortas: true, elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
+        16: { linha: 3, id: 16, nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        17: { linha: 3, id: 17, nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
+        18: { linha: 3, id: 18, nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
 
-        // LINHA 1 AZUL (Em Breve)
-        101: { linha: 1, nome: "Tucuruvi" },
-        102: { linha: 1, nome: "Parada Inglesa" },
-        103: { linha: 1, nome: "Jardim São Paulo-Ayrton Senna" },
-        104: { linha: 1, nome: "Santana" },
-        105: { linha: 1, nome: "Carandiru" },
-        106: { linha: 1, nome: "Portuguesa-Tietê" },
-        107: { linha: 1, nome: "Armênia" },
-        108: { linha: 1, nome: "Tiradentes" },
-        109: { linha: 1, nome: "Luz" },
-        110: { linha: 1, nome: "São Bento" },
-        111: { linha: 1, nome: "Sé" },
-        112: { linha: 1, nome: "Japão-Liberdade" },
-        113: { linha: 1, nome: "São Joaquim" },
-        114: { linha: 1, nome: "Vergueiro-Sebrae" },
-        115: { linha: 1, nome: "Paraíso" },
-        116: { linha: 1, nome: "Ana Rosa" },
-        117: { linha: 1, nome: "Vila Mariana" },
-        118: { linha: 1, nome: "Santa Cruz" },
-        119: { linha: 1, nome: "Praça da Árvore" },
-        120: { linha: 1, nome: "Saúde-Ultrafarma" },
-        121: { linha: 1, nome: "São Judas" },
-        122: { linha: 1, nome: "Conceição" },
-        123: { linha: 1, nome: "Jabaquara" }
+        101: { linha: 1, id: 101, nome: "Tucuruvi" }, 102: { linha: 1, id: 102, nome: "Parada Inglesa" }, 103: { linha: 1, id: 103, nome: "Jardim São Paulo" },
+        104: { linha: 1, id: 104, nome: "Santana" }, 105: { linha: 1, id: 105, nome: "Carandiru" }, 106: { linha: 1, id: 106, nome: "Portuguesa-Tietê" },
+        107: { linha: 1, id: 107, nome: "Armênia" }, 108: { linha: 1, id: 108, nome: "Tiradentes" }, 109: { linha: 1, id: 109, nome: "Luz" },
+        110: { linha: 1, id: 110, nome: "São Bento" }, 111: { linha: 1, id: 111, nome: "Sé" }, 112: { linha: 1, id: 112, nome: "Japão-Liberdade" },
+        113: { linha: 1, id: 113, nome: "São Joaquim" }, 114: { linha: 1, id: 114, nome: "Vergueiro" }, 115: { linha: 1, id: 115, nome: "Paraíso" },
+        116: { linha: 1, id: 116, nome: "Ana Rosa" }, 117: { linha: 1, id: 117, nome: "Vila Mariana" }, 118: { linha: 1, id: 118, nome: "Santa Cruz" },
+        119: { linha: 1, id: 119, nome: "Praça da Árvore" }, 120: { linha: 1, id: 120, nome: "Saúde" }, 121: { linha: 1, id: 121, nome: "São Judas" },
+        122: { linha: 1, id: 122, nome: "Conceição" }, 123: { linha: 1, id: 123, nome: "Jabaquara" }
     };
 
-    function carregarEstacoes() {
-        const selectOrigem = document.getElementById('origem');
-        const selectDestino = document.getElementById('destino');
+    function initSelects() {
+        const selLinhaOr = document.getElementById('linha-origem');
+        const selLinhaDest = document.getElementById('linha-destino');
         const t = dicionario[currentLang];
+
+        selLinhaOr.options.length = 0;
+        selLinhaDest.options.length = 0;
         
-        selectOrigem.options.length = 0;
-        selectDestino.options.length = 0;
+        selLinhaOr.add(new Option(t.selLinhaOr, "0", true, true));
+        selLinhaOr.options[0].disabled = true;
+        selLinhaDest.add(new Option(t.selLinhaDest, "0", true, true));
+        selLinhaDest.options[0].disabled = true;
 
-        selectOrigem.add(new Option(t.optDefaultOrigem, "0", true, true));
-        selectOrigem.options[0].disabled = true;
+        for (let k in linhas) {
+            selLinhaOr.add(new Option(t[linhas[k].keyName], k));
+            selLinhaDest.add(new Option(t[linhas[k].keyName], k));
+        }
         
-        selectDestino.add(new Option(t.optDefaultDestino, "0", true, true));
-        selectDestino.options[0].disabled = true;
+        atualizarEstacoes('origem', true);
+        atualizarEstacoes('destino', true);
+    }
 
-        let grupoOrigemL3 = document.createElement("optgroup");
-        grupoOrigemL3.label = t.grupoL3;
-        let grupoOrigemL1 = document.createElement("optgroup");
-        grupoOrigemL1.label = t.grupoL1;
+    function atualizarEstacoes(tipo, forceReset = false) {
+        const selLinha = document.getElementById(`linha-${tipo}`);
+        const selEstacao = document.getElementById(`estacao-${tipo}`);
+        const linhaId = selLinha.value;
+        const t = dicionario[currentLang];
 
-        let grupoDestinoL3 = document.createElement("optgroup");
-        grupoDestinoL3.label = t.grupoL3;
-        let grupoDestinoL1 = document.createElement("optgroup");
-        grupoDestinoL1.label = t.grupoL1;
+        // Atualiza a cor do select
+        selLinha.className = linhaId != "0" ? `linha-${linhaId}` : '';
 
-        for (let id in estacoes) {
-            let opt1 = new Option(estacoes[id].nome, id);
-            let opt2 = new Option(estacoes[id].nome, id);
-            
-            if (estacoes[id].linha === 3) {
-                grupoOrigemL3.appendChild(opt1);
-                grupoDestinoL3.appendChild(opt2);
-            } else {
-                grupoOrigemL1.appendChild(opt1);
-                grupoDestinoL1.appendChild(opt2);
-            }
+        selEstacao.options.length = 0;
+        
+        if (linhaId === "0" || forceReset) {
+            selEstacao.add(new Option(t[tipo === 'origem' ? 'selEstOr' : 'selEstDest'], "0", true, true));
+            selEstacao.disabled = true;
+            return;
         }
 
-        selectOrigem.appendChild(grupoOrigemL3);
-        selectOrigem.appendChild(grupoOrigemL1);
-        selectDestino.appendChild(grupoDestinoL3);
-        selectDestino.appendChild(grupoDestinoL1);
+        selEstacao.disabled = false;
+        selEstacao.add(new Option(tipo === 'origem' ? t.optDefaultOrigem : t.optDefaultDestino, "0", true, true));
+        selEstacao.options[0].disabled = true;
+
+        for (let id in estacoes) {
+            if (estacoes[id].linha == linhaId) {
+                selEstacao.add(new Option(estacoes[id].nome, id));
+            }
+        }
+        calcularRota();
     }
 
     function toggleFontSize() {
         isLargeFont = !isLargeFont;
-        if (isLargeFont) {
-            document.body.classList.add('large-font');
-            document.getElementById('btn-font').innerText = 'A-';
-        } else {
-            document.body.classList.remove('large-font');
-            document.getElementById('btn-font').innerText = 'A+';
-        }
+        document.body.classList.toggle('large-font', isLargeFont);
+        document.getElementById('btn-font').innerText = isLargeFont ? 'A-' : 'A+';
     }
 
     function toggleLanguage() {
         currentLang = currentLang === 'pt' ? 'en' : 'pt';
+        const t = dicionario[currentLang];
         
         document.getElementById('lang-pt').classList.toggle('active', currentLang === 'pt');
         document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
 
-        document.getElementById('app-title').innerHTML = dicionario[currentLang].title;
-        document.getElementById('tutorial-text').innerText = dicionario[currentLang].tutorial;
-        document.getElementById('lbl-pref').innerText = dicionario[currentLang].lblPref;
-        document.getElementById('opt-elevador').innerText = dicionario[currentLang].optElevador;
-        document.getElementById('opt-rolante').innerText = dicionario[currentLang].optRolante;
-        document.getElementById('opt-fixa').innerText = dicionario[currentLang].optFixa;
-        document.getElementById('lbl-origem').innerText = dicionario[currentLang].lblOrigem;
-        document.getElementById('lbl-destino').innerText = dicionario[currentLang].lblDestino;
-        document.getElementById('btn-report').innerText = dicionario[currentLang].btnReport;
-        document.getElementById('slogan-text').innerText = dicionario[currentLang].slogan;
+        document.getElementById('app-title').innerHTML = t.title;
+        document.getElementById('tutorial-text').innerText = t.tutorial;
+        document.getElementById('lbl-pref').innerText = t.lblPref;
+        document.getElementById('opt-elevador').innerText = t.optElevador;
+        document.getElementById('opt-rolante').innerText = t.optRolante;
+        document.getElementById('opt-fixa').innerText = t.optFixa;
+        document.getElementById('title-origem').innerText = t.titleOrigem;
+        document.getElementById('title-destino').innerText = t.titleDestino;
+        document.getElementById('btn-report').innerText = t.btnReport;
+        document.getElementById('slogan-text').innerText = t.slogan;
 
-        const origemVal = document.getElementById('origem').value;
-        const destinoVal = document.getElementById('destino').value;
+        const valLO = document.getElementById('linha-origem').value;
+        const valEO = document.getElementById('estacao-origem').value;
+        const valLD = document.getElementById('linha-destino').value;
+        const valED = document.getElementById('estacao-destino').value;
         
-        carregarEstacoes();
+        initSelects();
         
-        document.getElementById('origem').value = origemVal;
-        document.getElementById('destino').value = destinoVal;
+        document.getElementById('linha-origem').value = valLO;
+        if(valLO != "0") atualizarEstacoes('origem');
+        document.getElementById('estacao-origem').value = valEO;
+
+        document.getElementById('linha-destino').value = valLD;
+        if(valLD != "0") atualizarEstacoes('destino');
+        document.getElementById('estacao-destino').value = valED;
         
-        if(origemVal != 0 && destinoVal != 0) {
-            calcularRota();
-        } else {
-            document.getElementById('resultado-box').innerHTML = `<div class="info-text" id="initial-msg">${dicionario[currentLang].initialMsg}</div>`;
-        }
+        calcularRota();
     }
 
     function obterInfoExtra(alvo, sentido) {
+        if (!alvo) return "";
         let t = dicionario[currentLang];
-        let info = "";
         let vagaoMatch = alvo.match(/Vagão \d, Porta \d/);
         let numMatch = alvo.match(/\d{2}/);
 
         if (vagaoMatch) {
             let vStr = vagaoMatch[0];
-            let numEq = null;
-            for (let k in mapaPortas[sentido]) {
-                if (mapaPortas[sentido][k] === vStr) { numEq = k; break; }
-            }
-            if (numEq) info = t.equivalente.replace('{num}', numEq);
+            let numEq = Object.keys(mapaPortas[sentido]).find(k => mapaPortas[sentido][k] === vStr);
+            if (numEq) return t.equivalente.replace('{num}', numEq);
         } else if (numMatch && !alvo.includes("Vagão")) {
             let num = numMatch[0];
-            if (mapaPortas[sentido][num]) {
-                info = `(${traduzirPorta(mapaPortas[sentido][num])})`;
+            if (mapaPortas[sentido] && mapaPortas[sentido][num]) {
+                return `(${traduzirPorta(mapaPortas[sentido][num])})`;
             }
         }
-        return info;
+        return "";
     }
 
     function traduzirPorta(texto) {
-        if (currentLang === 'en') {
-            return texto.replace(/Porta/g, 'Door').replace(/Vagão/g, 'Car');
+        if (!texto) return "";
+        return currentLang === 'en' ? texto.replace(/Porta/g, 'Door').replace(/Vagão/g, 'Car') : texto;
+    }
+
+    // Função construtora do bloco visual HTML de um trecho (Leg)
+    function buildStepHTML(numTrecho, linhaId, origemNode, portaAlvo, infoExtra, msgDesembarque, avisoOrigem, isFaltaRolante = false, alternativaElevador = null) {
+        let t = dicionario[currentLang];
+        let corClasse = linhas[linhaId].cssClass;
+        let linhaNome = t[linhas[linhaId].keyName];
+        let html = `<div class="route-step step-${corClasse}">`;
+        html += `<div class="step-title">📍 ${t.trecho} ${numTrecho}: ${linhaNome}</div>`;
+        
+        if (portaAlvo && portaAlvo.includes("Pendente")) {
+            html += `<div class="info-text">${t.embarqueTrecho.replace('{estacao}', origemNode.nome)}</div>`;
+            html += `<div class="result-door door-${corClasse}" style="font-size: 1.5rem; color:#FFB74D;">${t.pendente}</div>`;
+            return html + `</div>`;
         }
-        return texto;
+
+        if (isFaltaRolante && alternativaElevador) {
+            html += `<div class="info-text" style="color:#FFB74D; margin-bottom:10px;">⚠️ ${t.faltaRolante}</div>`;
+            html += `<div class="info-text">${t.sugestaoElevador}</div>`;
+            html += `<div class="result-door door-${corClasse}">${traduzirPorta(alternativaElevador)}</div>`;
+            let extraAlt = obterInfoExtra(alternativaElevador, idOrigem < idDestino ? "BF" : "IT"); // Simplificado pro fallback
+            if(extraAlt) html += `<div class="info-extra">${extraAlt}</div>`;
+        } else if (portaAlvo) {
+            html += `<div class="info-text">${t.embarqueTrecho.replace('{estacao}', origemNode.nome)}</div>`;
+            html += `<div class="result-door door-${corClasse}">${traduzirPorta(portaAlvo)}</div>`;
+            if(infoExtra) html += `<div class="info-extra">${infoExtra}</div>`;
+        } else {
+             // Quando a linha ainda não tem dados (Ex: Linha 1)
+             html += `<div class="alert alert-blue" style="text-align: center;">ℹ️ ${t.emMapeamento.replace('{linha}', linhaNome)}</div>`;
+             return html + `</div>`;
+        }
+
+        html += `<div class="info-text">${msgDesembarque}</div>`;
+        if (avisoOrigem) html += `<div class="alert">${t.avisoVagao}</div>`;
+        
+        html += `</div>`;
+        return html;
     }
 
     function calcularRota() {
-        const idOrigem = parseInt(document.getElementById('origem').value);
-        const idDestino = parseInt(document.getElementById('destino').value);
-        const preferencia = document.getElementById('preferencia').value;
+        const estOr = document.getElementById('estacao-origem').value;
+        const estDest = document.getElementById('estacao-destino').value;
         const box = document.getElementById('resultado-box');
+        const pref = document.getElementById('preferencia').value;
         const t = dicionario[currentLang];
 
-        if (!idOrigem || !idDestino) return;
-
-        if (idOrigem === idDestino || (estacoes[idOrigem].nome === "Sé" && estacoes[idDestino].nome === "Sé")) {
-            box.innerHTML = `<div class="info-text">${t.mesmaEstacao}</div>`;
+        if (estOr == "0" || estDest == "0") {
+            box.innerHTML = `<div class="info-text" style="text-align:center;">${t.initialMsg}</div>`;
+            return;
+        }
+        if (estOr === estDest) {
+            box.innerHTML = `<div class="info-text" style="text-align:center;">${t.mesmaEstacao}</div>`;
             return;
         }
 
-        let origem = estacoes[idOrigem];
-        let destino = estacoes[idDestino];
+        let origem = estacoes[estOr];
+        let destino = estacoes[estDest];
+        box.innerHTML = ""; // Limpa a caixa
 
-        // Lógica para estações ainda em mapeamento (Linha 1)
-        if (origem.linha === 1 && destino.linha === 1) {
-            box.innerHTML = `<div class="alert alert-blue" style="text-align: center;">ℹ️ ${t.emMapeamentoL1}</div>`;
-            return;
-        }
-
-        // Lógica de BALDEAÇÃO L3 -> L1
-        if (origem.linha === 3 && destino.linha === 1) {
-            let sentidoL3 = idOrigem < 13 ? "BF" : "IT"; // 13 é a Sé na L3
-            let sentidoL1 = idDestino < 111 ? "Tucuruvi" : "Jabaquara"; // 111 é a Sé na L1
+        let tipoPrefTexto = pref === 'elevador' ? t.tipoElevador : (pref === 'rolante' ? t.tipoRolante : t.tipoFixa);
+        
+        // CENA 1: MESMA LINHA
+        if (origem.linha === destino.linha) {
+            if (origem.linha !== 3) {
+                 box.innerHTML = buildStepHTML(1, origem.linha, origem, null, null, null, false);
+                 return;
+            }
             
-            let portaAlvo = "";
-            // Portas mapeadas de transferência na Sé
-            if (sentidoL1 === "Tucuruvi") {
-                portaAlvo = sentidoL3 === "BF" ? "Porta 57" : "Porta 52";
-            } else {
-                portaAlvo = sentidoL3 === "BF" ? "Porta 15" : "Porta 13";
+            let sentido = origem.id < destino.id ? "BF" : "IT";
+            let porta = pref === "elevador" ? destino.elevadorBF : (pref === "rolante" ? destino.rolanteBF : destino.fixaBF);
+            if (sentido === "IT") porta = pref === "elevador" ? destino.elevadorIT : (pref === "rolante" ? destino.rolanteIT : destino.fixaIT);
+            
+            let fallback = false; let alternativa = "";
+            if (porta && porta.includes("Sem rolante")) {
+                fallback = true;
+                alternativa = sentido === "BF" ? destino.elevadorBF : destino.elevadorIT;
             }
 
-            let displayPorta = traduzirPorta(portaAlvo);
-            let infoExtra = obterInfoExtra(portaAlvo, sentidoL3);
-            let textoEmbarque = t.embarqueNa.replace('{origem}', origem.nome);
-            let textoSaidaBaldeacao = t.saidaBaldeacao.replace('{sentido}', sentidoL1);
-            let avisoVagaoNaOrigem = origem.semPortas ? `<div class="alert">${t.avisoVagao}</div>` : '';
+            let descSaida = t.saidaFinal.replace('{estacao}', destino.nome).replace('{tipo}', tipoPrefTexto);
+            box.innerHTML = buildStepHTML(1, origem.linha, origem, porta, obterInfoExtra(porta, sentido), descSaida, origem.semPortas, fallback, alternativa);
+        } 
+        // CENA 2: BALDEAÇÃO L3 -> L1
+        else if (origem.linha === 3 && destino.linha === 1) {
+            // Trecho 1: Origem(L3) até Sé(L3)
+            let sentidoL3 = origem.id < 13 ? "BF" : "IT";
+            let sentidoL1Nome = destino.id < 111 ? "Tucuruvi" : "Jabaquara";
+            
+            let portaTransf = "";
+            if (sentidoL1Nome === "Tucuruvi") portaTransf = sentidoL3 === "BF" ? "Porta 57" : "Porta 52";
+            else portaTransf = sentidoL3 === "BF" ? "Porta 15" : "Porta 13";
 
-            box.innerHTML = `
-                <div class="info-text">${textoEmbarque}</div>
-                <div class="result-door door-blue">${displayPorta}</div>
-                ${infoExtra ? `<div class="info-extra">${infoExtra}</div>` : ''}
-                <div class="info-text">${textoSaidaBaldeacao}</div>
-                ${avisoVagaoNaOrigem}
-                <div class="alert alert-blue" style="margin-top: 20px;">ℹ️ ${t.emMapeamentoL1}</div>
-            `;
-            return;
+            let descSaidaTransf = t.saidaTransf.replace('{estacao}', "Sé").replace('{linha}', t.linha1Nome).replace('{sentido}', sentidoL1Nome);
+            
+            let htmlTr1 = buildStepHTML(1, 3, origem, portaTransf, obterInfoExtra(portaTransf, sentidoL3), descSaidaTransf, origem.semPortas);
+            
+            // Trecho 2: Sé(L1) até Destino(L1) - Pendente de dados reais
+            let objSeL1 = estacoes[111]; 
+            let htmlTr2 = buildStepHTML(2, 1, objSeL1, null, null, null, false);
+            
+            box.innerHTML = htmlTr1 + htmlTr2;
         }
+        // CENA 3: BALDEAÇÃO L1 -> L3
+        else if (origem.linha === 1 && destino.linha === 3) {
+            // Trecho 1: Origem(L1) até Sé(L1) - Pendente
+            let htmlTr1 = buildStepHTML(1, 1, origem, null, null, null, false);
+            
+            // Trecho 2: Sé(L3) até Destino(L3)
+            let objSeL3 = estacoes[13];
+            let sentidoL3 = objSeL3.id < destino.id ? "BF" : "IT";
+            
+            let portaDest = pref === "elevador" ? destino.elevadorBF : (pref === "rolante" ? destino.rolanteBF : destino.fixaBF);
+            if (sentidoL3 === "IT") portaDest = pref === "elevador" ? destino.elevadorIT : (pref === "rolante" ? destino.rolanteIT : destino.fixaIT);
+            
+            let fallback = false; let alternativa = "";
+            if (portaDest && portaDest.includes("Sem rolante")) {
+                fallback = true;
+                alternativa = sentidoL3 === "BF" ? destino.elevadorBF : destino.elevadorIT;
+            }
 
-        // Lógica de BALDEAÇÃO L1 -> L3
-        if (origem.linha === 1 && destino.linha === 3) {
-            box.innerHTML = `
-                <div class="alert alert-blue" style="text-align: center; margin-bottom: 15px;">ℹ️ ${t.emMapeamentoL1}</div>
-                <div class="info-text">Vá até a estação Sé e faça a transferência para a <b>Linha 3 - Vermelha</b>.</div>
-            `;
-            return;
+            let descSaidaFinal = t.saidaFinal.replace('{estacao}', destino.nome).replace('{tipo}', tipoPrefTexto);
+            let htmlTr2 = buildStepHTML(2, 3, objSeL3, portaDest, obterInfoExtra(portaDest, sentidoL3), descSaidaFinal, objSeL3.semPortas, fallback, alternativa);
+
+            box.innerHTML = htmlTr1 + htmlTr2;
         }
-
-        // FLUXO NORMAL L3 -> L3
-        let sentido = idOrigem < idDestino ? "BF" : "IT";
-        let portaAlvo = "";
-        let portaAlternativaElevador = "";
-
-        if (preferencia === "elevador") {
-            portaAlvo = sentido === "BF" ? destino.elevadorBF : destino.elevadorIT;
-        } else if (preferencia === "rolante") {
-            portaAlvo = sentido === "BF" ? destino.rolanteBF : destino.rolanteIT;
-            portaAlternativaElevador = sentido === "BF" ? destino.elevadorBF : destino.elevadorIT;
-        } else {
-            portaAlvo = sentido === "BF" ? destino.fixaBF : destino.fixaIT;
-        }
-
-        if (portaAlvo.includes("Pendente") || portaAlvo === "-") {
-            box.innerHTML = `
-                <div class="info-text">${t.pendente}</div>
-                <div class="result-door" style="font-size: 1.2rem; color: #FFB74D;">${portaAlvo === "-" ? "N/A" : portaAlvo}</div>
-            `;
-            return;
-        }
-
-        let avisoVagaoNaOrigem = origem.semPortas ? `<div class="alert">${t.avisoVagao}</div>` : '';
-
-        if (portaAlvo.includes("Sem rolante")) {
-            let displayAlternativa = traduzirPorta(portaAlternativaElevador);
-            let infoExtraAlt = obterInfoExtra(portaAlternativaElevador, sentido);
-
-            box.innerHTML = `
-                <div class="info-text" style="color: #FFB74D; margin-bottom: 10px;">⚠️ ${t.faltaRolante}</div>
-                <div class="info-text">${t.sugestaoElevador}</div>
-                <div class="result-door">${displayAlternativa}</div>
-                ${infoExtraAlt ? `<div class="info-extra">${infoExtraAlt}</div>` : ''}
-                <div class="info-text">${t.saidaFrente.replace('{tipo}', t.tipoElevador).replace('{destino}', destino.nome)}</div>
-                ${avisoVagaoNaOrigem}
-            `;
-            return;
-        }
-
-        let tipoSaidaTexto = preferencia === 'elevador' ? t.tipoElevador : (preferencia === 'rolante' ? t.tipoRolante : t.tipoFixa);
-        let textoEmbarque = t.embarqueNa.replace('{origem}', origem.nome);
-        let textoSaida = t.saidaFrente.replace('{tipo}', tipoSaidaTexto).replace('{destino}', destino.nome);
-
-        let displayPorta = traduzirPorta(portaAlvo);
-        let infoExtra = obterInfoExtra(portaAlvo, sentido);
-
-        box.innerHTML = `
-            <div class="info-text">${textoEmbarque}</div>
-            <div class="result-door">${displayPorta}</div>
-            ${infoExtra ? `<div class="info-extra">${infoExtra}</div>` : ''}
-            <div class="info-text">${textoSaida}</div>
-            ${avisoVagaoNaOrigem}
-        `;
     }
 
-    carregarEstacoes();
+    initSelects();
 </script>
 
 </body>
