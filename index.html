@@ -99,6 +99,13 @@
             color: var(--red-line);
             margin: 10px 0;
         }
+        .info-extra {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: -5px;
+            margin-bottom: 15px;
+        }
         .info-text {
             font-size: 1rem;
             line-height: 1.5;
@@ -205,10 +212,11 @@
             tipoElevador: 'porta do elevador',
             tipoRolante: 'escada rolante',
             tipoFixa: 'escada fixa',
-            avisoVagao: '*Estação sem portas de plataforma. Baseie-se no vagão.',
+            avisoVagao: '*Estação sem portas na plataforma. Baseie-se pelo número do vagão.',
             faltaRolante: 'Opção indisponível nesta estação.',
             sugestaoElevador: 'Sugerimos utilizar o <b>Elevador</b> na:',
-            pendente: 'Dado pendente de mapeamento.'
+            pendente: 'Dado pendente de mapeamento.',
+            equivalente: '(Equivalente à Porta {num})'
         },
         'en': {
             title: 'Access Routes<br><span style="color: #EE3E34; font-size: 1.2rem;">Red Line 3</span>',
@@ -229,13 +237,34 @@
             tipoElevador: 'elevator door',
             tipoRolante: 'escalator',
             tipoFixa: 'stairs',
-            avisoVagao: '*Station without platform doors. Use wagon number.',
+            avisoVagao: '*Station without platform doors. Board using the car number.',
             faltaRolante: 'Option unavailable at this station.',
             sugestaoElevador: 'We suggest using the <b>Elevator</b> at:',
-            pendente: 'Data pending mapping.'
+            pendente: 'Data pending mapping.',
+            equivalente: '(Equivalent to Door {num})'
         }
     };
 
+    const mapaPortas = {
+        "BF": {
+            "18": "Vagão 1, Porta 1", "17": "Vagão 1, Porta 2", "16": "Vagão 1, Porta 3", "15": "Vagão 1, Porta 4",
+            "28": "Vagão 2, Porta 1", "27": "Vagão 2, Porta 2", "26": "Vagão 2, Porta 3", "25": "Vagão 2, Porta 4",
+            "38": "Vagão 3, Porta 1", "37": "Vagão 3, Porta 2", "36": "Vagão 3, Porta 3", "35": "Vagão 3, Porta 4",
+            "48": "Vagão 4, Porta 1", "47": "Vagão 4, Porta 2", "46": "Vagão 4, Porta 3", "45": "Vagão 4, Porta 4",
+            "58": "Vagão 5, Porta 1", "57": "Vagão 5, Porta 2", "56": "Vagão 5, Porta 3", "55": "Vagão 5, Porta 4",
+            "68": "Vagão 6, Porta 1", "67": "Vagão 6, Porta 2", "66": "Vagão 6, Porta 3", "65": "Vagão 6, Porta 4"
+        },
+        "IT": {
+            "11": "Vagão 6, Porta 4", "12": "Vagão 6, Porta 3", "13": "Vagão 6, Porta 2", "14": "Vagão 6, Porta 1",
+            "21": "Vagão 5, Porta 4", "22": "Vagão 5, Porta 3", "23": "Vagão 5, Porta 2", "24": "Vagão 5, Porta 1",
+            "31": "Vagão 4, Porta 4", "32": "Vagão 4, Porta 3", "33": "Vagão 4, Porta 2", "34": "Vagão 4, Porta 1",
+            "41": "Vagão 3, Porta 4", "42": "Vagão 3, Porta 3", "43": "Vagão 3, Porta 2", "44": "Vagão 3, Porta 1",
+            "51": "Vagão 2, Porta 4", "52": "Vagão 2, Porta 3", "53": "Vagão 2, Porta 2", "54": "Vagão 2, Porta 1",
+            "61": "Vagão 1, Porta 4", "62": "Vagão 1, Porta 3", "63": "Vagão 1, Porta 2", "64": "Vagão 1, Porta 1"
+        }
+    };
+
+    // Estações com a nova tag semPortas
     const estacoes = {
         1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
         2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
@@ -247,11 +276,11 @@
         8: { nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
         9: { nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
         10: { nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
-        11: { nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
+        11: { nome: "Brás", semPortas: true, elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
         12: { nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
         13: { nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
-        14: { nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
-        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
+        14: { nome: "Anhangabaú", semPortas: true, elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
+        15: { nome: "República", semPortas: true, elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
         16: { nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
         17: { nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
         18: { nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" }
@@ -261,11 +290,9 @@
         const selectOrigem = document.getElementById('origem');
         const selectDestino = document.getElementById('destino');
         
-        // Zera as opções com segurança para evitar bugs em navegadores de celular
         selectOrigem.options.length = 0;
         selectDestino.options.length = 0;
 
-        // Cria a opção padrão Origem
         let defaultOrigem = document.createElement("option");
         defaultOrigem.text = dicionario[currentLang].optDefaultOrigem;
         defaultOrigem.value = "0";
@@ -273,7 +300,6 @@
         defaultOrigem.selected = true;
         selectOrigem.add(defaultOrigem);
 
-        // Cria a opção padrão Destino
         let defaultDestino = document.createElement("option");
         defaultDestino.text = dicionario[currentLang].optDefaultDestino;
         defaultDestino.value = "0";
@@ -281,7 +307,6 @@
         defaultDestino.selected = true;
         selectDestino.add(defaultDestino);
 
-        // Preenche com as estações
         for (let id = 1; id <= 18; id++) {
             selectOrigem.add(new Option(estacoes[id].nome, id));
             selectDestino.add(new Option(estacoes[id].nome, id));
@@ -291,11 +316,9 @@
     function toggleLanguage() {
         currentLang = currentLang === 'pt' ? 'en' : 'pt';
         
-        // Atualiza estilo das bandeiras
         document.getElementById('lang-pt').classList.toggle('active', currentLang === 'pt');
         document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
 
-        // Atualiza textos estáticos
         document.getElementById('app-title').innerHTML = dicionario[currentLang].title;
         document.getElementById('lbl-pref').innerText = dicionario[currentLang].lblPref;
         document.getElementById('opt-elevador').innerText = dicionario[currentLang].optElevador;
@@ -306,14 +329,11 @@
         document.getElementById('btn-report').innerText = dicionario[currentLang].btnReport;
         document.getElementById('slogan-text').innerText = dicionario[currentLang].slogan;
 
-        // Salva a escolha atual do usuário para não resetar o que ele já clicou
         const origemVal = document.getElementById('origem').value;
         const destinoVal = document.getElementById('destino').value;
         
-        // Recarrega os menus suspensos traduzidos
         carregarEstacoes();
         
-        // Devolve os valores selecionados
         document.getElementById('origem').value = origemVal;
         document.getElementById('destino').value = destinoVal;
         
@@ -322,6 +342,35 @@
         } else {
             document.getElementById('resultado-box').innerHTML = `<div class="info-text" id="initial-msg">${dicionario[currentLang].initialMsg}</div>`;
         }
+    }
+
+    function obterInfoExtra(alvo, sentido) {
+        let t = dicionario[currentLang];
+        let info = "";
+        let vagaoMatch = alvo.match(/Vagão \d, Porta \d/);
+        let numMatch = alvo.match(/\d{2}/);
+
+        if (vagaoMatch) {
+            let vStr = vagaoMatch[0];
+            let numEq = null;
+            for (let k in mapaPortas[sentido]) {
+                if (mapaPortas[sentido][k] === vStr) { numEq = k; break; }
+            }
+            if (numEq) info = t.equivalente.replace('{num}', numEq);
+        } else if (numMatch && !alvo.includes("Vagão")) {
+            let num = numMatch[0];
+            if (mapaPortas[sentido][num]) {
+                info = `(${traduzirPorta(mapaPortas[sentido][num])})`;
+            }
+        }
+        return info;
+    }
+
+    function traduzirPorta(texto) {
+        if (currentLang === 'en') {
+            return texto.replace(/Porta/g, 'Door').replace(/Vagão/g, 'Car');
+        }
+        return texto;
     }
 
     function calcularRota() {
@@ -359,12 +408,20 @@
             return;
         }
 
+        // Verifica se a origem não tem portas (agora olha para a origem, não para o destino!)
+        let avisoVagaoNaOrigem = estacoes[idOrigem].semPortas ? `<div class="alert">${t.avisoVagao}</div>` : '';
+
         if (portaAlvo.includes("Sem rolante")) {
+            let displayAlternativa = traduzirPorta(portaAlternativaElevador);
+            let infoExtraAlt = obterInfoExtra(portaAlternativaElevador, sentido);
+
             box.innerHTML = `
                 <div class="info-text" style="color: #FFB74D; margin-bottom: 10px;">⚠️ ${t.faltaRolante}</div>
                 <div class="info-text">${t.sugestaoElevador}</div>
-                <div class="result-door">${portaAlternativaElevador}</div>
+                <div class="result-door">${displayAlternativa}</div>
+                ${infoExtraAlt ? `<div class="info-extra">${infoExtraAlt}</div>` : ''}
                 <div class="info-text">${t.saidaFrente.replace('{tipo}', t.tipoElevador).replace('{destino}', estacoes[idDestino].nome)}</div>
+                ${avisoVagaoNaOrigem}
             `;
             return;
         }
@@ -373,21 +430,18 @@
         let textoEmbarque = t.embarqueNa.replace('{origem}', estacoes[idOrigem].nome);
         let textoSaida = t.saidaFrente.replace('{tipo}', tipoSaidaTexto).replace('{destino}', estacoes[idDestino].nome);
 
-        let htmlBaldeacao = "";
-        if (idDestino === 13) {
-            // Estrutura reservada para integração da Linha 1 no futuro
-        }
+        let displayPorta = traduzirPorta(portaAlvo);
+        let infoExtra = obterInfoExtra(portaAlvo, sentido);
 
         box.innerHTML = `
             <div class="info-text">${textoEmbarque}</div>
-            <div class="result-door">${portaAlvo}</div>
+            <div class="result-door">${displayPorta}</div>
+            ${infoExtra ? `<div class="info-extra">${infoExtra}</div>` : ''}
             <div class="info-text">${textoSaida}</div>
-            ${portaAlvo.includes("Vagão") || portaAlvo.includes("Vagão") ? `<div class="alert">${t.avisoVagao}</div>` : ''}
-            ${htmlBaldeacao}
+            ${avisoVagaoNaOrigem}
         `;
     }
 
-    // Inicializa a página
     carregarEstacoes();
 </script>
 
