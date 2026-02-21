@@ -88,8 +88,14 @@
 <body>
 
 <div class="container">
-    <h1>Linha 3 - Elevadores</h1>
+    <h1>Rotas de Acesso - Linha 3</h1>
     
+    <label for="preferencia">Qual a sua preferência de saída?</label>
+    <select id="preferencia" onchange="calcularRota()">
+        <option value="elevador" selected>Elevador</option>
+        <option value="rolante">Escada Rolante</option>
+    </select>
+
     <label for="origem">Onde você vai embarcar?</label>
     <select id="origem" onchange="calcularRota()">
         <option value="0" disabled selected>Selecione a origem</option>
@@ -101,36 +107,36 @@
     </select>
 
     <div class="result-box" id="resultado-box">
-        <div class="info-text">Selecione origem e destino para ver a porta de embarque.</div>
+        <div class="info-text">Selecione as estações para ver a porta de embarque.</div>
     </div>
 </div>
 
 <script>
-    // Base de dados com o mapeamento das portas dos elevadores
+    // Base de dados com elevadores e escadas rolantes (focando em ROLANTE OUT para saída)
     const estacoes = {
-        1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-" },
-        2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64" },
-        3: { nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11" },
-        4: { nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12" },
-        5: { nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64" },
-        6: { nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11" },
-        7: { nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11" },
-        8: { nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63" },
-        9: { nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63" },
-        10: { nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63" },
-        11: { nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2" },
-        12: { nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Mapeamento pendente (Lateral IT)" },
-        13: { nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33" },
-        14: { nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1" },
-        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4" },
-        16: { nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Mapeamento pendente (Lateral IT)" },
-        17: { nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37 (confirmar)" },
-        18: { nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44" }
+        1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-" },
+        2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43" },
+        3: { nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34" },
+        4: { nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33" },
+        5: { nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42" },
+        6: { nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33" },
+        7: { nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33" },
+        8: { nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34" },
+        9: { nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42" },
+        10: { nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42" },
+        11: { nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2" },
+        12: { nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente" },
+        13: { nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52" },
+        14: { nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6" },
+        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4" },
+        16: { nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente" },
+        17: { nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36" },
+        18: { nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34" }
     };
 
-    // Preencher os selects
     const selectOrigem = document.getElementById('origem');
     const selectDestino = document.getElementById('destino');
+    const selectPreferencia = document.getElementById('preferencia');
 
     for (let id = 1; id <= 18; id++) {
         let optOrigem = document.createElement('option');
@@ -144,10 +150,10 @@
         selectDestino.appendChild(optDestino);
     }
 
-    // Lógica de cálculo
     function calcularRota() {
         const idOrigem = parseInt(selectOrigem.value);
         const idDestino = parseInt(selectDestino.value);
+        const preferencia = selectPreferencia.value;
         const box = document.getElementById('resultado-box');
 
         if (!idOrigem || !idDestino) return;
@@ -162,17 +168,17 @@
 
         if (idOrigem < idDestino) {
             sentido = "Barra Funda";
-            portaAlvo = estacoes[idDestino].elevadorBF;
+            portaAlvo = preferencia === "elevador" ? estacoes[idDestino].elevadorBF : estacoes[idDestino].rolanteBF;
         } else {
             sentido = "Itaquera";
-            portaAlvo = estacoes[idDestino].elevadorIT;
+            portaAlvo = preferencia === "elevador" ? estacoes[idDestino].elevadorIT : estacoes[idDestino].rolanteIT;
         }
 
-        if (portaAlvo.includes("pendente")) {
+        if (portaAlvo.includes("Pendente") || portaAlvo.includes("Sem rolante")) {
             box.innerHTML = `
                 <div class="info-text">Sentido: ${sentido}</div>
                 <div class="result-door" style="font-size: 1.2rem; color: #FFB74D;">${portaAlvo}</div>
-                <div class="info-text">Dados desta plataforma ainda não foram mapeados.</div>
+                <div class="info-text">Você pode atualizar esse dado no código assim que mapear.</div>
             `;
             return;
         }
@@ -180,8 +186,8 @@
         box.innerHTML = `
             <div class="info-text">Na estação <b>${estacoes[idOrigem].nome}</b>,<br>embarque exatamente na:</div>
             <div class="result-door">${portaAlvo}</div>
-            <div class="info-text">Você sairá de frente para o elevador em <b>${estacoes[idDestino].nome}</b>.</div>
-            ${portaAlvo.includes("Vagão") ? '<div class="alert">*Estação sem portas de plataforma. Baseie-se no número do vagão.</div>' : ''}
+            <div class="info-text">Você sairá de frente para a ${preferencia === 'elevador' ? 'porta do elevador' : 'escada rolante'} em <b>${estacoes[idDestino].nome}</b>.</div>
+            ${portaAlvo.includes("Vagão") ? '<div class="alert">*Estação sem portas na plataforma. Baseie-se no número do vagão.</div>' : ''}
         `;
     }
 </script>
