@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guia de Acesso - Linha 3 Vermelha</title>
+    <title>PORTA CERTA SP - Guia de Acesso</title>
     <style>
         :root {
             --red-line: #EE3E34;
@@ -21,6 +21,7 @@
             padding: 15px;
             display: flex;
             justify-content: center;
+            transition: all 0.3s ease;
         }
         .container {
             background-color: var(--card-bg);
@@ -37,27 +38,59 @@
         .header-top {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .header-actions {
+            display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            gap: 15px;
+        }
+        .a11y-btn {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-main);
+            background: #333;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            user-select: none;
         }
         .lang-switch {
             font-size: 1.5rem;
             cursor: pointer;
             user-select: none;
+            display: flex;
+            gap: 5px;
         }
         .lang-switch span {
-            margin-left: 5px;
-            opacity: 0.5;
+            opacity: 0.4;
             transition: opacity 0.3s;
         }
         .lang-switch span.active {
             opacity: 1;
         }
         h1 {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             margin: 0;
             text-align: left;
             color: var(--text-main);
+            line-height: 1.2;
+        }
+        .subtitle {
+            color: var(--red-line);
+            font-size: 1.1rem;
+            display: block;
+            margin-top: 4px;
+        }
+        .tutorial-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
         }
         label {
             display: block;
@@ -151,20 +184,37 @@
             color: var(--text-muted);
             letter-spacing: 0.5px;
         }
+
+        /* --- CLASSES DE ACESSIBILIDADE VISUAL (FONTE GRANDE) --- */
+        body.large-font h1 { font-size: 2.2rem; }
+        body.large-font .subtitle { font-size: 1.3rem; }
+        body.large-font .tutorial-text { font-size: 1.15rem; }
+        body.large-font label { font-size: 1.15rem; color: #FFF; }
+        body.large-font select { font-size: 1.25rem; padding: 16px; }
+        body.large-font .result-door { font-size: 2.8rem; }
+        body.large-font .info-text { font-size: 1.2rem; }
+        body.large-font .info-extra { font-size: 1.3rem; }
+        body.large-font .alert { font-size: 1.05rem; }
+        body.large-font .slogan { font-size: 1rem; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-top">
-        <h1 id="app-title">Rotas de Acesso<br><span style="color: #EE3E34; font-size: 1.2rem;">Linha 3 Vermelha</span></h1>
-        <div class="lang-switch" onclick="toggleLanguage()">
-            <span id="lang-pt" class="active">🇧🇷</span>
-            <span id="lang-en">🇺🇸</span>
+        <h1 id="app-title">PORTA CERTA SP<br><span class="subtitle">Linha 3 Vermelha</span></h1>
+        <div class="header-actions">
+            <span class="a11y-btn" id="btn-font" onclick="toggleFontSize()">A+</span>
+            <div class="lang-switch" onclick="toggleLanguage()">
+                <span id="lang-pt" class="active">🇧🇷</span>
+                <span id="lang-en">🇺🇸</span>
+            </div>
         </div>
     </div>
     
-    <label for="preferencia" id="lbl-pref">Qual a sua preferência de saída?</label>
+    <p class="tutorial-text" id="tutorial-text">Escolha a sua acessibilidade favorita, diga a Estação de Origem e a Estação de Destino e nós te diremos a Porta Certa!</p>
+    
+    <label for="preferencia" id="lbl-pref">Sua preferência de saída:</label>
     <select id="preferencia" onchange="calcularRota()">
         <option value="elevador" id="opt-elevador" selected>Elevador</option>
         <option value="rolante" id="opt-rolante">Escada Rolante</option>
@@ -184,18 +234,20 @@
     <button class="report-btn" id="btn-report">⚠️ Reportar alteração (Em breve)</button>
 
     <div class="footer">
-        <div class="slogan" id="slogan-text">"Autonomia. Precisão no embarque. Distâncias menores."</div>
-        <div class="signature">Idealizado por: Harry Bour | 2026</div>
+        <div class="slogan" id="slogan-text">Autonomia. Precisão no embarque. Distâncias menores.</div>
+        <div class="signature">Criador: Harry Bour | 2026</div>
     </div>
 </div>
 
 <script>
     let currentLang = 'pt';
+    let isLargeFont = false;
 
     const dicionario = {
         'pt': {
-            title: 'Rotas de Acesso<br><span style="color: #EE3E34; font-size: 1.2rem;">Linha 3 Vermelha</span>',
-            lblPref: 'Qual a sua preferência de saída?',
+            title: 'PORTA CERTA SP<br><span class="subtitle">Linha 3 Vermelha</span>',
+            tutorial: 'Escolha a sua acessibilidade favorita, diga a Estação de Origem e a Estação de Destino e nós te diremos a Porta Certa!',
+            lblPref: 'Sua preferência de saída:',
             optElevador: 'Elevador',
             optRolante: 'Escada Rolante',
             optFixa: 'Escada Fixa',
@@ -205,7 +257,7 @@
             optDefaultDestino: 'Selecione o destino',
             initialMsg: 'Selecione as estações para ver a porta de embarque.',
             btnReport: '⚠️ Reportar alteração (Em breve)',
-            slogan: '"Autonomia em cada embarque. O direito à cidade sem barreiras."',
+            slogan: 'Autonomia. Precisão no embarque. Distâncias menores.',
             mesmaEstacao: 'Origem e destino são a mesma estação.',
             embarqueNa: 'Na estação <b>{origem}</b>,<br>embarque exatamente na:',
             saidaFrente: 'Você sairá de frente para a <b>{tipo}</b> em <b>{destino}</b>.',
@@ -219,8 +271,9 @@
             equivalente: '(Equivalente à Porta {num})'
         },
         'en': {
-            title: 'Access Routes<br><span style="color: #EE3E34; font-size: 1.2rem;">Red Line 3</span>',
-            lblPref: 'What is your exit preference?',
+            title: 'PORTA CERTA SP<br><span class="subtitle">Red Line 3</span>',
+            tutorial: 'Choose your favorite accessibility option, tell us the Origin and Destination stations and we will tell you the Right Door!',
+            lblPref: 'Your preferred exit:',
             optElevador: 'Elevator',
             optRolante: 'Escalator',
             optFixa: 'Stairs',
@@ -230,7 +283,7 @@
             optDefaultDestino: 'Select destination',
             initialMsg: 'Select stations to see the boarding door.',
             btnReport: '⚠️ Report change (Coming soon)',
-            slogan: '"Autonomy. Boarding precision. Shorter distances."',
+            slogan: 'Autonomy. Boarding precision. Shorter distances.',
             mesmaEstacao: 'Origin and destination are the same.',
             embarqueNa: 'At <b>{origem}</b> station,<br>board exactly at:',
             saidaFrente: 'You will exit facing the <b>{tipo}</b> at <b>{destino}</b>.',
@@ -264,7 +317,6 @@
         }
     };
 
-    // Estações com a nova tag semPortas
     const estacoes = {
         1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
         2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
@@ -313,6 +365,17 @@
         }
     }
 
+    function toggleFontSize() {
+        isLargeFont = !isLargeFont;
+        if (isLargeFont) {
+            document.body.classList.add('large-font');
+            document.getElementById('btn-font').innerText = 'A-';
+        } else {
+            document.body.classList.remove('large-font');
+            document.getElementById('btn-font').innerText = 'A+';
+        }
+    }
+
     function toggleLanguage() {
         currentLang = currentLang === 'pt' ? 'en' : 'pt';
         
@@ -320,6 +383,7 @@
         document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
 
         document.getElementById('app-title').innerHTML = dicionario[currentLang].title;
+        document.getElementById('tutorial-text').innerText = dicionario[currentLang].tutorial;
         document.getElementById('lbl-pref').innerText = dicionario[currentLang].lblPref;
         document.getElementById('opt-elevador').innerText = dicionario[currentLang].optElevador;
         document.getElementById('opt-rolante').innerText = dicionario[currentLang].optRolante;
@@ -408,7 +472,6 @@
             return;
         }
 
-        // Verifica se a origem não tem portas (agora olha para a origem, não para o destino!)
         let avisoVagaoNaOrigem = estacoes[idOrigem].semPortas ? `<div class="alert">${t.avisoVagao}</div>` : '';
 
         if (portaAlvo.includes("Sem rolante")) {
@@ -447,4 +510,3 @@
 
 </body>
 </html>
-
