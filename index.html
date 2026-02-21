@@ -94,6 +94,7 @@
     <select id="preferencia" onchange="calcularRota()">
         <option value="elevador" selected>Elevador</option>
         <option value="rolante">Escada Rolante</option>
+        <option value="fixa">Escada Fixa</option>
     </select>
 
     <label for="origem">Onde você vai embarcar?</label>
@@ -112,26 +113,26 @@
 </div>
 
 <script>
-    // Base de dados com elevadores e escadas rolantes (focando em ROLANTE OUT para saída)
+    // Base de dados com elevadores, escadas rolantes e escadas fixas
     const estacoes = {
-        1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-" },
-        2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43" },
-        3: { nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34" },
-        4: { nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33" },
-        5: { nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42" },
-        6: { nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33" },
-        7: { nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33" },
-        8: { nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34" },
-        9: { nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42" },
-        10: { nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42" },
-        11: { nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2" },
-        12: { nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente" },
-        13: { nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52" },
-        14: { nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6" },
-        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4" },
-        16: { nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente" },
-        17: { nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36" },
-        18: { nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34" }
+        1: { nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
+        2: { nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        3: { nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        4: { nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        5: { nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        6: { nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 47", fixaIT: "Porta 42" },
+        7: { nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        8: { nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        9: { nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        10: { nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        11: { nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
+        12: { nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
+        13: { nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
+        14: { nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
+        15: { nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
+        16: { nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        17: { nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
+        18: { nome: "Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" }
     };
 
     const selectOrigem = document.getElementById('origem');
@@ -168,10 +169,14 @@
 
         if (idOrigem < idDestino) {
             sentido = "Barra Funda";
-            portaAlvo = preferencia === "elevador" ? estacoes[idDestino].elevadorBF : estacoes[idDestino].rolanteBF;
+            if (preferencia === "elevador") portaAlvo = estacoes[idDestino].elevadorBF;
+            else if (preferencia === "rolante") portaAlvo = estacoes[idDestino].rolanteBF;
+            else portaAlvo = estacoes[idDestino].fixaBF;
         } else {
             sentido = "Itaquera";
-            portaAlvo = preferencia === "elevador" ? estacoes[idDestino].elevadorIT : estacoes[idDestino].rolanteIT;
+            if (preferencia === "elevador") portaAlvo = estacoes[idDestino].elevadorIT;
+            else if (preferencia === "rolante") portaAlvo = estacoes[idDestino].rolanteIT;
+            else portaAlvo = estacoes[idDestino].fixaIT;
         }
 
         if (portaAlvo.includes("Pendente") || portaAlvo.includes("Sem rolante")) {
@@ -183,10 +188,15 @@
             return;
         }
 
+        let tipoSaidaTexto = "";
+        if (preferencia === 'elevador') tipoSaidaTexto = 'porta do elevador';
+        else if (preferencia === 'rolante') tipoSaidaTexto = 'escada rolante';
+        else tipoSaidaTexto = 'escada fixa';
+
         box.innerHTML = `
             <div class="info-text">Na estação <b>${estacoes[idOrigem].nome}</b>,<br>embarque exatamente na:</div>
             <div class="result-door">${portaAlvo}</div>
-            <div class="info-text">Você sairá de frente para a ${preferencia === 'elevador' ? 'porta do elevador' : 'escada rolante'} em <b>${estacoes[idDestino].nome}</b>.</div>
+            <div class="info-text">Você sairá de frente para a ${tipoSaidaTexto} em <b>${estacoes[idDestino].nome}</b>.</div>
             ${portaAlvo.includes("Vagão") ? '<div class="alert">*Estação sem portas na plataforma. Baseie-se no número do vagão.</div>' : ''}
         `;
     }
