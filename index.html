@@ -93,11 +93,10 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * AUTOR: Harry Bour
- * VERSÃO: 3.0.0 (Data: 22/02/2026)
+ * VERSÃO: 3.1.0 (Data: 23/02/2026)
  * JUSTIFICATIVA: Guia prático de autonomia projetado para facilitar o trânsito 
  * de pessoas com necessidades de acessibilidade no transporte de São Paulo,
  * indicando matematicamente a porta ideal de embarque.
- * ARQUITETURA: Modular Orientada a Objetos (Preparada para JSON Database)
  * ============================================================================
  */
 </script>
@@ -210,7 +209,6 @@ const AppData = {
         "IT": { "11": "Vagão 6, Porta 4", "12": "Vagão 6, Porta 3", "13": "Vagão 6, Porta 2", "14": "Vagão 6, Porta 1", "21": "Vagão 5, Porta 4", "22": "Vagão 5, Porta 3", "23": "Vagão 5, Porta 2", "24": "Vagão 5, Porta 1", "31": "Vagão 4, Porta 4", "32": "Vagão 4, Porta 3", "33": "Vagão 4, Porta 2", "34": "Vagão 4, Porta 1", "41": "Vagão 3, Porta 4", "42": "Vagão 3, Porta 3", "43": "Vagão 3, Porta 2", "44": "Vagão 3, Porta 1", "51": "Vagão 2, Porta 4", "52": "Vagão 2, Porta 3", "53": "Vagão 2, Porta 2", "54": "Vagão 2, Porta 1", "61": "Vagão 1, Porta 4", "62": "Vagão 1, Porta 3", "63": "Vagão 1, Porta 2", "64": "Vagão 1, Porta 1" }
     },
 
-    // Note a tag "mapeada: true" nas estações com dados validados
     estacoes: {
         301: { linha: 3, mapeada: true, nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
         302: { linha: 3, mapeada: true, nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
@@ -227,7 +225,7 @@ const AppData = {
         313: { linha: 3, mapeada: true, nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
         314: { linha: 3, mapeada: true, nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
         315: { linha: 3, mapeada: true, nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
-        316: { linha: 3, mapeada: true, nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        316: { linha: 3, mapeada: true, nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Pendente", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
         317: { linha: 3, mapeada: true, nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
         318: { linha: 3, mapeada: true, nome: "Palmeiras-Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
         
@@ -250,41 +248,41 @@ const AppData = {
             modTitle: 'Aviso de Segurança', modText: 'Esta ferramenta foi projetada para facilitar a autonomia de pessoas preferenciais. O Metrô recomenda o uso dos vagões das pontas. Lembre-se: o bom senso e a sua segurança devem ser sempre a regra número 1.',
             modCheck: 'Li e compreendi', modBtn: 'Acessar o Guia', btnCalc: 'Qual é a Porta Certa?',
             lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa',
-            titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha de Origem', selLinhaDest: 'Escolha a Linha de Destino',
-            selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', listTitle: 'Estações Mapeadas', listDesc: 'Atualmente, a precisão funciona nestas estações:',
+            titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha',
+            selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:',
             mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)',
             l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata',
             embTrecho: 'Em <b>{est}</b>, embarque na:', transfTrecho: 'Desembarque em <b>{est}</b> e faça transferência para a <b>{linha}</b>.', saidaFinal: 'No destino final (<b>{est}</b>), você sairá de frente para a <b>{tipo}</b>.',
-            tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', faltaRolante: 'Opção indisponível nesta estação.', sugestaoElevador: 'Sugerimos utilizar o Elevador na:',
+            tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa',
             pendente: 'A estação selecionada ainda não foi mapeada. Aguarde atualizações futuras.', palavraPorta: 'Porta', palavraVagao: 'Vagão'
         },
         'en': {
-            modTitle: 'Safety Notice', modText: 'This tool is designed to assist people with accessibility needs. The Subway recommends using the end cars. Common sense and your safety must always come first.',
+            modTitle: 'Safety Notice', modText: 'This tool is designed to assist people with accessibility needs. Common sense and your safety must always come first.',
             modCheck: 'I have read and understood', modBtn: 'Access Guide', btnCalc: 'What is the Right Door?',
             lblPref: 'Your preferred exit at final destination:', optElevador: 'Elevator', optRolante: 'Escalator', optFixa: 'Stairs',
-            titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Origin Line', selLinhaDest: 'Select Destination Line',
-            selEstOr: 'Select a line first', selEstDest: 'Select a line first', listTitle: 'Mapped Stations', listDesc: 'Currently, precision works in these stations:',
+            titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Line', selLinhaDest: 'Select Line',
+            selEstOr: 'Select a line first', selEstDest: 'Select a line first', listTitle: 'Mapped Stations', listDesc: 'Currently available at:',
             mesmaEstacao: 'You are already at the destination station.', trecho: 'Leg', emBreve: '(Soon)',
             l1: 'L1-Blue', l2: 'L2-Green', l3: 'L3-Red', l4: 'L4-Yellow', l5: 'L5-Lilac', l7: 'L7-Ruby', l8: 'L8-Diamond', l9: 'L9-Emerald', l10: 'L10-Turquoise', l11: 'L11-Coral', l12: 'L12-Sapphire', l13: 'L13-Jade', l15: 'L15-Silver',
             embTrecho: 'At <b>{est}</b>, board exactly at:', transfTrecho: 'Get off at <b>{est}</b> and transfer to <b>{linha}</b>.', saidaFinal: 'At final destination (<b>{est}</b>), you will exit facing the <b>{tipo}</b>.',
-            tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs', faltaRolante: 'Option unavailable here.', sugestaoElevador: 'We suggest using the Elevator at:',
+            tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs',
             pendente: 'The selected station has not been mapped yet. Please await future updates.', palavraPorta: 'Door', palavraVagao: 'Car'
         },
         'es': {
-            modTitle: 'Aviso de Seguridad', modText: 'Esta herramienta facilita la autonomía de personas preferenciales. El Metro recomienda los vagones extremos. Tu seguridad es siempre la regla número 1.',
+            modTitle: 'Aviso de Seguridad', modText: 'Esta herramienta facilita la autonomía de personas preferenciales. Tu seguridad es siempre la regla número 1.',
             modCheck: 'Leí y comprendí', modBtn: 'Acceder a la Guía', btnCalc: '¿Cuál es la Puerta Correcta?', lblPref: 'Tu preferencia de salida:', optElevador: 'Ascensor', optRolante: 'Escalera Mecánica', optFixa: 'Escalera Fija',
             titleOrigem: '📍 PUNTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Línea de Origen', selLinhaDest: 'Línea de Destino',
             selEstOr: 'Primero elige la línea', selEstDest: 'Primero elige la línea', listTitle: 'Estaciones Mapeadas', listDesc: 'Precisión disponible en:', mesmaEstacao: 'Ya estás en la estación.', trecho: 'Tramo', emBreve: '(Pronto)',
             l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Roja', l4: 'L4-Amarilla', l5: 'L5-Lila', l7: 'L7-Rubí', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Zafiro', l13: 'L13-Jade', l15: 'L15-Plata',
             embTrecho: 'En <b>{est}</b>, sube en:', transfTrecho: 'Baja en <b>{est}</b> y transfiere a <b>{linha}</b>.', saidaFinal: 'En tu destino (<b>{est}</b>), saldrás frente a <b>{tipo}</b>.',
-            tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija', faltaRolante: 'No disponible.', sugestaoElevador: 'Sugerimos el Ascensor en:',
+            tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija',
             pendente: 'La estación seleccionada aún no ha sido mapeada. Aguarda futuras actualizaciones.', palabraPorta: 'Puerta', palabraVagao: 'Vagón'
         },
-        'fr': { modTitle: 'Avis de Sécurité', modText: 'Pour les personnes à mobilité réduite. Le bon sens et la sécurité priment.', modCheck: 'Compris', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne de départ', selLinhaDest: 'Ligne d\'arrivée', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', faltaRolante: 'Indisponible.', sugestaoElevador: 'Ascenseur à:', pendente: 'La station sélectionnée n\'a pas encore été cartographiée.', palabraPorta: 'Porte', palabraVagao: 'Voiture' },
-        'zh': { modTitle: '安全提示', modText: '常识和您的安全必须始终放在第一位。', modCheck: '我已阅读并理解', modBtn: '进入指南', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '起点线路', selLinhaDest: '终点线路', selEstOr: '先选线', selEstDest: '先选线', listTitle: '已测绘车站', listDesc: '目前可用的车站:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '在 <b>{est}</b> 换乘 <b>{linha}</b>。', saidaFinal: '在 <b>{est}</b> 下车，正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', faltaRolante: '无。', sugestaoElevador: '建议直梯:', pendente: '所选车站尚未测绘，请等待未来更新。', palabraPorta: '号门', palabraVagao: '号车厢' },
-        'ja': { modTitle: '安全に関するお知らせ', modText: '利用者の安全と常識が常に最優先されます。', modCheck: '同意する', modBtn: 'ガイドへ', btnCalc: '正しいドアは？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '出発線', selLinhaDest: '到着線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{est}</b>で<b>{linha}</b>に乗換。', saidaFinal: '<b>{est}</b>で<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', faltaRolante: '利用不可。', sugestaoElevador: 'EV推奨:', pendente: '選択した駅はまだマッピングされていません。', palabraPorta: '番ドア', palabraVagao: '号車' },
-        'ko': { modTitle: '안전 공지', modText: '사용자의 안전에 대한 상식이 항상 최우선이어야 합니다.', modCheck: '동의합니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '출발 노선', selLinhaDest: '도착 노선', selEstOr: '노선 먼저 선택', selEstDest: '노선 먼저 선택', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{est}</b>에서 <b>{linha}</b> 환승.', saidaFinal: '<b>{est}</b>에서 <b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', faltaRolante: '불가.', sugestaoElevador: 'EV 권장:', pendente: '선택한 역은 아직 매핑되지 않았습니다.', palabraPorta: '번 문', palabraVagao: '호차' },
-        'ar': { modTitle: 'تنبيه أمان', modText: 'يجب أن يكون المنطق السليم وسلامتك دائمًا في المقام الأول.', modCheck: 'موافق', modBtn: 'دخول', btnCalc: 'ما هو الباب الصحيح؟', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في <b>{est}</b> اصعد:', transfTrecho: 'تحويل في <b>{est}</b> إلى <b>{linha}</b>.', saidaFinal: 'في <b>{est}</b> أمام <b>{tipo}</b>.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', faltaRolante: 'غير متوفر.', sugestaoElevador: 'استخدم المصعد:', pendente: 'لم يتم تعيين المحطة المحددة بعد. يرجى انتظار التحديثات.', palabraPorta: 'باب', palabraVagao: 'عربة' }
+        'fr': { modTitle: 'Avis de Sécurité', modText: 'Pour les personnes à mobilité réduite. Le bon sens et la sécurité priment.', modCheck: 'Compris', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne de départ', selLinhaDest: 'Ligne d\'arrivée', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'La station sélectionnée n\'a pas encore été cartographiée.', palabraPorta: 'Porte', palabraVagao: 'Voiture' },
+        'zh': { modTitle: '安全提示', modText: '常识和您的安全必须始终放在第一位。', modCheck: '我已阅读并理解', modBtn: '进入指南', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '起点线路', selLinhaDest: '终点线路', selEstOr: '先选线', selEstDest: '先选线', listTitle: '已测绘车站', listDesc: '目前可用的车站:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '在 <b>{est}</b> 换乘 <b>{linha}</b>。', saidaFinal: '在 <b>{est}</b> 下车，正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '所选车站尚未测绘，请等待未来更新。', palabraPorta: '号门', palabraVagao: '号车厢' },
+        'ja': { modTitle: '安全に関するお知らせ', modText: '利用者の安全と常識が常に最優先されます。', modCheck: '同意する', modBtn: 'ガイドへ', btnCalc: '正しいドアは？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '出発線', selLinhaDest: '到着線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{est}</b>で<b>{linha}</b>に乗換。', saidaFinal: '<b>{est}</b>で<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: '選択した駅はまだマッピングされていません。', palabraPorta: '番ドア', palabraVagao: '号車' },
+        'ko': { modTitle: '안전 공지', modText: '사용자의 안전에 대한 상식이 항상 최우선이어야 합니다.', modCheck: '동의합니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '출발 노선', selLinhaDest: '도착 노선', selEstOr: '노선 먼저 선택', selEstDest: '노선 먼저 선택', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{est}</b>에서 <b>{linha}</b> 환승.', saidaFinal: '<b>{est}</b>에서 <b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '선택한 역은 아직 매핑되지 않았습니다.', palabraPorta: '번 문', palabraVagao: '호차' },
+        'ar': { modTitle: 'تنبيه أمان', modText: 'يجب أن يكون المنطق السليم وسلامتك دائمًا في المقام الأول.', modCheck: 'موافق', modBtn: 'دخول', btnCalc: 'ما هو الباب الصحيح؟', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في <b>{est}</b> اصعد:', transfTrecho: 'تحويل في <b>{est}</b> إلى <b>{linha}</b>.', saidaFinal: 'في <b>{est}</b> أمام <b>{tipo}</b>.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم تعيين المحطة المحددة بعد. يرجى انتظار التحديثات.', palabraPorta: 'باب', palabraVagao: 'عربة' }
     }
 };
 
@@ -292,10 +290,8 @@ const AppData = {
  * ==========================================
  * BLOCO 2: FORMATADOR DE DADOS (Formatter)
  * ==========================================
- * Garante que a saída visual seja sempre padronizada.
  */
 const Formatter = {
-    // Mescla o número da porta e o código do vagão para entregar sempre a informação completa.
     formatarPorta: function(raw, sentido) {
         if (!raw || raw === "-" || raw === "Pendente") return raw;
 
@@ -308,29 +304,26 @@ const Formatter = {
         let numPorta = "";
         let vagaoStr = "";
 
-        // Se a base tem apenas o número (Ex: "Porta 44")
         if (numMatch && !raw.includes("Vagão")) {
             numPorta = numMatch[0];
             vagaoStr = map[numPorta] || ""; 
-        } 
-        // Se a base tem apenas o vagão (Ex: "Vagão 5, Porta 3")
-        else if (vagaoMatch) {
+        } else if (vagaoMatch) {
             vagaoStr = vagaoMatch[0];
             numPorta = Object.keys(map).find(k => map[k] === vagaoStr) || "";
         }
 
         let res = [];
         if (numPorta) {
-            res.push(AppData.currentLang === 'zh' ? `${numPorta}${t.palabraPorta}` : `${t.palavraPorta} ${numPorta}`);
+            res.push(AppData.currentLang === 'zh' ? `${numPorta}${t.palabraPorta}` : `${t.palabraPorta} ${numPorta}`);
         } else if (raw.includes("Porta")) {
-            res.push(raw.replace("Porta", t.palavraPorta)); // Fallback
+            res.push(raw.replace("Porta", t.palabraPorta));
         }
 
         if (vagaoStr) {
             let tradVagao = vagaoStr.replace("Vagão", t.palavraVagao).replace("Porta", t.palavraPorta);
-            // Ajuste fino para chinês e japonês
-            if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja') tradVagao = vagaoStr.replace(/Vagão (\d), Porta (\d)/, `$1${t.palavraVagao} $2${t.palavraPorta}`);
-            
+            if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja') {
+                tradVagao = vagaoStr.replace(/Vagão (\d), Porta (\d)/, `$1${t.palavraVagao} $2${t.palavraPorta}`);
+            }
             if (res.length > 0) res.push(`(${tradVagao})`);
             else res.push(tradVagao);
         }
@@ -393,10 +386,7 @@ const UI = {
         selLO.add(new Option(t.selLinhaOr, "0", true, true)); selLO.options[0].disabled = true;
         selLD.add(new Option(t.selLinhaDest, "0", true, true)); selLD.options[0].disabled = true;
         
-        AppData.linhas.forEach(l => { 
-            selLO.add(new Option(t['l'+l], l)); 
-            selLD.add(new Option(t['l'+l], l)); 
-        });
+        AppData.linhas.forEach(l => { selLO.add(new Option(t['l'+l], l)); selLD.add(new Option(t['l'+l], l)); });
         
         this.atualizarEstacoes('origem', true); 
         this.atualizarEstacoes('destino', true);
@@ -413,8 +403,7 @@ const UI = {
         
         if (selLinha.value === "0" || forceReset) {
             selEstacao.add(new Option(t[tipo === 'origem' ? 'selEstOr' : 'selEstDest'], "0", true, true));
-            selEstacao.disabled = true; 
-            return;
+            selEstacao.disabled = true; return;
         }
         
         selEstacao.disabled = false;
@@ -425,7 +414,7 @@ const UI = {
             let node = AppData.estacoes[id];
             if (node.linha == selLinha.value) {
                 let opt = new Option(node.nome + (!node.mapeada ? ` ${t.emBreve}` : ""), id);
-                if (!node.mapeada) opt.disabled = true; // Bloqueia estações não mapeadas
+                if (!node.mapeada) opt.disabled = true;
                 selEstacao.add(opt); 
             }
         }
@@ -456,10 +445,8 @@ const UI = {
         document.getElementById('list-desc').innerText = t.listDesc;
         document.getElementById('btn-close-list').innerText = langCode === 'en' ? 'Back' : (langCode === 'es' ? 'Volver' : 'Voltar');
         
-        const valLO = document.getElementById('linha-origem').value; 
-        const valEO = document.getElementById('estacao-origem').value;
-        const valLD = document.getElementById('linha-destino').value; 
-        const valED = document.getElementById('estacao-destino').value;
+        const valLO = document.getElementById('linha-origem').value; const valEO = document.getElementById('estacao-origem').value;
+        const valLD = document.getElementById('linha-destino').value; const valED = document.getElementById('estacao-destino').value;
         
         this.init();
         
@@ -527,16 +514,15 @@ const UI = {
             let sentidoCalculado = "BF";
 
             if (lAtual === 3) {
-                let nodeEmb = AppData.estacoes[Object.keys(AppData.estacoes).find(k => AppData.estacoes[k].nome === estNomeEmbarque && AppData.estacoes[k].linha === 3)];
-                let nodeDes = AppData.estacoes[Object.keys(AppData.estacoes).find(k => AppData.estacoes[k].nome === estNomeDesembarque && AppData.estacoes[k].linha === 3)];
+                let idEmb = Object.keys(AppData.estacoes).find(k => AppData.estacoes[k].nome === estNomeEmbarque && AppData.estacoes[k].linha === 3);
+                let idDes = Object.keys(AppData.estacoes).find(k => AppData.estacoes[k].nome === estNomeDesembarque && AppData.estacoes[k].linha === 3);
                 
-                if (nodeEmb && nodeDes) {
-                    sentidoCalculado = Router.calcularSentido(nodeEmb.id, nodeDes.id);
+                if (idEmb && idDes) {
+                    sentidoCalculado = Router.calcularSentido(idEmb, idDes);
+                    let nodeDes = AppData.estacoes[idDes];
                     
-                    // Tratamento Especial de Baldeação na L3->L1
                     if (isFirst && !isLast && nodeDes.id === 313 && caminho[i+1] === 1) {
-                        let idDestinoFinal = parseInt(estDest);
-                        let isTucuruviBound = idDestinoFinal < 111;
+                        let isTucuruviBound = parseInt(estDest) < 111;
                         portaRaw = isTucuruviBound ? (sentidoCalculado === "BF" ? "Porta 57" : "Porta 52") : (sentidoCalculado === "BF" ? "Porta 15" : "Porta 13");
                     } else {
                         portaRaw = Router.extrairPortaAlvo(nodeDes, sentidoCalculado, pref);
@@ -544,7 +530,6 @@ const UI = {
                 }
             }
 
-            // Exibição do Embarque
             if (isFirst) {
                 htmlFinal += `<div class="info-text">${t.embTrecho.replace('{est}', estNomeEmbarque)}</div>`;
                 if (portaRaw && portaRaw !== "-" && portaRaw !== "Pendente") {
@@ -554,12 +539,10 @@ const UI = {
                 }
             }
 
-            // Exibição do Desembarque
             if (!isLast) {
                 htmlFinal += `<div class="info-text" style="margin-top:15px;">${t.transfTrecho.replace('{est}', estNomeDesembarque).replace('{linha}', t['l'+caminho[i+1]])}</div>`;
             } else {
                 htmlFinal += `<div class="info-text" style="margin-top:15px;">${t.saidaFinal.replace('{est}', estNomeDesembarque).replace('{tipo}', tipoPrefTexto)}</div>`;
-                // Mostrar a porta de destino se mapeada
                 if (lAtual === 3 && portaRaw && !isFirst && portaRaw !== "-" && portaRaw !== "Pendente") {
                     htmlFinal += `<div class="result-door" style="color:${corVar}; font-size:1.6rem; margin-top:5px;">${Formatter.formatarPorta(portaRaw, sentidoCalculado)}</div>`;
                 }
@@ -578,7 +561,7 @@ window.onload = function() {
         document.getElementById('aviso-modal').style.display = 'none';
     }
 };
-
 </script>
+
 </body>
 </html>
