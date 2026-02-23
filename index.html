@@ -6,92 +6,59 @@
     <title>PORTA CERTA SP</title>
     <style>
         :root {
-            /* Cores oficiais do Metrô e CPTM */
             --l1: #00539B; --l2: #008061; --l3: #EE3E34; --l4: #F0D200; --l5: #A52182;
             --l7: #A0184B; --l8: #9E9E93; --l9: #00A88E; --l10: #007C8F; --l11: #F04D22;
             --l12: #033F88; --l13: #00B352; --l15: #8D8D8D;
             --bg-color: #000000; --card-bg: #1A1A1A; --text-main: #FFFFFF;
             --text-muted: #CCCCCC; --border-color: #444444; --btn-color: #EE3E34;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px;
-            display: flex; justify-content: center; transition: all 0.3s ease; direction: ltr;
-        }
-        .container {
-            background-color: var(--card-bg); border-radius: 12px; padding: 24px; max-width: 420px;
-            width: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.8);
-            border-top: 6px solid var(--text-muted); border: 1px solid var(--border-color);
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; display: flex; justify-content: center; transition: all 0.3s ease; direction: ltr; }
+        .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; max-width: 420px; width: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.8); border-top: 6px solid var(--text-muted); border: 1px solid var(--border-color); }
         
-        /* Modal / Termo de Uso */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex;
-            justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
-        }
-        .modal-content {
-            background: #1A1A1A; border: 1px solid var(--border-color); border-top: 5px solid var(--btn-color);
-            padding: 25px; border-radius: 12px; max-width: 380px; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
+        /* Modais Overlay */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .modal-content { background: #1A1A1A; border: 1px solid var(--border-color); border-top: 5px solid var(--btn-color); padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-height: 85vh; overflow-y: auto; }
         .modal-content h2 { margin-top: 0; font-size: 1.4rem; color: #FFF; }
         .modal-content p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px; }
-        .checkbox-container {
-            display: flex; align-items: center; gap: 10px; margin-bottom: 25px; cursor: pointer;
-        }
+        
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; cursor: pointer; }
         .checkbox-container input { width: 22px; height: 22px; accent-color: var(--btn-color); cursor: pointer; }
         .checkbox-container span { font-weight: bold; color: #FFF; font-size: 1.05rem; }
 
+        /* Estrutura Superior */
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .a11y-btn {
-            font-size: 1.2rem; font-weight: bold; color: var(--text-main); background: #333;
-            border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 10px; cursor: pointer; user-select: none;
-        }
+        .header-actions { display: flex; gap: 10px; }
+        .action-btn { font-size: 1.2rem; font-weight: bold; color: var(--text-main); background: #333; border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 10px; cursor: pointer; user-select: none; }
         h1 { font-size: 1.8rem; margin: 0; color: var(--text-main); line-height: 1.2; letter-spacing: -0.5px; }
+        
+        /* Grupos de Seleção */
         .selection-group { background-color: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px; }
         .selection-title { font-size: 1.05rem; font-weight: bold; color: #FFF; margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
-        
-        /* Ajuste para o idioma Árabe (RTL) */
-        body[dir="rtl"] .selection-title { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 8px; }
-        body[dir="rtl"] .route-step { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 15px; }
-        body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
-
         .selection-title.origem { border-color: #4CAF50; }
         .selection-title.destino { border-color: #E91E63; }
         label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
-        select {
-            width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 2px solid var(--border-color);
-            background-color: #000000; color: var(--text-main); font-size: 1rem; appearance: none;
-        }
+        select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 2px solid var(--border-color); background-color: #000000; color: var(--text-main); font-size: 1rem; appearance: none; cursor: pointer; }
         select:last-child { margin-bottom: 0; }
         select:focus { outline: none; border-color: #888; }
-        select:disabled { opacity: 0.5; cursor: not-allowed; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; color: #666; }
         
-        /* Botões */
-        .btn-action {
-            display: block; width: 100%; padding: 16px; margin-top: 10px; margin-bottom: 10px;
-            background-color: var(--btn-color); color: #FFF; border: none; border-radius: 8px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s;
-        }
+        /* Botões Base */
+        .btn-action { display: block; width: 100%; padding: 16px; margin-top: 10px; margin-bottom: 10px; background-color: var(--btn-color); color: #FFF; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s; }
         .btn-action:hover { background-color: #c92f27; }
         .btn-action:disabled { background-color: #555; color: #888; cursor: not-allowed; }
+        .btn-secondary { background-color: #333; margin-top: 0; border: 1px solid #555; }
 
-        .result-box {
-            background-color: #0A0A0A; border-radius: 8px; padding: 20px; margin-top: 15px;
-            border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center;
-        }
+        /* Resultado e Rota */
+        .result-box { background-color: #0A0A0A; border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
         .route-step { border-left: 4px solid var(--border-color); padding-left: 15px; margin-bottom: 25px; position: relative; }
         .route-step:last-child { margin-bottom: 0; }
-        .route-step::before {
-            content: ''; position: absolute; left: -9px; top: 0; width: 14px; height: 14px;
-            border-radius: 50%; background-color: var(--card-bg); border: 4px solid var(--border-color);
-        }
+        .route-step::before { content: ''; position: absolute; left: -9px; top: 0; width: 14px; height: 14px; border-radius: 50%; background-color: var(--card-bg); border: 4px solid var(--border-color); }
         .step-title { font-size: 0.9rem; font-weight: bold; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .result-door { font-size: 2rem; font-weight: 900; margin: 5px 0; color: #FFF; }
-        .info-extra { color: #999; font-size: 1rem; font-weight: 600; margin-top: -5px; margin-bottom: 10px; }
-        .info-text { font-size: 1rem; line-height: 1.4; }
-        .alert { font-size: 0.9rem; color: #FFC107; margin-top: 10px; padding: 10px; background-color: rgba(255, 193, 7, 0.1); border-radius: 6px; border: 1px solid rgba(255, 193, 7, 0.3); }
+        .result-door { font-size: 1.8rem; font-weight: 900; margin: 8px 0; color: #FFF; line-height: 1.2; }
+        .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); }
+        .alert-warning { font-size: 0.95rem; color: #FFC107; margin-top: 10px; padding: 12px; background-color: rgba(255, 193, 7, 0.1); border-radius: 6px; border: 1px solid rgba(255, 193, 7, 0.3); }
 
+        /* Rodapé de Idiomas */
         .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .lang-footer-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
         .lang-flag { font-size: 1.8rem; cursor: pointer; user-select: none; opacity: 0.4; filter: grayscale(50%); transition: all 0.3s ease; }
@@ -99,34 +66,73 @@
         .slogan { font-style: italic; margin-bottom: 8px; color: var(--text-main); font-size: 0.85rem;}
         .signature { font-weight: bold; color: var(--text-muted); letter-spacing: 0.5px; font-size: 0.85rem;}
 
-        /* Acessibilidade Visual */
+        /* Suporte a RTL (Árabe) */
+        body[dir="rtl"] .selection-title { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 8px; }
+        body[dir="rtl"] .route-step { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 15px; }
+        body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
+        
+        /* Estilos da Lista de Mapeadas */
+        .mapped-list { list-style: none; padding: 0; margin: 0; }
+        .mapped-list li { padding: 8px 0; border-bottom: 1px solid #333; color: #FFF; font-size: 0.95rem; }
+        .mapped-list li::before { content: '✔️'; margin-right: 8px; }
+
+        /* Acessibilidade Visual Ativada */
         body.large-font h1 { font-size: 2.2rem; }
         body.large-font .selection-title { font-size: 1.2rem; }
-        body.large-font label { font-size: 1.1rem; color: #FFF; }
+        body.large-font label { font-size: 1.1rem; }
         body.large-font select { font-size: 1.2rem; padding: 14px; }
         body.large-font .btn-action { font-size: 1.4rem; padding: 18px; }
-        body.large-font .result-door { font-size: 2.5rem; }
+        body.large-font .result-door { font-size: 2.2rem; }
         body.large-font .info-text { font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
+<script>
+/**
+ * ============================================================================
+ * PROJETO: PORTA CERTA SP
+ * AUTOR: Harry Bour
+ * VERSÃO: 3.0.0 (Data: 22/02/2026)
+ * JUSTIFICATIVA: Guia prático de autonomia projetado para facilitar o trânsito 
+ * de pessoas com necessidades de acessibilidade no transporte de São Paulo,
+ * indicando matematicamente a porta ideal de embarque.
+ * ARQUITETURA: Modular Orientada a Objetos (Preparada para JSON Database)
+ * ============================================================================
+ */
+</script>
+
 <div id="aviso-modal" class="modal-overlay">
     <div class="modal-content">
-        <h2 id="mod-title">Aviso Importante</h2>
-        <p id="mod-text">O Metrô sempre recomenda ir para os vagões da ponta. As indicações do Porta Certa SP não devem se sobrepor ao bom senso sobre a segurança dos usuários.</p>
+        <h2 id="mod-title">Aviso de Segurança</h2>
+        <p id="mod-text">Esta ferramenta foi projetada para facilitar a autonomia de pessoas preferenciais. O Metrô recomenda o uso dos vagões das pontas. Lembre-se: o bom senso e a sua segurança devem ser sempre a regra número 1.</p>
         <label class="checkbox-container">
-            <input type="checkbox" id="check-ciencia" onchange="liberarModal()">
+            <input type="checkbox" id="check-ciencia" onchange="UI.liberarModal()">
             <span id="mod-check">Li e compreendi</span>
         </label>
-        <button id="btn-modal" class="btn-action" disabled onclick="fecharModal()">Acessar o Guia</button>
+        <button id="btn-modal" class="btn-action" disabled onclick="UI.fecharModal()">Acessar o Guia</button>
+    </div>
+</div>
+
+<div id="mapeadas-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <h2 id="list-title">Estações Mapeadas</h2>
+        <p id="list-desc" style="margin-bottom: 10px;">Atualmente, a precisão de portas funciona nestas estações:</p>
+        <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="color: var(--l3); margin-top: 0; font-size: 1.1rem;">■ Linha 3 - Vermelha</h3>
+            <ul class="mapped-list" id="ul-mapeadas"></ul>
+        </div>
+        <button class="btn-action btn-secondary" onclick="UI.fecharListaMapeadas()" id="btn-close-list">Voltar</button>
     </div>
 </div>
 
 <div class="container">
     <div class="header-top">
         <h1 id="app-title">PORTA CERTA SP</h1>
-        <span class="a11y-btn" id="btn-font" onclick="toggleFontSize()">A+</span>
+        <div class="header-actions">
+            <span class="action-btn" onclick="UI.abrirListaMapeadas()" title="Estações Mapeadas">📋</span>
+            <span class="action-btn" id="btn-font" onclick="UI.toggleFontSize()" title="Acessibilidade Visual">A+</span>
+        </div>
     </div>
     
     <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
@@ -138,34 +144,34 @@
 
     <div class="selection-group">
         <div class="selection-title origem" id="title-origem">📍 PONTO DE PARTIDA</div>
-        <select id="linha-origem" onchange="atualizarEstacoes('origem')"></select>
+        <select id="linha-origem" onchange="UI.atualizarEstacoes('origem')"></select>
         <select id="estacao-origem" disabled>
-            <option value="0" disabled selected id="opt-default-est-origem">Primeiro, escolha a linha acima</option>
+            <option value="0" disabled selected id="opt-default-est-origem">Primeiro, escolha a linha</option>
         </select>
     </div>
 
     <div class="selection-group">
         <div class="selection-title destino" id="title-destino">🏁 DESTINO FINAL</div>
-        <select id="linha-destino" onchange="atualizarEstacoes('destino')"></select>
+        <select id="linha-destino" onchange="UI.atualizarEstacoes('destino')"></select>
         <select id="estacao-destino" disabled>
-            <option value="0" disabled selected id="opt-default-est-destino">Primeiro, escolha a linha acima</option>
+            <option value="0" disabled selected id="opt-default-est-destino">Primeiro, escolha a linha</option>
         </select>
     </div>
 
-    <button id="btn-calcular" class="btn-action" onclick="calcularRota()">Qual é a Porta Certa?</button>
+    <button id="btn-calcular" class="btn-action" onclick="UI.iniciarCalculo()">Qual é a Porta Certa?</button>
 
     <div class="result-box" id="resultado-box" style="display: none;"></div>
 
     <div class="footer">
         <div class="lang-footer-container">
-            <span class="lang-flag active" id="flag-pt" onclick="changeLanguage('pt')" title="Português">🇧🇷</span>
-            <span class="lang-flag" id="flag-en" onclick="changeLanguage('en')" title="English">🇺🇸</span>
-            <span class="lang-flag" id="flag-es" onclick="changeLanguage('es')" title="Español">🇪🇸</span>
-            <span class="lang-flag" id="flag-fr" onclick="changeLanguage('fr')" title="Français">🇫🇷</span>
-            <span class="lang-flag" id="flag-zh" onclick="changeLanguage('zh')" title="中文">🇨🇳</span>
-            <span class="lang-flag" id="flag-ja" onclick="changeLanguage('ja')" title="日本語">🇯🇵</span>
-            <span class="lang-flag" id="flag-ko" onclick="changeLanguage('ko')" title="한국어">🇰🇷</span>
-            <span class="lang-flag" id="flag-ar" onclick="changeLanguage('ar')" title="العربية">🇸🇦</span>
+            <span class="lang-flag active" id="flag-pt" onclick="UI.changeLanguage('pt')" title="Português">🇧🇷</span>
+            <span class="lang-flag" id="flag-en" onclick="UI.changeLanguage('en')" title="English">🇺🇸</span>
+            <span class="lang-flag" id="flag-es" onclick="UI.changeLanguage('es')" title="Español">🇪🇸</span>
+            <span class="lang-flag" id="flag-fr" onclick="UI.changeLanguage('fr')" title="Français">🇫🇷</span>
+            <span class="lang-flag" id="flag-zh" onclick="UI.changeLanguage('zh')" title="中文">🇨🇳</span>
+            <span class="lang-flag" id="flag-ja" onclick="UI.changeLanguage('ja')" title="日本語">🇯🇵</span>
+            <span class="lang-flag" id="flag-ko" onclick="UI.changeLanguage('ko')" title="한국어">🇰🇷</span>
+            <span class="lang-flag" id="flag-ar" onclick="UI.changeLanguage('ar')" title="العربية">🇸🇦</span>
         </div>
         <div class="slogan" id="slogan-text">Autonomia. Precisão no embarque. Distâncias menores.</div>
         <div class="signature">Criador: Harry Bour | 2026</div>
@@ -173,71 +179,17 @@
 </div>
 
 <script>
-    let currentLang = 'pt';
-    let isLargeFont = false;
-
-    // Lógica do Modal de Segurança (Salva no navegador para não aparecer toda hora)
-    function liberarModal() {
-        document.getElementById('btn-modal').disabled = !document.getElementById('check-ciencia').checked;
-    }
-    function fecharModal() {
-        document.getElementById('aviso-modal').style.display = 'none';
-        localStorage.setItem('portaCertaModal', 'lido');
-    }
-    window.onload = function() {
-        if(localStorage.getItem('portaCertaModal') === 'lido') {
-            document.getElementById('aviso-modal').style.display = 'none';
-        }
-    };
-
-    const dicionario = {
-        'pt': {
-            modTitle: 'Aviso Importante', modText: 'O Metrô sempre recomenda ir para os vagões da ponta. As indicações do Porta Certa SP não devem se sobrepor ao bom senso sobre a segurança dos usuários.',
-            modCheck: 'Li e compreendi', modBtn: 'Acessar o Guia', btnCalc: 'Qual é a Porta Certa?',
-            lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa',
-            titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha de Origem', selLinhaDest: 'Escolha a Linha de Destino',
-            selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', 
-            slogan: 'Autonomia. Precisão no embarque. Distâncias menores.', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho',
-            l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata',
-            embTrecho: 'Em <b>{est}</b>, embarque na:', transfTrecho: 'Desembarque em <b>{est}</b> e faça transferência para a <b>{linha}</b>.', saidaFinal: 'No destino final (<b>{est}</b>), você sairá de frente para a <b>{tipo}</b>.',
-            tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa',
-            avisoVagao: '*Estação sem portas na plataforma.', faltaRolante: 'Opção indisponível nesta estação.', sugestaoElevador: 'Sugerimos utilizar o Elevador na:',
-            pendente: 'Mapeamento em andamento.', equivalente: '(Equivalente à Porta {num})'
-        },
-        'en': {
-            modTitle: 'Important Notice', modText: 'The Subway always recommends going to the end cars. The indications from Porta Certa SP should not override common sense regarding user safety.',
-            modCheck: 'I have read and understood', modBtn: 'Access the Guide', btnCalc: 'What is the Right Door?',
-            lblPref: 'Your preferred exit at final destination:', optElevador: 'Elevator', optRolante: 'Escalator', optFixa: 'Stairs',
-            titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Origin Line', selLinhaDest: 'Select Destination Line',
-            selEstOr: 'Select a line first', selEstDest: 'Select a line first', 
-            slogan: 'Autonomy. Boarding precision. Shorter distances.', mesmaEstacao: 'You are already at the destination station.', trecho: 'Leg',
-            l1: 'L1-Blue', l2: 'L2-Green', l3: 'L3-Red', l4: 'L4-Yellow', l5: 'L5-Lilac', l7: 'L7-Ruby', l8: 'L8-Diamond', l9: 'L9-Emerald', l10: 'L10-Turquoise', l11: 'L11-Coral', l12: 'L12-Sapphire', l13: 'L13-Jade', l15: 'L15-Silver',
-            embTrecho: 'At <b>{est}</b>, board exactly at:', transfTrecho: 'Get off at <b>{est}</b> and transfer to <b>{linha}</b>.', saidaFinal: 'At final destination (<b>{est}</b>), you will exit facing the <b>{tipo}</b>.',
-            tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs',
-            avisoVagao: '*Station without platform doors.', faltaRolante: 'Option unavailable here.', sugestaoElevador: 'We suggest using the Elevator at:',
-            pendente: 'Mapping in progress.', equivalente: '(Equivalent to Door {num})'
-        },
-        'es': {
-            modTitle: 'Aviso Importante', modText: 'El Metro siempre recomienda ir a los vagones de los extremos. Las indicaciones de Porta Certa SP no deben primar sobre el sentido común respecto a la seguridad.',
-            modCheck: 'Leí y comprendí', modBtn: 'Acceder a la Guía', btnCalc: '¿Cuál es la Puerta Correcta?',
-            lblPref: 'Tu preferencia de salida:', optElevador: 'Ascensor', optRolante: 'Escalera Mecánica', optFixa: 'Escalera Fija',
-            titleOrigem: '📍 PUNTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Línea de Origen', selLinhaDest: 'Línea de Destino',
-            selEstOr: 'Primero elige la línea', selEstDest: 'Primero elige la línea', slogan: 'Autonomía. Precisión. Distancias menores.', mesmaEstacao: 'Ya estás en la estación.', trecho: 'Tramo',
-            l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Roja', l4: 'L4-Amarilla', l5: 'L5-Lila', l7: 'L7-Rubí', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Zafiro', l13: 'L13-Jade', l15: 'L15-Plata',
-            embTrecho: 'En <b>{est}</b>, sube en la:', transfTrecho: 'Baja en <b>{est}</b> y transfiere a la <b>{linha}</b>.', saidaFinal: 'En tu destino (<b>{est}</b>), saldrás frente a la <b>{tipo}</b>.',
-            tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija', avisoVagao: '*Sin puertas de andén.', faltaRolante: 'No disponible.', sugestaoElevador: 'Sugerimos el Ascensor en:', pendente: 'Mapeo en curso.', equivalente: '(Equivale a Puerta {num})'
-        },
-        'fr': { modTitle: 'Avis Important', modText: 'Le métro recommande toujours d\'aller aux voitures d\'extrémité. Les indications ne doivent pas l\'emporter sur le bon sens concernant la sécurité.', modCheck: 'Compris', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne de départ', selLinhaDest: 'Ligne d\'arrivée', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', slogan: 'Précision.', mesmaEstacao: 'Même station.', trecho: 'Trajet', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À <b>{est}</b>, montez:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', avisoVagao: '*Pas de portes.', faltaRolante: 'Indisponible.', sugestaoElevador: 'Ascenseur à:', pendente: 'En cours.', equivalente: '(Porte {num})' },
-        'zh': { modTitle: '重要提示', modText: '地铁始终建议前往两端的车厢。Porta Certa SP 的指示不应凌驾于有关用户安全的常识之上。', modCheck: '我已阅读并理解', modBtn: '进入指南', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '起点线路', selLinhaDest: '终点线路', selEstOr: '先选线', selEstDest: '先选线', slogan: '精准。', mesmaEstacao: '已在终点。', trecho: '路段', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '在 <b>{est}</b> 换乘 <b>{linha}</b>。', saidaFinal: '在 <b>{est}</b> 下车，正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', avisoVagao: '*无屏蔽门。', faltaRolante: '无。', sugestaoElevador: '建议直梯:', pendente: '数据采集中。', equivalente: '({num}门)' },
-        'ja': { modTitle: '重要なお知らせ', modText: '地下鉄では常に端の車両を利用することをお勧めしています。指示は利用者の安全に関する常識に優先するものではありません。', modCheck: '同意する', modBtn: 'ガイドへ', btnCalc: '正しいドアはどれですか？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '出発線', selLinhaDest: '到着線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', slogan: '正確。', mesmaEstacao: '同じ駅。', trecho: '区間', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{est}</b>で<b>{linha}</b>に乗換。', saidaFinal: '<b>{est}</b>で<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', avisoVagao: '*ホームドアなし。', faltaRolante: '利用不可。', sugestaoElevador: 'EV推奨:', pendente: 'マッピング中。', equivalente: '({num}番)' },
-        'ko': { modTitle: '중요 공지', modText: '지하철은 항상 양 끝 객차를 이용할 것을 권장합니다. 앱의 안내가 사용자의 안전에 대한 상식보다 우선해서는 안 됩니다.', modCheck: '동의합니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '출발 노선', selLinhaDest: '도착 노선', selEstOr: '노선 먼저 선택', selEstDest: '노선 먼저 선택', slogan: '정확성.', mesmaEstacao: '같은 역.', trecho: '구간', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{est}</b>에서 <b>{linha}</b> 환승.', saidaFinal: '<b>{est}</b>에서 <b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', avisoVagao: '*스크린도어 없음.', faltaRolante: '불가.', sugestaoElevador: 'EV 권장:', pendente: '매핑 중.', equivalente: '({num}번)' },
-        'ar': { modTitle: 'تنبيه هام', modText: 'يوصي المترو دائمًا بالذهاب إلى العربات الطرفية. يجب ألا تتجاوز الإرشادات المنطق السليم فيما يتعلق بسلامة المستخدمين.', modCheck: 'موافق', modBtn: 'دخول', btnCalc: 'ما هو الباب الصحيح؟', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', slogan: 'دقة.', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في <b>{est}</b> اصعد:', transfTrecho: 'تحويل في <b>{est}</b> إلى <b>{linha}</b>.', saidaFinal: 'في <b>{est}</b> أمام <b>{tipo}</b>.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', avisoVagao: '*بدون أبواب.', faltaRolante: 'غير متوفر.', sugestaoElevador: 'استخدم المصعد:', pendente: 'قيد العمل.', equivalente: '(باب {num})' }
-    };
-
-    const linhas = [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13];
-
-    // Algoritmo de Grafos - Mapa de Conexões da Rede
-    const transferencias = {
+/**
+ * ==========================================
+ * BLOCO 1: BANCO DE DADOS (AppData)
+ * ==========================================
+ */
+const AppData = {
+    currentLang: 'pt',
+    isLargeFont: false,
+    linhas: [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13],
+    
+    transferencias: {
         1: { 2: 'Paraíso', 3: 'Sé', 4: 'Luz', 5: 'Santa Cruz', 10: 'Luz', 11: 'Luz' },
         2: { 1: 'Paraíso', 4: 'Consolação', 5: 'Chácara Klabin', 10: 'Tamanduateí', 15: 'Vila Prudente' },
         3: { 1: 'Sé', 4: 'República', 7: 'Barra Funda', 8: 'Barra Funda', 10: 'Brás', 11: 'Brás', 12: 'Brás' },
@@ -251,83 +203,239 @@
         12: { 3: 'Brás', 10: 'Brás', 11: 'Brás', 13: 'Engenheiro Goulart' },
         13: { 12: 'Engenheiro Goulart' },
         15: { 2: 'Vila Prudente' }
-    };
+    },
 
-    const mapaPortas = {
+    mapaPortas: {
         "BF": { "18": "Vagão 1, Porta 1", "17": "Vagão 1, Porta 2", "16": "Vagão 1, Porta 3", "15": "Vagão 1, Porta 4", "28": "Vagão 2, Porta 1", "27": "Vagão 2, Porta 2", "26": "Vagão 2, Porta 3", "25": "Vagão 2, Porta 4", "38": "Vagão 3, Porta 1", "37": "Vagão 3, Porta 2", "36": "Vagão 3, Porta 3", "35": "Vagão 3, Porta 4", "48": "Vagão 4, Porta 1", "47": "Vagão 4, Porta 2", "46": "Vagão 4, Porta 3", "45": "Vagão 4, Porta 4", "58": "Vagão 5, Porta 1", "57": "Vagão 5, Porta 2", "56": "Vagão 5, Porta 3", "55": "Vagão 5, Porta 4", "68": "Vagão 6, Porta 1", "67": "Vagão 6, Porta 2", "66": "Vagão 6, Porta 3", "65": "Vagão 6, Porta 4" },
         "IT": { "11": "Vagão 6, Porta 4", "12": "Vagão 6, Porta 3", "13": "Vagão 6, Porta 2", "14": "Vagão 6, Porta 1", "21": "Vagão 5, Porta 4", "22": "Vagão 5, Porta 3", "23": "Vagão 5, Porta 2", "24": "Vagão 5, Porta 1", "31": "Vagão 4, Porta 4", "32": "Vagão 4, Porta 3", "33": "Vagão 4, Porta 2", "34": "Vagão 4, Porta 1", "41": "Vagão 3, Porta 4", "42": "Vagão 3, Porta 3", "43": "Vagão 3, Porta 2", "44": "Vagão 3, Porta 1", "51": "Vagão 2, Porta 4", "52": "Vagão 2, Porta 3", "53": "Vagão 2, Porta 2", "54": "Vagão 2, Porta 1", "61": "Vagão 1, Porta 4", "62": "Vagão 1, Porta 3", "63": "Vagão 1, Porta 2", "64": "Vagão 1, Porta 1" }
-    };
+    },
 
-    const estacoes = {
-        301: { linha: 3, nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
-        302: { linha: 3, nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
-        303: { linha: 3, nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
-        304: { linha: 3, nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
-        305: { linha: 3, nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 25", fixaIT: "Porta 24" },
-        306: { linha: 3, nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 47", fixaIT: "Porta 42" },
-        307: { linha: 3, nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
-        308: { linha: 3, nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
-        309: { linha: 3, nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
-        310: { linha: 3, nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
-        311: { linha: 3, nome: "Brás", semPortas: true, elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
-        312: { linha: 3, nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
-        313: { linha: 3, nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
-        314: { linha: 3, nome: "Anhangabaú", semPortas: true, elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
-        315: { linha: 3, nome: "República", semPortas: true, elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
-        316: { linha: 3, nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
-        317: { linha: 3, nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
-        318: { linha: 3, nome: "Palmeiras-Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
-        101: { linha: 1, nome: "Tucuruvi" }, 102: { linha: 1, nome: "Parada Inglesa" }, 103: { linha: 1, nome: "Jardim São Paulo" }, 104: { linha: 1, nome: "Santana" }, 105: { linha: 1, nome: "Carandiru" }, 106: { linha: 1, nome: "Portuguesa-Tietê" }, 107: { linha: 1, nome: "Armênia" }, 108: { linha: 1, nome: "Tiradentes" }, 109: { linha: 1, nome: "Luz" }, 110: { linha: 1, nome: "São Bento" }, 111: { linha: 1, nome: "Sé" }, 112: { linha: 1, nome: "Japão-Liberdade" }, 113: { linha: 1, nome: "São Joaquim" }, 114: { linha: 1, nome: "Vergueiro" }, 115: { linha: 1, nome: "Paraíso" }, 116: { linha: 1, nome: "Ana Rosa" }, 117: { linha: 1, nome: "Vila Mariana" }, 118: { linha: 1, nome: "Santa Cruz" }, 119: { linha: 1, nome: "Praça da Árvore" }, 120: { linha: 1, nome: "Saúde" }, 121: { linha: 1, nome: "São Judas" }, 122: { linha: 1, nome: "Conceição" }, 123: { linha: 1, nome: "Jabaquara" },
-        201: { linha: 2, nome: "Vila Madalena" }, 202: { linha: 2, nome: "Santuário Sumaré" }, 203: { linha: 2, nome: "Clínicas" }, 204: { linha: 2, nome: "Consolação" }, 205: { linha: 2, nome: "Trianon-Masp" }, 206: { linha: 2, nome: "Brigadeiro" }, 207: { linha: 2, nome: "Paraíso" }, 208: { linha: 2, nome: "Ana Rosa" }, 209: { linha: 2, nome: "Chácara Klabin" }, 210: { linha: 2, nome: "Santos-Imigrantes" }, 211: { linha: 2, nome: "Alto do Ipiranga" }, 212: { linha: 2, nome: "Sacomã" }, 213: { linha: 2, nome: "Tamanduateí" }, 214: { linha: 2, nome: "Vila Prudente" },
-        401: { linha: 4, nome: "Luz" }, 402: { linha: 4, nome: "República" }, 403: { linha: 4, nome: "Higienópolis" }, 404: { linha: 4, nome: "Paulista" }, 405: { linha: 4, nome: "Oscar Freire" }, 406: { linha: 4, nome: "Fradique Coutinho" }, 407: { linha: 4, nome: "Faria Lima" }, 408: { linha: 4, nome: "Pinheiros" }, 409: { linha: 4, nome: "Butantã" }, 410: { linha: 4, nome: "São Paulo-Morumbi" }, 411: { linha: 4, nome: "Vila Sônia" },
-        501: { linha: 5, nome: "Capão Redondo" }, 502: { linha: 5, nome: "Campo Limpo" }, 503: { linha: 5, nome: "Vila das Belezas" }, 504: { linha: 5, nome: "Giovanni Gronchi" }, 505: { linha: 5, nome: "Santo Amaro" }, 506: { linha: 5, nome: "Largo Treze" }, 507: { linha: 5, nome: "Adolfo Pinheiro" }, 508: { linha: 5, nome: "Alto da Boa Vista" }, 509: { linha: 5, nome: "Borba Gato" }, 510: { linha: 5, nome: "Brooklin" }, 511: { linha: 5, nome: "Campo Belo" }, 512: { linha: 5, nome: "Eucaliptos" }, 513: { linha: 5, nome: "Moema" }, 514: { linha: 5, nome: "AACD-Servidor" }, 515: { linha: 5, nome: "Hospital São Paulo" }, 516: { linha: 5, nome: "Santa Cruz" }, 517: { linha: 5, nome: "Chácara Klabin" },
-        1501: { linha: 15, nome: "Vila Prudente" }, 1502: { linha: 15, nome: "Oratório" }, 1503: { linha: 15, nome: "São Lucas" }, 1504: { linha: 15, nome: "Camilo Haddad" }, 1505: { linha: 15, nome: "Vila Tolstói" }, 1506: { linha: 15, nome: "Vila União" }, 1507: { linha: 15, nome: "Jardim Planalto" }, 1508: { linha: 15, nome: "Sapopemba" }, 1509: { linha: 15, nome: "Fazenda da Juta" }, 1510: { linha: 15, nome: "São Mateus" }, 1511: { linha: 15, nome: "Jardim Colonial" },
-        701: { linha: 7, nome: "Barra Funda" }, 702: { linha: 7, nome: "Água Branca" }, 703: { linha: 7, nome: "Lapa" }, 704: { linha: 7, nome: "Piqueri" }, 705: { linha: 7, nome: "Pirituba" }, 706: { linha: 7, nome: "Vila Clarice" }, 707: { linha: 7, nome: "Jaraguá" }, 708: { linha: 7, nome: "Vila Aurora" }, 709: { linha: 7, nome: "Perus" }, 710: { linha: 7, nome: "Caieiras" }, 711: { linha: 7, nome: "Franco da Rocha" }, 712: { linha: 7, nome: "Baltazar Fidélis" }, 713: { linha: 7, nome: "Francisco Morato" }, 714: { linha: 7, nome: "Botujuru" }, 715: { linha: 7, nome: "Campo Limpo Pta" }, 716: { linha: 7, nome: "Várzea Pta" }, 717: { linha: 7, nome: "Jundiaí" },
-        801: { linha: 8, nome: "Júlio Prestes" }, 802: { linha: 8, nome: "Barra Funda" }, 803: { linha: 8, nome: "Lapa" }, 804: { linha: 8, nome: "Domingos de Moraes" }, 805: { linha: 8, nome: "Imperatriz" }, 806: { linha: 8, nome: "Pres. Altino" }, 807: { linha: 8, nome: "Osasco" }, 808: { linha: 8, nome: "Cmdt. Sampaio" }, 809: { linha: 8, nome: "Quitaúna" }, 810: { linha: 8, nome: "Gen. Miguel Costa" }, 811: { linha: 8, nome: "Carapicuíba" }, 812: { linha: 8, nome: "Santa Terezinha" }, 813: { linha: 8, nome: "Antônio João" }, 814: { linha: 8, nome: "Barueri" }, 815: { linha: 8, nome: "Jd. Belval" }, 816: { linha: 8, nome: "Jd. Silveira" }, 817: { linha: 8, nome: "Jandira" }, 818: { linha: 8, nome: "Sagrado Coração" }, 819: { linha: 8, nome: "Eng. Cardoso" }, 820: { linha: 8, nome: "Itapevi" }, 821: { linha: 8, nome: "Santa Rita" }, 822: { linha: 8, nome: "Amador Bueno" },
-        901: { linha: 9, nome: "Osasco" }, 902: { linha: 9, nome: "Pres. Altino" }, 903: { linha: 9, nome: "Ceasa" }, 904: { linha: 9, nome: "Villa Lobos" }, 905: { linha: 9, nome: "Cidade Universitária" }, 906: { linha: 9, nome: "Pinheiros" }, 907: { linha: 9, nome: "Hebraica" }, 908: { linha: 9, nome: "Cidade Jardim" }, 909: { linha: 9, nome: "Vila Olímpia" }, 910: { linha: 9, nome: "Berrini" }, 911: { linha: 9, nome: "Morumbi" }, 912: { linha: 9, nome: "Granja Julieta" }, 913: { linha: 9, nome: "João Dias" }, 914: { linha: 9, nome: "Santo Amaro" }, 915: { linha: 9, nome: "Socorro" }, 916: { linha: 9, nome: "Jurubatuba" }, 917: { linha: 9, nome: "Autódromo" }, 918: { linha: 9, nome: "Primavera" }, 919: { linha: 9, nome: "Grajaú" }, 920: { linha: 9, nome: "Mendes" }, 921: { linha: 9, nome: "Varginha" },
-        1001: { linha: 10, nome: "Barra Funda" }, 1002: { linha: 10, nome: "Luz" }, 1003: { linha: 10, nome: "Brás" }, 1004: { linha: 10, nome: "Juventus-Mooca" }, 1005: { linha: 10, nome: "Ipiranga" }, 1006: { linha: 10, nome: "Tamanduateí" }, 1007: { linha: 10, nome: "São Caetano" }, 1008: { linha: 10, nome: "Utinga" }, 1009: { linha: 10, nome: "Prefeito Saladino" }, 1010: { linha: 10, nome: "Santo André" }, 1011: { linha: 10, nome: "Capuava" }, 1012: { linha: 10, nome: "Mauá" }, 1013: { linha: 10, nome: "Guapituba" }, 1014: { linha: 10, nome: "Ribeirão Pires" }, 1015: { linha: 10, nome: "Rio Grande da Serra" },
-        1101: { linha: 11, nome: "Luz" }, 1102: { linha: 11, nome: "Brás" }, 1103: { linha: 11, nome: "Tatuapé" }, 1104: { linha: 11, nome: "Corinthians-Itaquera" }, 1105: { linha: 11, nome: "Dom Bosco" }, 1106: { linha: 11, nome: "José Bonifácio" }, 1107: { linha: 11, nome: "Guaianases" }, 1108: { linha: 11, nome: "Gianetti Neto" }, 1109: { linha: 11, nome: "Ferraz de Vasconcelos" }, 1110: { linha: 11, nome: "Poá" }, 1111: { linha: 11, nome: "Calmon Viana" }, 1112: { linha: 11, nome: "Suzano" }, 1113: { linha: 11, nome: "Jundiapeba" }, 1114: { linha: 11, nome: "Braz Cubas" }, 1115: { linha: 11, nome: "Mogi das Cruzes" }, 1116: { linha: 11, nome: "Estudantes" },
-        1201: { linha: 12, nome: "Brás" }, 1202: { linha: 12, nome: "Tatuapé" }, 1203: { linha: 12, nome: "Eng. Goulart" }, 1204: { linha: 12, nome: "USP Leste" }, 1205: { linha: 12, nome: "Comendador Ermelino" }, 1206: { linha: 12, nome: "São Miguel" }, 1207: { linha: 12, nome: "Jd. Helena" }, 1208: { linha: 12, nome: "Itaim Pta" }, 1209: { linha: 12, nome: "Jd. Romano" }, 1210: { linha: 12, nome: "Manoel Feio" }, 1211: { linha: 12, nome: "Itaquaquecetuba" }, 1212: { linha: 12, nome: "Aracaré" }, 1213: { linha: 12, nome: "Calmon Viana" },
-        1301: { linha: 13, nome: "Eng. Goulart" }, 1302: { linha: 13, nome: "Guarulhos-Cecap" }, 1303: { linha: 13, nome: "Aeroporto" }
-    };
+    // Note a tag "mapeada: true" nas estações com dados validados
+    estacoes: {
+        301: { linha: 3, mapeada: true, nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
+        302: { linha: 3, mapeada: true, nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        303: { linha: 3, mapeada: true, nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        304: { linha: 3, mapeada: true, nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        305: { linha: 3, mapeada: true, nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        306: { linha: 3, mapeada: true, nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 47", fixaIT: "Porta 42" },
+        307: { linha: 3, mapeada: true, nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        308: { linha: 3, mapeada: true, nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        309: { linha: 3, mapeada: true, nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        310: { linha: 3, mapeada: true, nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        311: { linha: 3, mapeada: true, nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
+        312: { linha: 3, mapeada: true, nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
+        313: { linha: 3, mapeada: true, nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
+        314: { linha: 3, mapeada: true, nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
+        315: { linha: 3, mapeada: true, nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
+        316: { linha: 3, mapeada: true, nome: "Santa Cecília", elevadorBF: "Porta 44", elevadorIT: "Pendente", rolanteBF: "Sem rolante mapeada", rolanteIT: "Pendente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        317: { linha: 3, mapeada: true, nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
+        318: { linha: 3, mapeada: true, nome: "Palmeiras-Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
+        
+        101: { linha: 1, mapeada: false, nome: "Tucuruvi" }, 102: { linha: 1, mapeada: false, nome: "Parada Inglesa" }, 103: { linha: 1, mapeada: false, nome: "Jardim São Paulo" }, 104: { linha: 1, mapeada: false, nome: "Santana" }, 105: { linha: 1, mapeada: false, nome: "Carandiru" }, 106: { linha: 1, mapeada: false, nome: "Portuguesa-Tietê" }, 107: { linha: 1, mapeada: false, nome: "Armênia" }, 108: { linha: 1, mapeada: false, nome: "Tiradentes" }, 109: { linha: 1, mapeada: false, nome: "Luz" }, 110: { linha: 1, mapeada: false, nome: "São Bento" }, 111: { linha: 1, mapeada: false, nome: "Sé" }, 112: { linha: 1, mapeada: false, nome: "Japão-Liberdade" }, 113: { linha: 1, mapeada: false, nome: "São Joaquim" }, 114: { linha: 1, mapeada: false, nome: "Vergueiro" }, 115: { linha: 1, mapeada: false, nome: "Paraíso" }, 116: { linha: 1, mapeada: false, nome: "Ana Rosa" }, 117: { linha: 1, mapeada: false, nome: "Vila Mariana" }, 118: { linha: 1, mapeada: false, nome: "Santa Cruz" }, 119: { linha: 1, mapeada: false, nome: "Praça da Árvore" }, 120: { linha: 1, mapeada: false, nome: "Saúde" }, 121: { linha: 1, mapeada: false, nome: "São Judas" }, 122: { linha: 1, mapeada: false, nome: "Conceição" }, 123: { linha: 1, mapeada: false, nome: "Jabaquara" },
+        201: { linha: 2, mapeada: false, nome: "Vila Madalena" }, 202: { linha: 2, mapeada: false, nome: "Santuário Sumaré" }, 203: { linha: 2, mapeada: false, nome: "Clínicas" }, 204: { linha: 2, mapeada: false, nome: "Consolação" }, 205: { linha: 2, mapeada: false, nome: "Trianon-Masp" }, 206: { linha: 2, mapeada: false, nome: "Brigadeiro" }, 207: { linha: 2, mapeada: false, nome: "Paraíso" }, 208: { linha: 2, mapeada: false, nome: "Ana Rosa" }, 209: { linha: 2, mapeada: false, nome: "Chácara Klabin" }, 210: { linha: 2, mapeada: false, nome: "Santos-Imigrantes" }, 211: { linha: 2, mapeada: false, nome: "Alto do Ipiranga" }, 212: { linha: 2, mapeada: false, nome: "Sacomã" }, 213: { linha: 2, mapeada: false, nome: "Tamanduateí" }, 214: { linha: 2, mapeada: false, nome: "Vila Prudente" },
+        401: { linha: 4, mapeada: false, nome: "Luz" }, 402: { linha: 4, mapeada: false, nome: "República" }, 403: { linha: 4, mapeada: false, nome: "Higienópolis" }, 404: { linha: 4, mapeada: false, nome: "Paulista" }, 405: { linha: 4, mapeada: false, nome: "Oscar Freire" }, 406: { linha: 4, mapeada: false, nome: "Fradique Coutinho" }, 407: { linha: 4, mapeada: false, nome: "Faria Lima" }, 408: { linha: 4, mapeada: false, nome: "Pinheiros" }, 409: { linha: 4, mapeada: false, nome: "Butantã" }, 410: { linha: 4, mapeada: false, nome: "São Paulo-Morumbi" }, 411: { linha: 4, mapeada: false, nome: "Vila Sônia" },
+        501: { linha: 5, mapeada: false, nome: "Capão Redondo" }, 502: { linha: 5, mapeada: false, nome: "Campo Limpo" }, 503: { linha: 5, mapeada: false, nome: "Vila das Belezas" }, 504: { linha: 5, mapeada: false, nome: "Giovanni Gronchi" }, 505: { linha: 5, mapeada: false, nome: "Santo Amaro" }, 506: { linha: 5, mapeada: false, nome: "Largo Treze" }, 507: { linha: 5, mapeada: false, nome: "Adolfo Pinheiro" }, 508: { linha: 5, mapeada: false, nome: "Alto da Boa Vista" }, 509: { linha: 5, mapeada: false, nome: "Borba Gato" }, 510: { linha: 5, mapeada: false, nome: "Brooklin" }, 511: { linha: 5, mapeada: false, nome: "Campo Belo" }, 512: { linha: 5, mapeada: false, nome: "Eucaliptos" }, 513: { linha: 5, mapeada: false, nome: "Moema" }, 514: { linha: 5, mapeada: false, nome: "AACD-Servidor" }, 515: { linha: 5, mapeada: false, nome: "Hospital São Paulo" }, 516: { linha: 5, mapeada: false, nome: "Santa Cruz" }, 517: { linha: 5, mapeada: false, nome: "Chácara Klabin" },
+        1501: { linha: 15, mapeada: false, nome: "Vila Prudente" }, 1502: { linha: 15, mapeada: false, nome: "Oratório" }, 1503: { linha: 15, mapeada: false, nome: "São Lucas" }, 1504: { linha: 15, mapeada: false, nome: "Camilo Haddad" }, 1505: { linha: 15, mapeada: false, nome: "Vila Tolstói" }, 1506: { linha: 15, mapeada: false, nome: "Vila União" }, 1507: { linha: 15, mapeada: false, nome: "Jardim Planalto" }, 1508: { linha: 15, mapeada: false, nome: "Sapopemba" }, 1509: { linha: 15, mapeada: false, nome: "Fazenda da Juta" }, 1510: { linha: 15, mapeada: false, nome: "São Mateus" }, 1511: { linha: 15, mapeada: false, nome: "Jardim Colonial" },
+        701: { linha: 7, mapeada: false, nome: "Barra Funda" }, 702: { linha: 7, mapeada: false, nome: "Água Branca" }, 703: { linha: 7, mapeada: false, nome: "Lapa" }, 704: { linha: 7, mapeada: false, nome: "Piqueri" }, 705: { linha: 7, mapeada: false, nome: "Pirituba" }, 706: { linha: 7, mapeada: false, nome: "Vila Clarice" }, 707: { linha: 7, mapeada: false, nome: "Jaraguá" }, 708: { linha: 7, mapeada: false, nome: "Vila Aurora" }, 709: { linha: 7, mapeada: false, nome: "Perus" }, 710: { linha: 7, mapeada: false, nome: "Caieiras" }, 711: { linha: 7, mapeada: false, nome: "Franco da Rocha" }, 712: { linha: 7, mapeada: false, nome: "Baltazar Fidélis" }, 713: { linha: 7, mapeada: false, nome: "Francisco Morato" }, 714: { linha: 7, mapeada: false, nome: "Botujuru" }, 715: { linha: 7, mapeada: false, nome: "Campo Limpo Pta" }, 716: { linha: 7, mapeada: false, nome: "Várzea Pta" }, 717: { linha: 7, mapeada: false, nome: "Jundiaí" },
+        801: { linha: 8, mapeada: false, nome: "Júlio Prestes" }, 802: { linha: 8, mapeada: false, nome: "Barra Funda" }, 803: { linha: 8, mapeada: false, nome: "Lapa" }, 804: { linha: 8, mapeada: false, nome: "Domingos de Moraes" }, 805: { linha: 8, mapeada: false, nome: "Imperatriz" }, 806: { linha: 8, mapeada: false, nome: "Pres. Altino" }, 807: { linha: 8, mapeada: false, nome: "Osasco" }, 808: { linha: 8, mapeada: false, nome: "Cmdt. Sampaio" }, 809: { linha: 8, mapeada: false, nome: "Quitaúna" }, 810: { linha: 8, mapeada: false, nome: "Gen. Miguel Costa" }, 811: { linha: 8, mapeada: false, nome: "Carapicuíba" }, 812: { linha: 8, mapeada: false, nome: "Santa Terezinha" }, 813: { linha: 8, mapeada: false, nome: "Antônio João" }, 814: { linha: 8, mapeada: false, nome: "Barueri" }, 815: { linha: 8, mapeada: false, nome: "Jd. Belval" }, 816: { linha: 8, mapeada: false, nome: "Jd. Silveira" }, 817: { linha: 8, mapeada: false, nome: "Jandira" }, 818: { linha: 8, mapeada: false, nome: "Sagrado Coração" }, 819: { linha: 8, mapeada: false, nome: "Eng. Cardoso" }, 820: { linha: 8, mapeada: false, nome: "Itapevi" }, 821: { linha: 8, mapeada: false, nome: "Santa Rita" }, 822: { linha: 8, mapeada: false, nome: "Amador Bueno" },
+        901: { linha: 9, mapeada: false, nome: "Osasco" }, 902: { linha: 9, mapeada: false, nome: "Pres. Altino" }, 903: { linha: 9, mapeada: false, nome: "Ceasa" }, 904: { linha: 9, mapeada: false, nome: "Villa Lobos" }, 905: { linha: 9, mapeada: false, nome: "Cidade Universitária" }, 906: { linha: 9, mapeada: false, nome: "Pinheiros" }, 907: { linha: 9, mapeada: false, nome: "Hebraica" }, 908: { linha: 9, mapeada: false, nome: "Cidade Jardim" }, 909: { linha: 9, mapeada: false, nome: "Vila Olímpia" }, 910: { linha: 9, mapeada: false, nome: "Berrini" }, 911: { linha: 9, mapeada: false, nome: "Morumbi" }, 912: { linha: 9, mapeada: false, nome: "Granja Julieta" }, 913: { linha: 9, mapeada: false, nome: "João Dias" }, 914: { linha: 9, mapeada: false, nome: "Santo Amaro" }, 915: { linha: 9, mapeada: false, nome: "Socorro" }, 916: { linha: 9, mapeada: false, nome: "Jurubatuba" }, 917: { linha: 9, mapeada: false, nome: "Autódromo" }, 918: { linha: 9, mapeada: false, nome: "Primavera" }, 919: { linha: 9, mapeada: false, nome: "Grajaú" }, 920: { linha: 9, mapeada: false, nome: "Mendes" }, 921: { linha: 9, mapeada: false, nome: "Varginha" },
+        1001: { linha: 10, mapeada: false, nome: "Barra Funda" }, 1002: { linha: 10, mapeada: false, nome: "Luz" }, 1003: { linha: 10, mapeada: false, nome: "Brás" }, 1004: { linha: 10, mapeada: false, nome: "Juventus-Mooca" }, 1005: { linha: 10, mapeada: false, nome: "Ipiranga" }, 1006: { linha: 10, mapeada: false, nome: "Tamanduateí" }, 1007: { linha: 10, mapeada: false, nome: "São Caetano" }, 1008: { linha: 10, mapeada: false, nome: "Utinga" }, 1009: { linha: 10, mapeada: false, nome: "Prefeito Saladino" }, 1010: { linha: 10, mapeada: false, nome: "Santo André" }, 1011: { linha: 10, mapeada: false, nome: "Capuava" }, 1012: { linha: 10, mapeada: false, nome: "Mauá" }, 1013: { linha: 10, mapeada: false, nome: "Guapituba" }, 1014: { linha: 10, mapeada: false, nome: "Ribeirão Pires" }, 1015: { linha: 10, mapeada: false, nome: "Rio Grande da Serra" },
+        1101: { linha: 11, mapeada: false, nome: "Luz" }, 1102: { linha: 11, mapeada: false, nome: "Brás" }, 1103: { linha: 11, mapeada: false, nome: "Tatuapé" }, 1104: { linha: 11, mapeada: false, nome: "Corinthians-Itaquera" }, 1105: { linha: 11, mapeada: false, nome: "Dom Bosco" }, 1106: { linha: 11, mapeada: false, nome: "José Bonifácio" }, 1107: { linha: 11, mapeada: false, nome: "Guaianases" }, 1108: { linha: 11, mapeada: false, nome: "Gianetti Neto" }, 1109: { linha: 11, mapeada: false, nome: "Ferraz de Vasconcelos" }, 1110: { linha: 11, mapeada: false, nome: "Poá" }, 1111: { linha: 11, mapeada: false, nome: "Calmon Viana" }, 1112: { linha: 11, mapeada: false, nome: "Suzano" }, 1113: { linha: 11, mapeada: false, nome: "Jundiapeba" }, 1114: { linha: 11, mapeada: false, nome: "Braz Cubas" }, 1115: { linha: 11, mapeada: false, nome: "Mogi das Cruzes" }, 1116: { linha: 11, mapeada: false, nome: "Estudantes" },
+        1201: { linha: 12, mapeada: false, nome: "Brás" }, 1202: { linha: 12, mapeada: false, nome: "Tatuapé" }, 1203: { linha: 12, mapeada: false, nome: "Eng. Goulart" }, 1204: { linha: 12, mapeada: false, nome: "USP Leste" }, 1205: { linha: 12, mapeada: false, nome: "Comendador Ermelino" }, 1206: { linha: 12, mapeada: false, nome: "São Miguel" }, 1207: { linha: 12, mapeada: false, nome: "Jd. Helena" }, 1208: { linha: 12, mapeada: false, nome: "Itaim Pta" }, 1209: { linha: 12, mapeada: false, nome: "Jd. Romano" }, 1210: { linha: 12, mapeada: false, nome: "Manoel Feio" }, 1211: { linha: 12, mapeada: false, nome: "Itaquaquecetuba" }, 1212: { linha: 12, mapeada: false, nome: "Aracaré" }, 1213: { linha: 12, mapeada: false, nome: "Calmon Viana" },
+        1301: { linha: 13, mapeada: false, nome: "Eng. Goulart" }, 1302: { linha: 13, mapeada: false, nome: "Guarulhos-Cecap" }, 1303: { linha: 13, mapeada: false, nome: "Aeroporto" }
+    },
 
-    function initSelects() {
-        const selLO = document.getElementById('linha-origem'); const selLD = document.getElementById('linha-destino');
-        const t = dicionario[currentLang];
+    dicionario: {
+        'pt': {
+            modTitle: 'Aviso de Segurança', modText: 'Esta ferramenta foi projetada para facilitar a autonomia de pessoas preferenciais. O Metrô recomenda o uso dos vagões das pontas. Lembre-se: o bom senso e a sua segurança devem ser sempre a regra número 1.',
+            modCheck: 'Li e compreendi', modBtn: 'Acessar o Guia', btnCalc: 'Qual é a Porta Certa?',
+            lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa',
+            titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha de Origem', selLinhaDest: 'Escolha a Linha de Destino',
+            selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', listTitle: 'Estações Mapeadas', listDesc: 'Atualmente, a precisão funciona nestas estações:',
+            mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)',
+            l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata',
+            embTrecho: 'Em <b>{est}</b>, embarque na:', transfTrecho: 'Desembarque em <b>{est}</b> e faça transferência para a <b>{linha}</b>.', saidaFinal: 'No destino final (<b>{est}</b>), você sairá de frente para a <b>{tipo}</b>.',
+            tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', faltaRolante: 'Opção indisponível nesta estação.', sugestaoElevador: 'Sugerimos utilizar o Elevador na:',
+            pendente: 'A estação selecionada ainda não foi mapeada. Aguarde atualizações futuras.', palavraPorta: 'Porta', palavraVagao: 'Vagão'
+        },
+        'en': {
+            modTitle: 'Safety Notice', modText: 'This tool is designed to assist people with accessibility needs. The Subway recommends using the end cars. Common sense and your safety must always come first.',
+            modCheck: 'I have read and understood', modBtn: 'Access Guide', btnCalc: 'What is the Right Door?',
+            lblPref: 'Your preferred exit at final destination:', optElevador: 'Elevator', optRolante: 'Escalator', optFixa: 'Stairs',
+            titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Origin Line', selLinhaDest: 'Select Destination Line',
+            selEstOr: 'Select a line first', selEstDest: 'Select a line first', listTitle: 'Mapped Stations', listDesc: 'Currently, precision works in these stations:',
+            mesmaEstacao: 'You are already at the destination station.', trecho: 'Leg', emBreve: '(Soon)',
+            l1: 'L1-Blue', l2: 'L2-Green', l3: 'L3-Red', l4: 'L4-Yellow', l5: 'L5-Lilac', l7: 'L7-Ruby', l8: 'L8-Diamond', l9: 'L9-Emerald', l10: 'L10-Turquoise', l11: 'L11-Coral', l12: 'L12-Sapphire', l13: 'L13-Jade', l15: 'L15-Silver',
+            embTrecho: 'At <b>{est}</b>, board exactly at:', transfTrecho: 'Get off at <b>{est}</b> and transfer to <b>{linha}</b>.', saidaFinal: 'At final destination (<b>{est}</b>), you will exit facing the <b>{tipo}</b>.',
+            tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs', faltaRolante: 'Option unavailable here.', sugestaoElevador: 'We suggest using the Elevator at:',
+            pendente: 'The selected station has not been mapped yet. Please await future updates.', palavraPorta: 'Door', palavraVagao: 'Car'
+        },
+        'es': {
+            modTitle: 'Aviso de Seguridad', modText: 'Esta herramienta facilita la autonomía de personas preferenciales. El Metro recomienda los vagones extremos. Tu seguridad es siempre la regla número 1.',
+            modCheck: 'Leí y comprendí', modBtn: 'Acceder a la Guía', btnCalc: '¿Cuál es la Puerta Correcta?', lblPref: 'Tu preferencia de salida:', optElevador: 'Ascensor', optRolante: 'Escalera Mecánica', optFixa: 'Escalera Fija',
+            titleOrigem: '📍 PUNTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Línea de Origen', selLinhaDest: 'Línea de Destino',
+            selEstOr: 'Primero elige la línea', selEstDest: 'Primero elige la línea', listTitle: 'Estaciones Mapeadas', listDesc: 'Precisión disponible en:', mesmaEstacao: 'Ya estás en la estación.', trecho: 'Tramo', emBreve: '(Pronto)',
+            l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Roja', l4: 'L4-Amarilla', l5: 'L5-Lila', l7: 'L7-Rubí', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Zafiro', l13: 'L13-Jade', l15: 'L15-Plata',
+            embTrecho: 'En <b>{est}</b>, sube en:', transfTrecho: 'Baja en <b>{est}</b> y transfiere a <b>{linha}</b>.', saidaFinal: 'En tu destino (<b>{est}</b>), saldrás frente a <b>{tipo}</b>.',
+            tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija', faltaRolante: 'No disponible.', sugestaoElevador: 'Sugerimos el Ascensor en:',
+            pendente: 'La estación seleccionada aún no ha sido mapeada. Aguarda futuras actualizaciones.', palabraPorta: 'Puerta', palabraVagao: 'Vagón'
+        },
+        'fr': { modTitle: 'Avis de Sécurité', modText: 'Pour les personnes à mobilité réduite. Le bon sens et la sécurité priment.', modCheck: 'Compris', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne de départ', selLinhaDest: 'Ligne d\'arrivée', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', faltaRolante: 'Indisponible.', sugestaoElevador: 'Ascenseur à:', pendente: 'La station sélectionnée n\'a pas encore été cartographiée.', palabraPorta: 'Porte', palabraVagao: 'Voiture' },
+        'zh': { modTitle: '安全提示', modText: '常识和您的安全必须始终放在第一位。', modCheck: '我已阅读并理解', modBtn: '进入指南', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '起点线路', selLinhaDest: '终点线路', selEstOr: '先选线', selEstDest: '先选线', listTitle: '已测绘车站', listDesc: '目前可用的车站:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '在 <b>{est}</b> 换乘 <b>{linha}</b>。', saidaFinal: '在 <b>{est}</b> 下车，正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', faltaRolante: '无。', sugestaoElevador: '建议直梯:', pendente: '所选车站尚未测绘，请等待未来更新。', palabraPorta: '号门', palabraVagao: '号车厢' },
+        'ja': { modTitle: '安全に関するお知らせ', modText: '利用者の安全と常識が常に最優先されます。', modCheck: '同意する', modBtn: 'ガイドへ', btnCalc: '正しいドアは？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '出発線', selLinhaDest: '到着線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{est}</b>で<b>{linha}</b>に乗換。', saidaFinal: '<b>{est}</b>で<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', faltaRolante: '利用不可。', sugestaoElevador: 'EV推奨:', pendente: '選択した駅はまだマッピングされていません。', palabraPorta: '番ドア', palabraVagao: '号車' },
+        'ko': { modTitle: '안전 공지', modText: '사용자의 안전에 대한 상식이 항상 최우선이어야 합니다.', modCheck: '동의합니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '출발 노선', selLinhaDest: '도착 노선', selEstOr: '노선 먼저 선택', selEstDest: '노선 먼저 선택', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{est}</b>에서 <b>{linha}</b> 환승.', saidaFinal: '<b>{est}</b>에서 <b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', faltaRolante: '불가.', sugestaoElevador: 'EV 권장:', pendente: '선택한 역은 아직 매핑되지 않았습니다.', palabraPorta: '번 문', palabraVagao: '호차' },
+        'ar': { modTitle: 'تنبيه أمان', modText: 'يجب أن يكون المنطق السليم وسلامتك دائمًا في المقام الأول.', modCheck: 'موافق', modBtn: 'دخول', btnCalc: 'ما هو الباب الصحيح؟', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في <b>{est}</b> اصعد:', transfTrecho: 'تحويل في <b>{est}</b> إلى <b>{linha}</b>.', saidaFinal: 'في <b>{est}</b> أمام <b>{tipo}</b>.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', faltaRolante: 'غير متوفر.', sugestaoElevador: 'استخدم المصعد:', pendente: 'لم يتم تعيين المحطة المحددة بعد. يرجى انتظار التحديثات.', palabraPorta: 'باب', palabraVagao: 'عربة' }
+    }
+};
+
+/**
+ * ==========================================
+ * BLOCO 2: FORMATADOR DE DADOS (Formatter)
+ * ==========================================
+ * Garante que a saída visual seja sempre padronizada.
+ */
+const Formatter = {
+    // Mescla o número da porta e o código do vagão para entregar sempre a informação completa.
+    formatarPorta: function(raw, sentido) {
+        if (!raw || raw === "-" || raw === "Pendente") return raw;
+
+        let map = AppData.mapaPortas[sentido] || {};
+        let t = AppData.dicionario[AppData.currentLang];
+        
+        let numMatch = raw.match(/\d{2}/);
+        let vagaoMatch = raw.match(/Vagão \d, Porta \d/);
+        
+        let numPorta = "";
+        let vagaoStr = "";
+
+        // Se a base tem apenas o número (Ex: "Porta 44")
+        if (numMatch && !raw.includes("Vagão")) {
+            numPorta = numMatch[0];
+            vagaoStr = map[numPorta] || ""; 
+        } 
+        // Se a base tem apenas o vagão (Ex: "Vagão 5, Porta 3")
+        else if (vagaoMatch) {
+            vagaoStr = vagaoMatch[0];
+            numPorta = Object.keys(map).find(k => map[k] === vagaoStr) || "";
+        }
+
+        let res = [];
+        if (numPorta) {
+            res.push(AppData.currentLang === 'zh' ? `${numPorta}${t.palabraPorta}` : `${t.palavraPorta} ${numPorta}`);
+        } else if (raw.includes("Porta")) {
+            res.push(raw.replace("Porta", t.palavraPorta)); // Fallback
+        }
+
+        if (vagaoStr) {
+            let tradVagao = vagaoStr.replace("Vagão", t.palavraVagao).replace("Porta", t.palavraPorta);
+            // Ajuste fino para chinês e japonês
+            if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja') tradVagao = vagaoStr.replace(/Vagão (\d), Porta (\d)/, `$1${t.palavraVagao} $2${t.palavraPorta}`);
+            
+            if (res.length > 0) res.push(`(${tradVagao})`);
+            else res.push(tradVagao);
+        }
+
+        return res.length > 0 ? res.join(" ") : raw;
+    }
+};
+
+/**
+ * ==========================================
+ * BLOCO 3: MOTOR DE ROTEAMENTO (Router)
+ * ==========================================
+ */
+const Router = {
+    encontrarCaminhoLinhas: function(lOrigem, lDestino) {
+        if (lOrigem === lDestino) return [lOrigem];
+        let fila = [[lOrigem]];
+        let visitados = new Set();
+        visitados.add(lOrigem);
+
+        while (fila.length > 0) {
+            let caminho = fila.shift();
+            let atual = caminho[caminho.length - 1];
+            for (let vizinho in AppData.transferencias[atual]) {
+                vizinho = parseInt(vizinho);
+                if (!visitados.has(vizinho)) {
+                    visitados.add(vizinho);
+                    let novoCaminho = [...caminho, vizinho];
+                    if (vizinho === lDestino) return novoCaminho;
+                    fila.push(novoCaminho);
+                }
+            }
+        }
+        return null;
+    },
+
+    calcularSentido: function(idOrigem, idDestino) {
+        return parseInt(idOrigem) < parseInt(idDestino) ? "BF" : "IT";
+    },
+
+    extrairPortaAlvo: function(nodeDestino, sentido, prefSaida) {
+        let alvo = prefSaida === "elevador" ? nodeDestino.elevadorBF : (prefSaida === "rolante" ? nodeDestino.rolanteBF : nodeDestino.fixaBF);
+        if (sentido === "IT") alvo = prefSaida === "elevador" ? nodeDestino.elevadorIT : (prefSaida === "rolante" ? nodeDestino.rolanteIT : nodeDestino.fixaIT);
+        return alvo;
+    }
+};
+
+/**
+ * ==========================================
+ * BLOCO 4: INTERFACE E EVENTOS (UI)
+ * ==========================================
+ */
+const UI = {
+    init: function() {
+        const selLO = document.getElementById('linha-origem'); 
+        const selLD = document.getElementById('linha-destino');
+        const t = AppData.dicionario[AppData.currentLang];
+        
         selLO.options.length = 0; selLD.options.length = 0;
         selLO.add(new Option(t.selLinhaOr, "0", true, true)); selLO.options[0].disabled = true;
         selLD.add(new Option(t.selLinhaDest, "0", true, true)); selLD.options[0].disabled = true;
-        linhas.forEach(l => { selLO.add(new Option(t['l'+l], l)); selLD.add(new Option(t['l'+l], l)); });
-        atualizarEstacoes('origem', true); atualizarEstacoes('destino', true);
-    }
+        
+        AppData.linhas.forEach(l => { 
+            selLO.add(new Option(t['l'+l], l)); 
+            selLD.add(new Option(t['l'+l], l)); 
+        });
+        
+        this.atualizarEstacoes('origem', true); 
+        this.atualizarEstacoes('destino', true);
+        this.popularListaMapeadas();
+    },
 
-    function atualizarEstacoes(tipo, forceReset = false) {
+    atualizarEstacoes: function(tipo, forceReset = false) {
         const selLinha = document.getElementById(`linha-${tipo}`);
         const selEstacao = document.getElementById(`estacao-${tipo}`);
-        const t = dicionario[currentLang];
-        if (selLinha.value != "0") selLinha.style.borderColor = `var(--l${selLinha.value})`;
-        else selLinha.style.borderColor = '';
+        const t = AppData.dicionario[AppData.currentLang];
+        
+        selLinha.style.borderColor = (selLinha.value != "0") ? `var(--l${selLinha.value})` : '';
         selEstacao.options.length = 0;
+        
         if (selLinha.value === "0" || forceReset) {
             selEstacao.add(new Option(t[tipo === 'origem' ? 'selEstOr' : 'selEstDest'], "0", true, true));
-            selEstacao.disabled = true; return;
+            selEstacao.disabled = true; 
+            return;
         }
+        
         selEstacao.disabled = false;
         selEstacao.add(new Option(tipo === 'origem' ? t.selEstOr : t.selEstDest, "0", true, true));
         selEstacao.options[0].disabled = true;
-        for (let id in estacoes) { if (estacoes[id].linha == selLinha.value) selEstacao.add(new Option(estacoes[id].nome, id)); }
         
+        for (let id in AppData.estacoes) { 
+            let node = AppData.estacoes[id];
+            if (node.linha == selLinha.value) {
+                let opt = new Option(node.nome + (!node.mapeada ? ` ${t.emBreve}` : ""), id);
+                if (!node.mapeada) opt.disabled = true; // Bloqueia estações não mapeadas
+                selEstacao.add(opt); 
+            }
+        }
         document.getElementById('resultado-box').style.display = 'none';
-    }
+    },
 
-    function toggleFontSize() {
-        isLargeFont = !isLargeFont; document.body.classList.toggle('large-font', isLargeFont);
-        document.getElementById('btn-font').innerText = isLargeFont ? 'A-' : 'A+';
-    }
-
-    function changeLanguage(langCode) {
+    changeLanguage: function(langCode) {
         let isResultVisible = document.getElementById('resultado-box').style.display === 'block';
-        currentLang = langCode; const t = dicionario[currentLang];
+        AppData.currentLang = langCode; 
+        const t = AppData.dicionario[langCode];
         
         document.body.setAttribute('dir', langCode === 'ar' ? 'rtl' : 'ltr');
         document.querySelectorAll('.lang-flag').forEach(el => el.classList.remove('active'));
@@ -344,68 +452,61 @@
         document.getElementById('opt-fixa').innerText = t.optFixa;
         document.getElementById('title-origem').innerText = t.titleOrigem;
         document.getElementById('title-destino').innerText = t.titleDestino;
+        document.getElementById('list-title').innerText = t.listTitle;
+        document.getElementById('list-desc').innerText = t.listDesc;
+        document.getElementById('btn-close-list').innerText = langCode === 'en' ? 'Back' : (langCode === 'es' ? 'Volver' : 'Voltar');
         
-        const valLO = document.getElementById('linha-origem').value; const valEO = document.getElementById('estacao-origem').value;
-        const valLD = document.getElementById('linha-destino').value; const valED = document.getElementById('estacao-destino').value;
-        initSelects();
-        document.getElementById('linha-origem').value = valLO; if(valLO != "0") atualizarEstacoes('origem');
+        const valLO = document.getElementById('linha-origem').value; 
+        const valEO = document.getElementById('estacao-origem').value;
+        const valLD = document.getElementById('linha-destino').value; 
+        const valED = document.getElementById('estacao-destino').value;
+        
+        this.init();
+        
+        document.getElementById('linha-origem').value = valLO; if(valLO != "0") this.atualizarEstacoes('origem');
         document.getElementById('estacao-origem').value = valEO;
-        document.getElementById('linha-destino').value = valLD; if(valLD != "0") atualizarEstacoes('destino');
+        document.getElementById('linha-destino').value = valLD; if(valLD != "0") this.atualizarEstacoes('destino');
         document.getElementById('estacao-destino').value = valED;
         
-        if(isResultVisible) calcularRota();
-    }
+        if(isResultVisible) this.iniciarCalculo();
+    },
 
-    function traduzirPorta(texto) {
-        if (!texto) return "";
-        if (currentLang === 'en') return texto.replace(/Porta/g, 'Door').replace(/Vagão/g, 'Car');
-        if (currentLang === 'es') return texto.replace(/Porta/g, 'Puerta').replace(/Vagão/g, 'Vagón');
-        if (currentLang === 'fr') return texto.replace(/Porta/g, 'Porte').replace(/Vagão/g, 'Voiture');
-        if (currentLang === 'zh') return texto.replace(/Porta/g, '号门').replace(/Vagão/g, '号车厢');
-        if (currentLang === 'ar') return texto.replace(/Porta/g, 'باب').replace(/Vagão/g, 'عربة');
-        return texto;
-    }
+    toggleFontSize: function() { AppData.isLargeFont = !AppData.isLargeFont; document.body.classList.toggle('large-font', AppData.isLargeFont); },
+    liberarModal: function() { document.getElementById('btn-modal').disabled = !document.getElementById('check-ciencia').checked; },
+    fecharModal: function() { document.getElementById('aviso-modal').style.display = 'none'; localStorage.setItem('portaCertaModal', 'lido'); },
+    abrirListaMapeadas: function() { document.getElementById('mapeadas-modal').style.display = 'flex'; },
+    fecharListaMapeadas: function() { document.getElementById('mapeadas-modal').style.display = 'none'; },
 
-    // Algoritmo de roteamento (BFS - Busca em Largura)
-    function encontrarCaminho(lOrigem, lDestino) {
-        if (lOrigem === lDestino) return [lOrigem];
-        let fila = [[lOrigem]];
-        let visitados = new Set();
-        visitados.add(lOrigem);
-
-        while (fila.length > 0) {
-            let caminho = fila.shift();
-            let atual = caminho[caminho.length - 1];
-            for (let vizinho in transferencias[atual]) {
-                vizinho = parseInt(vizinho);
-                if (!visitados.has(vizinho)) {
-                    visitados.add(vizinho);
-                    let novoCaminho = [...caminho, vizinho];
-                    if (vizinho === lDestino) return novoCaminho;
-                    fila.push(novoCaminho);
-                }
+    popularListaMapeadas: function() {
+        const ul = document.getElementById('ul-mapeadas');
+        ul.innerHTML = "";
+        for (let id in AppData.estacoes) {
+            if (AppData.estacoes[id].mapeada) {
+                let li = document.createElement('li');
+                li.innerText = AppData.estacoes[id].nome;
+                ul.appendChild(li);
             }
         }
-        return null;
-    }
+    },
 
-    function calcularRota() {
+    iniciarCalculo: function() {
         const estOr = document.getElementById('estacao-origem').value;
         const estDest = document.getElementById('estacao-destino').value;
-        const box = document.getElementById('resultado-box');
         const pref = document.getElementById('preferencia').value;
-        const t = dicionario[currentLang];
+        const box = document.getElementById('resultado-box');
+        const t = AppData.dicionario[AppData.currentLang];
 
         if (estOr == "0" || estDest == "0") return;
+        
         if (estOr === estDest) {
             box.innerHTML = `<div class="info-text" style="text-align:center;">${t.mesmaEstacao}</div>`;
             box.style.display = 'block'; return;
         }
 
-        let origem = estacoes[estOr];
-        let destino = estacoes[estDest];
-        let caminho = encontrarCaminho(origem.linha, destino.linha);
-        let tipoPrefTexto = pref === 'elevador' ? t.tipoElevador : (pref === 'rolante' ? t.tipoRolante : t.tipoFixa);
+        const origem = AppData.estacoes[estOr];
+        const destino = AppData.estacoes[estDest];
+        const caminho = Router.encontrarCaminhoLinhas(origem.linha, destino.linha);
+        const tipoPrefTexto = pref === 'elevador' ? t.tipoElevador : (pref === 'rolante' ? t.tipoRolante : t.tipoFixa);
         
         let htmlFinal = "";
         
@@ -414,53 +515,53 @@
             let isFirst = (i === 0);
             let isLast = (i === caminho.length - 1);
             
-            let estNomeEmbarque = isFirst ? origem.nome : transferencias[caminho[i-1]][lAtual];
-            let estNomeDesembarque = isLast ? destino.nome : transferencias[lAtual][caminho[i+1]];
+            let estNomeEmbarque = isFirst ? origem.nome : AppData.transferencias[caminho[i-1]][lAtual];
+            let estNomeDesembarque = isLast ? destino.nome : AppData.transferencias[lAtual][caminho[i+1]];
             let corVar = `var(--l${lAtual})`;
             
             htmlFinal += `<div class="route-step" style="border-color: ${corVar};">`;
             htmlFinal += `<style>.route-step:nth-child(${i+1})::before { border-color: ${corVar} !important; }</style>`;
             htmlFinal += `<div class="step-title">📍 ${t.trecho} ${i+1}: ${t['l'+lAtual]}</div>`;
 
-            let portaAlvo = null;
-            // Cálculo da L3 (a única com portas inseridas no momento)
-            if (isFirst && lAtual === 3) {
-                let sL3 = parseInt(estOr) < 313 ? "BF" : "IT";
-                if (origem.linha === destino.linha) {
-                    portaAlvo = pref === "elevador" ? destino.elevadorBF : (pref === "rolante" ? destino.rolanteBF : destino.fixaBF);
-                    if(sL3 === "IT") portaAlvo = pref === "elevador" ? destino.elevadorIT : (pref === "rolante" ? destino.rolanteIT : destino.fixaIT);
-                } else if (origem.linha === 3 && destino.linha === 1) { // Hardcode Sé
-                    let sL1 = parseInt(estDest) < 111 ? "Tucuruvi" : "Jabaquara";
-                    portaAlvo = sL1 === "Tucuruvi" ? (sL3 === "BF" ? "Porta 57" : "Porta 52") : (sL3 === "BF" ? "Porta 15" : "Porta 13");
-                }
-            } else if (isLast && lAtual === 3 && !isFirst) {
-                let objEmbarqueL3 = Object.values(estacoes).find(e => e.nome === estNomeEmbarque && e.linha === 3);
-                if (objEmbarqueL3) {
-                    let sentidoL3 = objEmbarqueL3.id < parseInt(estDest) ? "BF" : "IT";
-                    portaAlvo = pref === "elevador" ? destino.elevadorBF : (pref === "rolante" ? destino.rolanteBF : destino.fixaBF);
-                    if(sentidoL3 === "IT") portaAlvo = pref === "elevador" ? destino.elevadorIT : (pref === "rolante" ? destino.rolanteIT : destino.fixaIT);
-                }
-            }
+            let portaRaw = null;
+            let sentidoCalculado = "BF";
 
-            if (isFirst) {
-                if (portaAlvo && portaAlvo !== "-") {
-                    htmlFinal += `<div class="info-text">${t.embTrecho.replace('{est}', estNomeEmbarque)}</div>`;
-                    htmlFinal += `<div class="result-door" style="color:${corVar};">${traduzirPorta(portaAlvo)}</div>`;
-                } else {
-                    htmlFinal += `<div class="info-text">${t.embTrecho.replace('{est}', estNomeEmbarque)}</div>`;
-                    htmlFinal += `<div class="result-door" style="color:#FFB74D; font-size:1.5rem;">${t.pendente}</div>`;
-                }
-                if (origem.semPortas) htmlFinal += `<div class="alert">${t.avisoVagao}</div>`;
-            }
-
-            if (!isLast) {
-                htmlFinal += `<div class="info-text" style="margin-top:10px;">${t.transfTrecho.replace('{est}', estNomeDesembarque).replace('{linha}', t['l'+caminho[i+1]])}</div>`;
-            } else {
-                htmlFinal += `<div class="info-text" style="margin-top:10px;">${t.saidaFinal.replace('{est}', estNomeDesembarque).replace('{tipo}', tipoPrefTexto)}</div>`;
+            if (lAtual === 3) {
+                let nodeEmb = AppData.estacoes[Object.keys(AppData.estacoes).find(k => AppData.estacoes[k].nome === estNomeEmbarque && AppData.estacoes[k].linha === 3)];
+                let nodeDes = AppData.estacoes[Object.keys(AppData.estacoes).find(k => AppData.estacoes[k].nome === estNomeDesembarque && AppData.estacoes[k].linha === 3)];
                 
-                // Exibe a porta final SE o destino for Linha 3, mesmo que a origem seja outra linha (Ex: L1 -> L3)
-                if (lAtual === 3 && portaAlvo && !isFirst && portaAlvo !== "-") {
-                    htmlFinal += `<div class="result-door" style="color:${corVar}; font-size:1.5rem; margin-top:5px;">${traduzirPorta(portaAlvo)}</div>`;
+                if (nodeEmb && nodeDes) {
+                    sentidoCalculado = Router.calcularSentido(nodeEmb.id, nodeDes.id);
+                    
+                    // Tratamento Especial de Baldeação na L3->L1
+                    if (isFirst && !isLast && nodeDes.id === 313 && caminho[i+1] === 1) {
+                        let idDestinoFinal = parseInt(estDest);
+                        let isTucuruviBound = idDestinoFinal < 111;
+                        portaRaw = isTucuruviBound ? (sentidoCalculado === "BF" ? "Porta 57" : "Porta 52") : (sentidoCalculado === "BF" ? "Porta 15" : "Porta 13");
+                    } else {
+                        portaRaw = Router.extrairPortaAlvo(nodeDes, sentidoCalculado, pref);
+                    }
+                }
+            }
+
+            // Exibição do Embarque
+            if (isFirst) {
+                htmlFinal += `<div class="info-text">${t.embTrecho.replace('{est}', estNomeEmbarque)}</div>`;
+                if (portaRaw && portaRaw !== "-" && portaRaw !== "Pendente") {
+                    htmlFinal += `<div class="result-door" style="color:${corVar};">${Formatter.formatarPorta(portaRaw, sentidoCalculado)}</div>`;
+                } else {
+                    htmlFinal += `<div class="alert-warning">⏳ ${t.pendente}</div>`;
+                }
+            }
+
+            // Exibição do Desembarque
+            if (!isLast) {
+                htmlFinal += `<div class="info-text" style="margin-top:15px;">${t.transfTrecho.replace('{est}', estNomeDesembarque).replace('{linha}', t['l'+caminho[i+1]])}</div>`;
+            } else {
+                htmlFinal += `<div class="info-text" style="margin-top:15px;">${t.saidaFinal.replace('{est}', estNomeDesembarque).replace('{tipo}', tipoPrefTexto)}</div>`;
+                // Mostrar a porta de destino se mapeada
+                if (lAtual === 3 && portaRaw && !isFirst && portaRaw !== "-" && portaRaw !== "Pendente") {
+                    htmlFinal += `<div class="result-door" style="color:${corVar}; font-size:1.6rem; margin-top:5px;">${Formatter.formatarPorta(portaRaw, sentidoCalculado)}</div>`;
                 }
             }
             htmlFinal += `</div>`;
@@ -469,9 +570,15 @@
         box.innerHTML = htmlFinal;
         box.style.display = 'block';
     }
+};
 
-    initSelects();
+window.onload = function() {
+    UI.init();
+    if(localStorage.getItem('portaCertaModal') === 'lido') {
+        document.getElementById('aviso-modal').style.display = 'none';
+    }
+};
+
 </script>
-
 </body>
 </html>
