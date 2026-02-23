@@ -31,7 +31,7 @@
 
         /* Estrutura Superior */
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .header-actions { display: flex; gap: 10px; }
+        .header-actions { display: flex; gap: 8px; }
         .action-btn { font-size: 1.2rem; font-weight: bold; color: var(--text-main); background: #333; border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 10px; cursor: pointer; user-select: none; }
         h1 { font-size: 1.8rem; margin: 0; color: var(--text-main); line-height: 1.2; letter-spacing: -0.5px; }
         
@@ -76,10 +76,14 @@
         body[dir="rtl"] .route-step { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 15px; }
         body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
         
-        /* Estilos da Lista de Mapeadas */
+        /* Estilos da Lista de Mapeadas e Ajuda */
         .mapped-list { list-style: none; padding: 0; margin: 0; }
         .mapped-list li { padding: 8px 0; border-bottom: 1px solid #333; color: #FFF; font-size: 0.95rem; }
         .mapped-list li::before { content: '✔️'; margin-right: 8px; }
+        .help-text h3 { color: #FFF; font-size: 1.1rem; margin-top: 15px; margin-bottom: 5px; }
+        .help-text p { font-size: 0.95rem; color: #CCC; margin-top: 0; margin-bottom: 10px; line-height: 1.4; }
+        .help-text ul { padding-left: 20px; margin-top: 0; color: #CCC; font-size: 0.95rem; line-height: 1.4; }
+        .help-text li { margin-bottom: 8px; }
 
         /* Acessibilidade Visual Ativada */
         body.large-font h1 { font-size: 2.2rem; }
@@ -89,6 +93,7 @@
         body.large-font .btn-action { font-size: 1.4rem; padding: 18px; }
         body.large-font .result-door { font-size: 2.2rem; }
         body.large-font .info-text { font-size: 1.2rem; }
+        body.large-font .help-text p, body.large-font .help-text ul { font-size: 1.1rem; }
     </style>
 </head>
 <body>
@@ -98,10 +103,10 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * AUTOR: Harry Bour
- * VERSÃO: 3.4.0 (Data: 23/02/2026)
+ * VERSÃO: 3.5.0 (Data: 23/02/2026)
  * JUSTIFICATIVA: Ferramenta de ativismo para garantir a autonomia de pessoas
  * com deficiência. Chegar mais rápido é benefício secundário.
- * UPDATE: Fluxo dinâmico de texto UX nos dropdowns.
+ * UPDATE: Inclusão do Menu de Ajuda/Tutorial embutido no cabeçalho.
  * ============================================================================
  */
 </script>
@@ -115,6 +120,33 @@
             <span id="mod-check">Li e compreendi o propósito do guia</span>
         </label>
         <button id="btn-modal" class="btn-action" disabled onclick="UI.fecharModal()">Acessar o Guia</button>
+    </div>
+</div>
+
+<div id="ajuda-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content help-text">
+        <h2 style="color: var(--l3); margin-bottom: 10px;">Como usar o Porta Certa SP</h2>
+        <p>O aplicativo calcula em qual porta do trem você deve entrar para sair exatamente de frente para a escada ou elevador que você precisa no destino.</p>
+        
+        <h3>1. O que você precisa?</h3>
+        <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
+
+        <h3>2. Origem e Destino</h3>
+        <p>Escolha a Linha e a Estação onde você vai embarcar. Depois, faça o mesmo para a estação onde você quer chegar. <br><em>Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas.</em></p>
+
+        <h3>3. Calcule a rota</h3>
+        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo, incluindo as trocas de linha. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
+        <p>Basta procurar o adesivo 47 no alto da porta automática de vidro na plataforma. Se a estação não tiver portas de vidro, conte os vagões do trem (a Porta 1 do vagão é sempre a primeira no sentido em que o trem está indo).</p>
+
+        <h3>Recursos importantes:</h3>
+        <ul>
+            <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
+            <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
+            <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho direto para a Ouvidoria do Estado. Cobre seus direitos.</li>
+            <li><strong>Ajude a mapear:</strong> Descobriu a porta exata de uma estação nova? Vá até o final da página e clique em "Contribuir com o Mapa" para nos enviar a informação.</li>
+        </ul>
+
+        <button class="btn-action btn-secondary" onclick="UI.fecharModalAjuda()" style="margin-top: 20px;">Entendi</button>
     </div>
 </div>
 
@@ -145,6 +177,7 @@
     <div class="header-top">
         <h1 id="app-title">PORTA CERTA SP</h1>
         <div class="header-actions">
+            <span class="action-btn" onclick="UI.abrirModalAjuda()" title="Como usar">❓</span>
             <span class="action-btn" onclick="UI.abrirListaMapeadas()" title="Estações Mapeadas">📋</span>
             <span class="action-btn" id="btn-font" onclick="UI.toggleFontSize()" title="Acessibilidade Visual">A+</span>
         </div>
@@ -265,14 +298,14 @@ const AppData = {
         },
         'en': { 
             modTitle: 'Notice: Accessibility and Rights', modText: 'Porta Certa SP is, first and foremost, an activism tool. Our main goal is to ensure autonomy for people with reduced mobility. Getting there faster is a secondary benefit. If you are just in a hurry, have empathy: leave the space at these doors for those who really need it and use the end cars, as the Subway recommends. Common sense and safety come first.', modCheck: 'I have read and understood the guide\'s purpose', modBtn: 'Access Guide', btnCalc: 'What is the Right Door?', lblPref: 'Your preferred exit at final destination:', optElevador: 'Elevator', optRolante: 'Escalator', optFixa: 'Stairs', titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Line', selLinhaDest: 'Select Line', selEstOr: 'Select a line first', selEstDest: 'Select a line first', selEstAtivo: 'Now, choose the station', listTitle: 'Mapped Stations', listDesc: 'Currently available at:', mesmaEstacao: 'You are already at the destination station.', trecho: 'Leg', emBreve: '(Soon)', l1: 'L1-Blue', l2: 'L2-Green', l3: 'L3-Red', l4: 'L4-Yellow', l5: 'L5-Lilac', l7: 'L7-Ruby', l8: 'L8-Diamond', l9: 'L9-Emerald', l10: 'L10-Turquoise', l11: 'L11-Coral', l12: 'L12-Sapphire', l13: 'L13-Jade', l15: 'L15-Silver', embTrecho: 'At <b>{est}</b>, board exactly at:', transfTrecho: 'Get off at <b>{est}</b> and transfer to <b>{linha}</b>.', saidaFinal: 'At final destination (<b>{est}</b>), you will exit facing the <b>{tipo}</b>.', tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs', pendente: 'The selected station has not been mapped yet. Please await future updates.', txtPorta: 'Door', txtVagao: 'Car',
-            accTitle: 'Accessibility Rights', accText: 'The selected station lacks the requested accessibility equipment. Full access is your right. Demand improvements through the official ombudsman (FALA.SP).', accBtnFala: 'Complain on FALA.SP', accBtnClose: 'Understood', txtInexistente: 'Equipment not available here.'
+            accTitle: 'Accessibility Rights', accText: 'The selected station lacks the requested accessibility equipment. Full access is your right. Demand improvements through the official ombudsman (FALA.SP).', accBtnFala: 'Complain on FALA.SP', accBtnClose: 'Close', txtInexistente: 'Equipment not available here.'
         },
         'es': { 
             modTitle: 'Aviso: Accesibilidad y Derechos', modText: 'Porta Certa SP es, ante todo, una herramienta de activismo. Nuestro principal objetivo es garantizar la autonomía de las personas con movilidad reducida. Llegar más rápido es un beneficio secundario. Si solo tienes prisa, ten empatía: deja el espacio de estas puertas para quienes realmente lo necesitan y usa los vagones de los extremos. El sentido común y la seguridad son lo primero.', modCheck: 'Leí y comprendí el propósito de la guía', modBtn: 'Acceder a la Guía', btnCalc: '¿Cuál es la Puerta Correcta?', lblPref: 'Tu preferencia de salida:', optElevador: 'Ascensor', optRolante: 'Escalera Mecánica', optFixa: 'Escalera Fija', titleOrigem: '📍 PUNTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Línea de Origen', selLinhaDest: 'Línea de Destino', selEstOr: 'Primero elige la línea', selEstDest: 'Primero elige la línea', selEstAtivo: 'Ahora, elige la estación', listTitle: 'Estaciones Mapeadas', listDesc: 'Precisión disponible en:', mesmaEstacao: 'Ya estás en la estación.', trecho: 'Tramo', emBreve: '(Pronto)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Roja', l4: 'L4-Amarilla', l5: 'L5-Lila', l7: 'L7-Rubí', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Zafiro', l13: 'L13-Jade', l15: 'L15-Plata', embTrecho: 'En <b>{est}</b>, sube en:', transfTrecho: 'Baja en <b>{est}</b> y transfiere a <b>{linha}</b>.', saidaFinal: 'En tu destino (<b>{est}</b>), saldrás frente a <b>{tipo}</b>.', tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija', pendente: 'La estación seleccionada aún no ha sido mapeada. Aguarda futuras actualizaciones.', txtPorta: 'Puerta', txtVagao: 'Vagón',
-            accTitle: 'Derecho a la Accesibilidad', accText: 'La estación seleccionada no cuenta con el equipo de accesibilidad solicitado. Reclama mejoras en la defensoría del pueblo (FALA.SP).', accBtnFala: 'Reclamar en FALA.SP', accBtnClose: 'Entendido', txtInexistente: 'Equipo no disponible.'
+            accTitle: 'Derecho a la Accesibilidad', accText: 'La estación seleccionada no cuenta con el equipo de accesibilidad solicitado. Reclama mejoras en la defensoría del pueblo (FALA.SP).', accBtnFala: 'Reclamar en FALA.SP', accBtnClose: 'Cerrar', txtInexistente: 'Equipo no disponible.'
         },
         'fr': { modTitle: 'Avis : Accessibilité et Droits', modText: 'Le bon sens et la sécurité priment. Laissez l\'espace à ceux qui en ont besoin.', modCheck: 'J\'ai compris l\'objectif du guide', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accText: 'Équipement indisponible.', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible ici.' },
-        'zh': { modTitle: '提示：无障碍与权利', modText: '常识和安全必须始终放在第一位。请将空间留给需要的人。', modCheck: '我已阅读并理解指南的目的', modBtn: '进入', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '换乘 <b>{linha}</b>。', saidaFinal: '正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accText: '该站缺少无障碍设施。', accBtnFala: 'FALA.SP', accBtnClose: '懂了', txtInexistente: '不可用。' },
+        'zh': { modTitle: '提示：无障碍与权利', modText: '常识和安全必须始终放在第一位。请将空间留给需要的人。', modCheck: '我已阅读并理解指南的目的', modBtn: '进入', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '换乘 <b>{linha}</b>。', saidaFinal: '正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accText: '该站缺少无障碍设施。', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。' },
         'ja': { modTitle: 'お知らせ：アクセシビリティと権利', modText: '利用者の安全と常識が常に最優先されます。必要な人のためにスペースを空けてください。', modCheck: 'ガイドの目的を理解しました', modBtn: 'ガイドへ', btnCalc: '正しいドアは？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{linha}</b>に乗換。', saidaFinal: '<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accText: '設備がありません。', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。' },
         'ko': { modTitle: '공지: 접근성 및 권리', modText: '안전에 대한 상식이 항상 최우선입니다. 필요한 사람을 위해 공간을 양보하세요.', modCheck: '가이드의 목적을 이해했습니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{linha}</b> 환승.', saidaFinal: '<b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accText: '장비 없음.', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.' },
         'ar': { modTitle: 'إشعار: إمكانية الوصول والحقوق', modText: 'يجب أن يكون المنطق السليم وسلامتك دائمًا في المقام الأول. اترك المساحة لمن يحتاجها.', modCheck: 'لقد فهمت الغرض من الدليل', modBtn: 'دخول', btnCalc: 'الباب الصحيح؟', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', selEstAtivo: 'الآن، اختر المحطة', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', embTrecho: 'في <b>{est}</b> اصعد:', transfTrecho: 'إلى <b>{linha}</b>.', saidaFinal: 'أمام <b>{tipo}</b>.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم التعيين بعد.', txtPorta: 'باب', txtVagao: 'عربة', accTitle: 'إمكانية الوصول', accText: 'المعدات غير متوفرة.', accBtnFala: 'FALA.SP', accBtnClose: 'أغلق', txtInexistente: 'غير متوفر.' }
@@ -455,6 +488,8 @@ const UI = {
     fecharListaMapeadas: function() { document.getElementById('mapeadas-modal').style.display = 'none'; },
     abrirModalAcessibilidade: function() { document.getElementById('acessibilidade-modal').style.display = 'flex'; },
     fecharModalAcessibilidade: function() { document.getElementById('acessibilidade-modal').style.display = 'none'; },
+    abrirModalAjuda: function() { document.getElementById('ajuda-modal').style.display = 'flex'; },
+    fecharModalAjuda: function() { document.getElementById('ajuda-modal').style.display = 'none'; },
 
     popularListaMapeadas: function() {
         const ul = document.getElementById('ul-mapeadas'); ul.innerHTML = "";
