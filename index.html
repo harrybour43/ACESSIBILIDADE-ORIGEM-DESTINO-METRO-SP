@@ -108,7 +108,7 @@
 <div id="aviso-modal" class="modal-overlay">
     <div class="modal-content">
         <h2 id="mod-title">Aviso: Acessibilidade e Direitos</h2>
-        <p id="mod-text">O Porta Certa SP é, antes de tudo, uma ferramenta de ativismo. Nosso principal objetivo é garantir autonomia para pessoas com mobilidade reduzida. Chegar mais rápido é um benefício secundário. O bom senso e a segurança vêm em primeiro lugar.</p>
+        <p id="mod-text">O Porta Certa SP é, antes de tudo, uma ferramenta de ativismo. Nosso principal objetivo é garantir autonomia para pessoas com mobilidade reduzida. Chegar mais rápido é um benefício secundário. Se você está apenas com pressa, tenha empatia: deixe o espaço destas portas para quem realmente precisa e use os vagões das pontas, como o Metrô recomenda. O bom senso e a segurança vêm em primeiro lugar.</p>
         <label class="checkbox-container">
             <input type="checkbox" id="check-ciencia" onchange="UI.liberarModal()">
             <span id="mod-check">Li e compreendi o propósito do guia</span>
@@ -124,9 +124,9 @@
         <h3>1. O que você precisa?</h3>
         <p>No topo da tela, escolha a sua preferência para a saída no destino final.</p>
         <h3>2. Origem e Destino</h3>
-        <p>Escolha a Linha e a Estação onde você vai embarcar. Use o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS.</p>
+        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS.</p>
         <h3>3. Calcule a rota</h3>
-        <p>O sistema mostrará o trajeto modular. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>. Nosso mapa mostrará em qual vagão você deve entrar.</p>
+        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto modular. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>. Nosso mapa mostrará em qual vagão você deve entrar.</p>
         <button class="btn-action btn-secondary" onclick="UI.fecharModalAjuda()" style="margin-top: 20px;">Entendi</button>
     </div>
 </div>
@@ -134,7 +134,7 @@
 <div id="acessibilidade-modal" class="modal-overlay" style="display: none;">
     <div class="modal-content" style="border-top: 5px solid #FF3B30;">
         <h2 id="mod-acc-title" style="color: #FF3B30;">Direito à Acessibilidade</h2>
-        <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.</p>
+        <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias directamente na Ouvidoria do Governo de São Paulo.</p>
         <div style="display: flex; flex-direction: column; gap: 10px;">
             <a href="https://fala.sp.gov.br/" target="_blank" class="btn-action" style="background-color: #FF3B30;" id="mod-acc-btn-fala">Registrar Cobrança no FALA.SP</a>
             <button class="btn-action btn-secondary" onclick="UI.fecharModalAcessibilidade()" id="mod-acc-btn-close">Entendi</button>
@@ -223,13 +223,12 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * DATA: 27/02/2026
- * VERSÃO: 4.4.0 (Motor Modular de Baldeações)
+ * VERSÃO: 4.4.1 (Patch UX e Limite GPS)
  * DESENVOLVEDOR: Harry Bour
  * JUSTIFICATIVA: Ferramenta de ativismo para garantir a autonomia de pessoas
  * com deficiência. Chegar mais rápido é benefício secundário.
- * MOTIVO DA VERSÃO: Loop de renderização reescrito para suportar múltiplas
- * baldeações de forma isolada, renderizando instruções e trem animado para
- * cada perna da viagem, com fallback seguro para linhas não mapeadas.
+ * MOTIVO DA VERSÃO: Aviso interativo para campos vazios e limitação do raio
+ * de alcance do GPS para 8km para evitar falsos positivos distantes.
  * ============================================================================
  */
 
@@ -550,7 +549,12 @@ const UI = {
         const pref = document.getElementById('preferencia').value; const box = document.getElementById('resultado-box');
         const t = AppData.dicionario[AppData.currentLang];
 
-        if (estOr == "0" || estDest == "0") return;
+        // CORREÇÃO UX 2: Impede o cálculo vazio e mostra aviso visual ao usuário
+        if (estOr == "0" || estDest == "0") { 
+            box.innerHTML = `<div class="alert-warning" style="text-align:center; color:#FFC107; border-color:rgba(255, 193, 7, 0.3); border: 1px solid;">⚠️ Por favor, escolha a estação de <b>Origem</b> e de <b>Destino</b> para calcular a rota.</div>`; 
+            box.style.display = 'block'; 
+            return; 
+        }
         
         try {
             let freqs = JSON.parse(localStorage.getItem('pc_freq_origem')) || {};
@@ -567,12 +571,10 @@ const UI = {
         let htmlFinal = "";
         let ativouFaltaAcessibilidade = false;
 
-        // NOVO: Aviso de Coerência de Roteiro para Baldeações Múltiplas
         if (caminho.length > 1) {
             htmlFinal += `<div class="alert-warning alert-info">ℹ️ <b>${t.avisoRota || 'Atenção:'}</b><br>${t.avisoRotaTexto || 'Esta rota foca em acessibilidade e nas portas corretas. Pode não ser o trajeto mais rápido.'}</div>`;
         }
         
-        // NOVO: Loop Modular. Todo trecho é tratado como uma viagem com Embarque e Desembarque
         for (let i = 0; i < caminho.length; i++) {
             let lAtual = caminho[i]; 
             let isFirst = (i === 0); 
@@ -594,7 +596,6 @@ const UI = {
                 sentidoCalculado = Router.calcularSentido(idEmb, idDes);
                 let nodeDes = AppData.estacoes[idDes];
                 
-                // Só tenta calcular porta se a estação ALVO deste trecho estiver mapeada
                 if (nodeDes && nodeDes.mapeada) {
                     if (parseInt(idDes) === 313 && !isLast && caminho[i+1] === 1) {
                         let isL1Last = (i + 1 === caminho.length - 1);
@@ -610,7 +611,6 @@ const UI = {
 
             if (portaRaw === "Inexistente") ativouFaltaAcessibilidade = true;
 
-            // --- BLOCO 1: INSTRUÇÃO DE EMBARQUE (Para TODOS os trechos) ---
             htmlFinal += `<div class="info-text">${t.embTrecho.replace('{est}', `<b>${estNomeEmbarque}</b>`)}</div>`;
             
             if (portaRaw === "Inexistente") {
@@ -623,7 +623,6 @@ const UI = {
                 htmlFinal += `<div class="alert-warning alert-pendente" style="margin-top:8px;">⏳ ${t.pendente}</div>`;
             }
 
-            // --- BLOCO 2: INSTRUÇÃO DE DESEMBARQUE/TRANSFERÊNCIA (Para TODOS os trechos) ---
             if (!isLast) {
                 let proxLinhaNome = t['l'+caminho[i+1]] || `Linha ${caminho[i+1]}`;
                 htmlFinal += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed #333; padding-top: 10px;">${t.transfTrecho.replace('{est}', `<b>${estNomeDesembarque}</b>`).replace('{linha}', `<b>${proxLinhaNome}</b>`)}</div>`;
@@ -682,6 +681,9 @@ const GeoLocation = {
                 
                 let closest = null;
                 let minDist = Infinity;
+                
+                // CORREÇÃO UX 1: Limite máximo do radar do GPS (Em Quilômetros)
+                let RAIO_MAXIMO_KM = 8; 
 
                 for (let id in AppData.estacoes) {
                     let st = AppData.estacoes[id];
@@ -694,7 +696,7 @@ const GeoLocation = {
                     }
                 }
 
-                if (closest) {
+                if (closest && minDist <= RAIO_MAXIMO_KM) {
                     document.getElementById('linha-origem').value = closest.linha;
                     UI.atualizarEstacoes('origem');
                     document.getElementById('estacao-origem').value = closest.id;
