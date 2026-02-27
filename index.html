@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PORTA CERTA SP</title>
+
     <style>
         /* Regra de Ouro: Impede que botões e caixas vazem a largura da tela */
         * { box-sizing: border-box; }
 
+        /* Variáveis de Cores Oficiais das Linhas */
         :root {
             --l1: #00539B; --l2: #008061; --l3: #EE3E34; --l4: #F0D200; --l5: #A52182;
             --l7: #A0184B; --l8: #9E9E93; --l9: #00A88E; --l10: #007C8F; --l11: #F04D22;
@@ -16,10 +18,11 @@
             --text-muted: #CCCCCC; --border-color: #444444; --btn-color: #EE3E34;
         }
         
+        /* Estrutura Base */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; display: flex; justify-content: center; transition: all 0.3s ease; direction: ltr; }
         .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; max-width: 420px; width: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.8); border-top: 6px solid var(--text-muted); border: 1px solid var(--border-color); }
         
-        /* Modais Overlay */
+        /* Modais de Aviso e Overlay */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #1A1A1A; border: 1px solid var(--border-color); border-top: 5px solid var(--btn-color); padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-height: 85vh; overflow-y: auto; }
         .modal-content h2 { margin-top: 0; font-size: 1.4rem; color: #FFF; line-height: 1.2;}
@@ -29,13 +32,13 @@
         .checkbox-container input { width: 22px; height: 22px; accent-color: var(--btn-color); cursor: pointer; }
         .checkbox-container span { font-weight: bold; color: #FFF; font-size: 1.05rem; }
 
-        /* Estrutura Superior */
+        /* Estrutura Superior (Cabeçalho) */
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .header-actions { display: flex; gap: 8px; }
         .action-btn { font-size: 1.2rem; font-weight: bold; color: var(--text-main); background: #333; border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 10px; cursor: pointer; user-select: none; }
         h1 { font-size: 1.8rem; margin: 0; color: var(--text-main); line-height: 1.2; letter-spacing: -0.5px; }
         
-        /* Grupos de Seleção */
+        /* Formulários e Seletores */
         .selection-group { background-color: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px; }
         .selection-title { font-size: 1.05rem; font-weight: bold; color: #FFF; margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
         .selection-title.origem { border-color: #4CAF50; }
@@ -43,19 +46,17 @@
         label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
         select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 2px solid var(--border-color); background-color: #000000; color: var(--text-main); font-size: 1rem; appearance: none; cursor: pointer; }
         select:last-child { margin-bottom: 0; }
-        select:focus { outline: none; border-color: #888; }
         select:disabled { opacity: 0.5; cursor: not-allowed; color: #666; }
         
-        /* Botões Base e GPS */
+        /* Botões de Ação */
         .btn-action { display: block; width: 100%; padding: 16px; margin-top: 10px; margin-bottom: 10px; background-color: var(--btn-color); color: #FFF; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s; text-decoration: none; text-align: center; }
         .btn-action:hover { background-color: #c92f27; }
         .btn-action:disabled { background-color: #555; color: #888; cursor: not-allowed; }
         .btn-secondary { background-color: #333; margin-top: 0; border: 1px solid #555; }
-        .btn-secondary:hover { background-color: #444; }
         .btn-gps { background: #333; color: #4CAF50; border: 1px solid #4CAF50; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
         .btn-gps:hover { background: #4CAF50; color: #000; }
 
-        /* Resultado e Rota */
+        /* Resultado de Rota */
         .result-box { background-color: #0A0A0A; border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
         .route-step { border-left: 4px solid var(--border-color); padding-left: 15px; margin-bottom: 25px; position: relative; }
         .route-step:last-child { margin-bottom: 0; }
@@ -65,7 +66,7 @@
         .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); }
         .alert-warning { font-size: 0.95rem; color: #FFC107; margin-top: 10px; padding: 12px; background-color: rgba(255, 193, 7, 0.1); border-radius: 6px; border: 1px solid rgba(255, 193, 7, 0.3); }
 
-        /* ====== ANIMAÇÃO DO TREM 4.0.0 ====== */
+        /* Animação do Trem (Interface Dinâmica) */
         .t-container { width: 100%; height: 85px; background-color: #050505; border: 1px solid #333; border-radius: 8px; overflow: hidden; position: relative; margin-top: 10px; margin-bottom: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
         .t-track { position: absolute; height: 2px; width: 100%; bottom: 15px; background: #444; z-index: 0; }
         .t-wrapper { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: center; gap: 6px; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; padding: 0 10px; }
@@ -78,29 +79,21 @@
         .t-door.target::before { content: '▼'; position: absolute; top: -22px; left: -3px; color: #4CAF50; font-size: 14px; animation: bounce 1s infinite; text-shadow: 0 0 5px #000; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-        /* Rodapé de Idiomas */
+        /* Rodapé e Textos Extras */
         .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .lang-footer-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
         .lang-flag { font-size: 1.8rem; cursor: pointer; user-select: none; opacity: 0.4; filter: grayscale(50%); transition: all 0.3s ease; }
         .lang-flag.active { opacity: 1; filter: grayscale(0%); transform: scale(1.15); }
         .slogan { font-style: italic; margin-bottom: 8px; color: var(--text-main); font-size: 0.85rem;}
         .signature { font-weight: bold; color: var(--text-muted); letter-spacing: 0.5px; font-size: 0.85rem;}
-
-        /* Suporte a RTL (Árabe) */
-        body[dir="rtl"] .selection-title { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 8px; }
-        body[dir="rtl"] .route-step { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 15px; }
-        body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
-        
-        /* Estilos da Lista de Mapeadas e Ajuda */
         .mapped-list { list-style: none; padding: 0; margin: 0; }
         .mapped-list li { padding: 8px 0; border-bottom: 1px solid #333; color: #FFF; font-size: 0.95rem; }
         .mapped-list li::before { content: '✔️'; margin-right: 8px; }
         .help-text h3 { color: #FFF; font-size: 1.1rem; margin-top: 15px; margin-bottom: 5px; }
         .help-text p { font-size: 0.95rem; color: #CCC; margin-top: 0; margin-bottom: 10px; line-height: 1.4; }
         .help-text ul { padding-left: 20px; margin-top: 0; color: #CCC; font-size: 0.95rem; line-height: 1.4; }
-        .help-text li { margin-bottom: 8px; }
-
-        /* Acessibilidade Visual Ativada */
+        
+        /* Classe Especial de Acessibilidade Visual Ativada */
         body.large-font h1 { font-size: 2.2rem; }
         body.large-font .selection-title { font-size: 1.2rem; }
         body.large-font label { font-size: 1.1rem; }
@@ -112,19 +105,6 @@
     </style>
 </head>
 <body>
-
-<script>
-/**
- * ============================================================================
- * PROJETO: PORTA CERTA SP
- * AUTOR: Harry Bour
- * VERSÃO: 4.1.0 (Data: 23/02/2026)
- * JUSTIFICATIVA: Ferramenta de ativismo para garantir a autonomia de pessoas
- * com deficiência. Chegar mais rápido é benefício secundário.
- * UPDATE: Motor de Geolocalização + Link MS Forms.
- * ============================================================================
- */
-</script>
 
 <div id="aviso-modal" class="modal-overlay">
     <div class="modal-content">
@@ -142,25 +122,12 @@
     <div class="modal-content help-text">
         <h2 style="color: var(--l3); margin-bottom: 10px;">Como usar o Porta Certa SP</h2>
         <p>O aplicativo calcula em qual porta do trem você deve entrar para sair exatamente de frente para a escada ou elevador que você precisa no destino.</p>
-        
         <h3>1. O que você precisa?</h3>
-        <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
-
+        <p>No topo da tela, escolha a sua preferência para a saída no destino final.</p>
         <h3>2. Origem e Destino</h3>
-        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em>Nota: Estações "(Em breve)" estão bloqueadas porque ainda não foram mapeadas.</em></p>
-
+        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS.</p>
         <h3>3. Calcule a rota</h3>
-        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
-        <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
-
-        <h3>Recursos importantes:</h3>
-        <ul>
-            <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
-            <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
-            <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho para a Ouvidoria do Estado. Cobre seus direitos.</li>
-            <li><strong>Ajude a mapear:</strong> Descobriu a porta exata de uma estação nova? Vá até o final da página e clique em "Contribuir com o Mapa" para nos enviar a informação.</li>
-        </ul>
-
+        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>. Nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
         <button class="btn-action btn-secondary" onclick="UI.fecharModalAjuda()" style="margin-top: 20px;">Entendi</button>
     </div>
 </div>
@@ -180,7 +147,7 @@
     <div class="modal-content">
         <h2 id="list-title">Estações Mapeadas</h2>
         <p id="list-desc" style="margin-bottom: 10px;">A precisão de portas já funciona nestas estações:</p>
-        <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 250px; overflow-y: auto;">
             <h3 style="color: var(--l3); margin-top: 0; font-size: 1.1rem;">■ Linha 3 - Vermelha</h3>
             <ul class="mapped-list" id="ul-mapeadas"></ul>
         </div>
@@ -255,7 +222,8 @@
 <script>
 /**
  * ==========================================
- * BLOCO 1: BANCO DE DADOS (AppData)
+ * [BLOCO 3] JS: BANCO DE DADOS (AppData)
+ * Objeto central que armazena todas as linhas, estações, coordenadas geográficas e traduções.
  * ==========================================
  */
 const AppData = {
@@ -263,6 +231,7 @@ const AppData = {
     isLargeFont: false,
     linhas: [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13],
     
+    // Matriz de Baldeações
     transferencias: {
         1: { 2: 'Paraíso', 3: 'Sé', 4: 'Luz', 5: 'Santa Cruz', 10: 'Luz', 11: 'Luz' },
         2: { 1: 'Paraíso', 4: 'Consolação', 5: 'Chácara Klabin', 10: 'Tamanduateí', 15: 'Vila Prudente' },
@@ -279,39 +248,236 @@ const AppData = {
         15: { 2: 'Vila Prudente' }
     },
 
+    // Tradutor de Adesivo para Vagão/Porta
     mapaPortas: {
         "BF": { "18": "Vagão 1, Porta 1", "17": "Vagão 1, Porta 2", "16": "Vagão 1, Porta 3", "15": "Vagão 1, Porta 4", "28": "Vagão 2, Porta 1", "27": "Vagão 2, Porta 2", "26": "Vagão 2, Porta 3", "25": "Vagão 2, Porta 4", "38": "Vagão 3, Porta 1", "37": "Vagão 3, Porta 2", "36": "Vagão 3, Porta 3", "35": "Vagão 3, Porta 4", "48": "Vagão 4, Porta 1", "47": "Vagão 4, Porta 2", "46": "Vagão 4, Porta 3", "45": "Vagão 4, Porta 4", "58": "Vagão 5, Porta 1", "57": "Vagão 5, Porta 2", "56": "Vagão 5, Porta 3", "55": "Vagão 5, Porta 4", "68": "Vagão 6, Porta 1", "67": "Vagão 6, Porta 2", "66": "Vagão 6, Porta 3", "65": "Vagão 6, Porta 4" },
         "IT": { "11": "Vagão 6, Porta 4", "12": "Vagão 6, Porta 3", "13": "Vagão 6, Porta 2", "14": "Vagão 6, Porta 1", "21": "Vagão 5, Porta 4", "22": "Vagão 5, Porta 3", "23": "Vagão 5, Porta 2", "24": "Vagão 5, Porta 1", "31": "Vagão 4, Porta 4", "32": "Vagão 4, Porta 3", "33": "Vagão 4, Porta 2", "34": "Vagão 4, Porta 1", "41": "Vagão 3, Porta 4", "42": "Vagão 3, Porta 3", "43": "Vagão 3, Porta 2", "44": "Vagão 3, Porta 1", "51": "Vagão 2, Porta 4", "52": "Vagão 2, Porta 3", "53": "Vagão 2, Porta 2", "54": "Vagão 2, Porta 1", "61": "Vagão 1, Porta 4", "62": "Vagão 1, Porta 3", "63": "Vagão 1, Porta 2", "64": "Vagão 1, Porta 1" }
     },
 
+    // Cadastro completo de Estações (Nomes, Lat/Lng e Mapeamentos)
     estacoes: {
-        301: { linha: 3, mapeada: true, nome: "Corinthians-Itaquera", elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
-        302: { linha: 3, mapeada: true, nome: "Artur Alvim", elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
-        303: { linha: 3, mapeada: true, nome: "Patriarca", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
-        304: { linha: 3, mapeada: true, nome: "Guilhermina-Esperança", elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
-        305: { linha: 3, mapeada: true, nome: "Vila Matilde", elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 25", fixaIT: "Porta 24" },
-        306: { linha: 3, mapeada: true, nome: "Penha", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 47", fixaIT: "Porta 42" },
-        307: { linha: 3, mapeada: true, nome: "Carrão", elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
-        308: { linha: 3, mapeada: true, nome: "Tatuapé", elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
-        309: { linha: 3, mapeada: true, nome: "Belém", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
-        310: { linha: 3, mapeada: true, nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
-        311: { linha: 3, mapeada: true, nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
-        312: { linha: 3, mapeada: true, nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
-        
-        /* TESTE GPS - COORDENADAS ATIVAS NESTAS ESTAÇÕES */
-        313: { linha: 3, mapeada: true, nome: "Sé", lat: -23.5504, lng: -46.6334, elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
-        314: { linha: 3, mapeada: true, nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
-        315: { linha: 3, mapeada: true, nome: "República", lat: -23.5430, lng: -46.6425, elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
-        316: { linha: 3, mapeada: true, nome: "Santa Cecília", lat: -23.5384, lng: -46.6488, elevadorBF: "Porta 45", elevadorIT: "Pendente", rolanteBF: "Inexistente", rolanteIT: "Inexistente", fixaBF: "Porta 33", fixaIT: "Pendente" },
-        
-        317: { linha: 3, mapeada: true, nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
-        318: { linha: 3, mapeada: true, nome: "Palmeiras-Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
-        
-        101: { linha: 1, mapeada: false, nome: "Tucuruvi" }, 102: { linha: 1, mapeada: false, nome: "Parada Inglesa" }, 103: { linha: 1, mapeada: false, nome: "Jardim São Paulo" }, 104: { linha: 1, mapeada: false, nome: "Santana" }, 105: { linha: 1, mapeada: false, nome: "Carandiru" }, 106: { linha: 1, mapeada: false, nome: "Portuguesa-Tietê" }, 107: { linha: 1, mapeada: false, nome: "Armênia" }, 108: { linha: 1, mapeada: false, nome: "Tiradentes" }, 109: { linha: 1, mapeada: false, nome: "Luz" }, 110: { linha: 1, mapeada: false, nome: "São Bento" }, 111: { linha: 1, mapeada: false, nome: "Sé" }, 112: { linha: 1, mapeada: false, nome: "Japão-Liberdade" }, 113: { linha: 1, mapeada: false, nome: "São Joaquim" }, 114: { linha: 1, mapeada: false, nome: "Vergueiro" }, 115: { linha: 1, mapeada: false, nome: "Paraíso" }, 116: { linha: 1, mapeada: false, nome: "Ana Rosa" }, 117: { linha: 1, mapeada: false, nome: "Vila Mariana" }, 118: { linha: 1, mapeada: false, nome: "Santa Cruz" }, 119: { linha: 1, mapeada: false, nome: "Praça da Árvore" }, 120: { linha: 1, mapeada: false, nome: "Saúde" }, 121: { linha: 1, mapeada: false, nome: "São Judas" }, 122: { linha: 1, mapeada: false, nome: "Conceição" }, 123: { linha: 1, mapeada: false, nome: "Jabaquara" },
-        201: { linha: 2, mapeada: false, nome: "Vila Madalena" }, 202: { linha: 2, mapeada: false, nome: "Santuário Sumaré" }, 203: { linha: 2, mapeada: false, nome: "Clínicas" }, 204: { linha: 2, mapeada: false, nome: "Consolação" }, 205: { linha: 2, mapeada: false, nome: "Trianon-Masp" }, 206: { linha: 2, mapeada: false, nome: "Brigadeiro" }, 207: { linha: 2, mapeada: false, nome: "Paraíso" }, 208: { linha: 2, mapeada: false, nome: "Ana Rosa" }, 209: { linha: 2, mapeada: false, nome: "Chácara Klabin" }, 210: { linha: 2, mapeada: false, nome: "Santos-Imigrantes" }, 211: { linha: 2, mapeada: false, nome: "Alto do Ipiranga" }, 212: { linha: 2, mapeada: false, nome: "Sacomã" }, 213: { linha: 2, mapeada: false, nome: "Tamanduateí" }, 214: { linha: 2, mapeada: false, nome: "Vila Prudente" },
-        401: { linha: 4, mapeada: false, nome: "Luz" }, 402: { linha: 4, mapeada: false, nome: "República" }, 403: { linha: 4, mapeada: false, nome: "Higienópolis" }, 404: { linha: 4, mapeada: false, nome: "Paulista" }, 405: { linha: 4, mapeada: false, nome: "Oscar Freire" }, 406: { linha: 4, mapeada: false, nome: "Fradique Coutinho" }, 407: { linha: 4, mapeada: false, nome: "Faria Lima" }, 408: { linha: 4, mapeada: false, nome: "Pinheiros" }, 409: { linha: 4, mapeada: false, nome: "Butantã" }, 410: { linha: 4, mapeada: false, nome: "São Paulo-Morumbi" }, 411: { linha: 4, mapeada: false, nome: "Vila Sônia" }
+        /* ==== LINHA 1 - AZUL ==== */
+        101: { linha: 1, mapeada: false, nome: "Tucuruvi", lat: -23.4804, lng: -46.6038 },
+        102: { linha: 1, mapeada: false, nome: "Parada Inglesa", lat: -23.4877, lng: -46.6080 },
+        103: { linha: 1, mapeada: false, nome: "Jardim São Paulo", lat: -23.4922, lng: -46.6166 },
+        104: { linha: 1, mapeada: false, nome: "Santana", lat: -23.5026, lng: -46.6250 },
+        105: { linha: 1, mapeada: false, nome: "Carandiru", lat: -23.5096, lng: -46.6249 },
+        106: { linha: 1, mapeada: false, nome: "Portuguesa-Tietê", lat: -23.5165, lng: -46.6251 },
+        107: { linha: 1, mapeada: false, nome: "Armênia", lat: -23.5254, lng: -46.6261 },
+        108: { linha: 1, mapeada: false, nome: "Tiradentes", lat: -23.5312, lng: -46.6315 },
+        109: { linha: 1, mapeada: false, nome: "Luz", lat: -23.5385, lng: -46.6360 },
+        110: { linha: 1, mapeada: false, nome: "São Bento", lat: -23.5434, lng: -46.6333 },
+        111: { linha: 1, mapeada: false, nome: "Sé", lat: -23.5492, lng: -46.6334 },
+        112: { linha: 1, mapeada: false, nome: "Japão-Liberdade", lat: -23.5555, lng: -46.6359 },
+        113: { linha: 1, mapeada: false, nome: "São Joaquim", lat: -23.5618, lng: -46.6388 },
+        114: { linha: 1, mapeada: false, nome: "Vergueiro", lat: -23.5689, lng: -46.6397 },
+        115: { linha: 1, mapeada: false, nome: "Paraíso", lat: -23.5759, lng: -46.6414 },
+        116: { linha: 1, mapeada: false, nome: "Ana Rosa", lat: -23.5813, lng: -46.6383 },
+        117: { linha: 1, mapeada: false, nome: "Vila Mariana", lat: -23.5894, lng: -46.6346 },
+        118: { linha: 1, mapeada: false, nome: "Santa Cruz", lat: -23.5989, lng: -46.6366 },
+        119: { linha: 1, mapeada: false, nome: "Praça da Árvore", lat: -23.6106, lng: -46.6378 },
+        120: { linha: 1, mapeada: false, nome: "Saúde", lat: -23.6172, lng: -46.6343 },
+        121: { linha: 1, mapeada: false, nome: "São Judas", lat: -23.6253, lng: -46.6394 },
+        122: { linha: 1, mapeada: false, nome: "Conceição", lat: -23.6362, lng: -46.6411 },
+        123: { linha: 1, mapeada: false, nome: "Jabaquara", lat: -23.6470, lng: -46.6395 },
+
+        /* ==== LINHA 2 - VERDE ==== */
+        201: { linha: 2, mapeada: false, nome: "Vila Madalena", lat: -23.5445, lng: -46.6900 },
+        202: { linha: 2, mapeada: false, nome: "Santuário Sumaré", lat: -23.5513, lng: -46.6778 },
+        203: { linha: 2, mapeada: false, nome: "Clínicas", lat: -23.5553, lng: -46.6718 },
+        204: { linha: 2, mapeada: false, nome: "Consolação", lat: -23.5580, lng: -46.6601 },
+        205: { linha: 2, mapeada: false, nome: "Trianon-Masp", lat: -23.5630, lng: -46.6540 },
+        206: { linha: 2, mapeada: false, nome: "Brigadeiro", lat: -23.5687, lng: -46.6465 },
+        207: { linha: 2, mapeada: false, nome: "Paraíso", lat: -23.5759, lng: -46.6414 },
+        208: { linha: 2, mapeada: false, nome: "Ana Rosa", lat: -23.5813, lng: -46.6383 },
+        209: { linha: 2, mapeada: false, nome: "Chácara Klabin", lat: -23.5927, lng: -46.6293 },
+        210: { linha: 2, mapeada: false, nome: "Santos-Imigrantes", lat: -23.5955, lng: -46.6200 },
+        211: { linha: 2, mapeada: false, nome: "Alto do Ipiranga", lat: -23.6025, lng: -46.6125 },
+        212: { linha: 2, mapeada: false, nome: "Sacomã", lat: -23.6021, lng: -46.5927 },
+        213: { linha: 2, mapeada: false, nome: "Tamanduateí", lat: -23.5929, lng: -46.5895 },
+        214: { linha: 2, mapeada: false, nome: "Vila Prudente", lat: -23.5816, lng: -46.5817 },
+
+        /* ==== LINHA 3 - VERMELHA (Com dados reais mapeados) ==== */
+        301: { linha: 3, mapeada: true, nome: "Corinthians-Itaquera", lat: -23.5424, lng: -46.4735, elevadorBF: "Porta 11", elevadorIT: "-", rolanteBF: "Porta 21", rolanteIT: "-", fixaBF: "Porta 31", fixaIT: "-" },
+        302: { linha: 3, mapeada: true, nome: "Artur Alvim", lat: -23.5404, lng: -46.4845, elevadorBF: "Porta 65", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 43", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        303: { linha: 3, mapeada: true, nome: "Patriarca", lat: -23.5311, lng: -46.5015, elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        304: { linha: 3, mapeada: true, nome: "Guilhermina-Esperança", lat: -23.5293, lng: -46.5168, elevadorBF: "Porta 17", elevadorIT: "Porta 12", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        305: { linha: 3, mapeada: true, nome: "Vila Matilde", lat: -23.5317, lng: -46.5309, elevadorBF: "Porta 66", elevadorIT: "Porta 64", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 25", fixaIT: "Porta 24" },
+        306: { linha: 3, mapeada: true, nome: "Penha", lat: -23.5332, lng: -46.5398, elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 47", fixaIT: "Porta 42" },
+        307: { linha: 3, mapeada: true, nome: "Carrão", lat: -23.5350, lng: -46.5641, elevadorBF: "Porta 18", elevadorIT: "Porta 11", rolanteBF: "Porta 36", rolanteIT: "Porta 33", fixaBF: "Porta 58", fixaIT: "Porta 51" },
+        308: { linha: 3, mapeada: true, nome: "Tatuapé", lat: -23.5398, lng: -46.5768, elevadorBF: "Porta 66", elevadorIT: "Porta 63", rolanteBF: "Porta 35", rolanteIT: "Porta 34", fixaBF: "Porta 45", fixaIT: "Porta 44" },
+        309: { linha: 3, mapeada: true, nome: "Belém", lat: -23.5431, lng: -46.5898, elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        310: { linha: 3, mapeada: true, nome: "Bresser-Mooca", lat: -23.5463, lng: -46.6067, elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
+        311: { linha: 3, mapeada: true, nome: "Brás", lat: -23.5471, lng: -46.6164, elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
+        312: { linha: 3, mapeada: true, nome: "Pedro II", lat: -23.5498, lng: -46.6258, elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
+        313: { linha: 3, mapeada: true, nome: "Sé", lat: -23.5492, lng: -46.6334, elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
+        314: { linha: 3, mapeada: true, nome: "Anhangabaú", lat: -23.5478, lng: -46.6385, elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
+        315: { linha: 3, mapeada: true, nome: "República", lat: -23.5439, lng: -46.6425, elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
+        316: { linha: 3, mapeada: true, nome: "Santa Cecília", lat: -23.5384, lng: -46.6492, elevadorBF: "Porta 45", elevadorIT: "Pendente", rolanteBF: "Inexistente", rolanteIT: "Inexistente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        317: { linha: 3, mapeada: true, nome: "Marechal Deodoro", lat: -23.5328, lng: -46.6558, elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
+        318: { linha: 3, mapeada: true, nome: "Palmeiras-Barra Funda", lat: -23.5256, lng: -46.6640, elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
+
+        /* ==== LINHA 4 - AMARELA ==== */
+        401: { linha: 4, mapeada: false, nome: "Luz", lat: -23.5385, lng: -46.6360 },
+        402: { linha: 4, mapeada: false, nome: "República", lat: -23.5439, lng: -46.6425 },
+        403: { linha: 4, mapeada: false, nome: "Higienópolis-Mackenzie", lat: -23.5486, lng: -46.6521 },
+        404: { linha: 4, mapeada: false, nome: "Paulista", lat: -23.5551, lng: -46.6613 },
+        405: { linha: 4, mapeada: false, nome: "Oscar Freire", lat: -23.5606, lng: -46.6719 },
+        406: { linha: 4, mapeada: false, nome: "Fradique Coutinho", lat: -23.5661, lng: -46.6841 },
+        407: { linha: 4, mapeada: false, nome: "Faria Lima", lat: -23.5674, lng: -46.6934 },
+        408: { linha: 4, mapeada: false, nome: "Pinheiros", lat: -23.5665, lng: -46.7029 },
+        409: { linha: 4, mapeada: false, nome: "Butantã", lat: -23.5714, lng: -46.7083 },
+        410: { linha: 4, mapeada: false, nome: "São Paulo-Morumbi", lat: -23.5866, lng: -46.7237 },
+        411: { linha: 4, mapeada: false, nome: "Vila Sônia", lat: -23.5938, lng: -46.7360 },
+
+        /* ==== LINHA 5 - LILÁS ==== */
+        501: { linha: 5, mapeada: false, nome: "Capão Redondo", lat: -23.6593, lng: -46.7753 },
+        502: { linha: 5, mapeada: false, nome: "Campo Limpo", lat: -23.6450, lng: -46.7597 },
+        503: { linha: 5, mapeada: false, nome: "Vila das Belezas", lat: -23.6393, lng: -46.7451 },
+        504: { linha: 5, mapeada: false, nome: "Giovanni Gronchi", lat: -23.6406, lng: -46.7352 },
+        505: { linha: 5, mapeada: false, nome: "Santo Amaro", lat: -23.6525, lng: -46.7126 },
+        506: { linha: 5, mapeada: false, nome: "Largo Treze", lat: -23.6543, lng: -46.7075 },
+        507: { linha: 5, mapeada: false, nome: "Adolfo Pinheiro", lat: -23.6500, lng: -46.7042 },
+        508: { linha: 5, mapeada: false, nome: "Alto da Boa Vista", lat: -23.6416, lng: -46.6994 },
+        509: { linha: 5, mapeada: false, nome: "Borba Gato", lat: -23.6334, lng: -46.6936 },
+        510: { linha: 5, mapeada: false, nome: "Brooklin", lat: -23.6263, lng: -46.6882 },
+        511: { linha: 5, mapeada: false, nome: "Campo Belo", lat: -23.6214, lng: -46.6800 },
+        512: { linha: 5, mapeada: false, nome: "Eucaliptos", lat: -23.6111, lng: -46.6669 },
+        513: { linha: 5, mapeada: false, nome: "Moema", lat: -23.6041, lng: -46.6601 },
+        514: { linha: 5, mapeada: false, nome: "AACD-Servidor", lat: -23.5978, lng: -46.6523 },
+        515: { linha: 5, mapeada: false, nome: "Hospital São Paulo", lat: -23.5956, lng: -46.6441 },
+        516: { linha: 5, mapeada: false, nome: "Santa Cruz", lat: -23.5989, lng: -46.6366 },
+        517: { linha: 5, mapeada: false, nome: "Chácara Klabin", lat: -23.5927, lng: -46.6293 },
+
+        /* ==== LINHA 7 - RUBI ==== */
+        701: { linha: 7, mapeada: false, nome: "Luz", lat: -23.5385, lng: -46.6360 },
+        702: { linha: 7, mapeada: false, nome: "Palmeiras-Barra Funda", lat: -23.5256, lng: -46.6640 },
+        703: { linha: 7, mapeada: false, nome: "Água Branca", lat: -23.5205, lng: -46.6836 },
+        704: { linha: 7, mapeada: false, nome: "Lapa", lat: -23.5186, lng: -46.7011 },
+        705: { linha: 7, mapeada: false, nome: "Piqueri", lat: -23.5042, lng: -46.7198 },
+        706: { linha: 7, mapeada: false, nome: "Pirituba", lat: -23.4842, lng: -46.7194 },
+        707: { linha: 7, mapeada: false, nome: "Vila Clarice", lat: -23.4549, lng: -46.7397 },
+        708: { linha: 7, mapeada: false, nome: "Jaraguá", lat: -23.4414, lng: -46.7386 },
+        709: { linha: 7, mapeada: false, nome: "Vila Aurora", lat: -23.4182, lng: -46.7410 },
+        710: { linha: 7, mapeada: false, nome: "Perus", lat: -23.3871, lng: -46.7483 },
+        711: { linha: 7, mapeada: false, nome: "Caieiras", lat: -23.3619, lng: -46.7402 },
+        712: { linha: 7, mapeada: false, nome: "Franco da Rocha", lat: -23.3263, lng: -46.7277 },
+        713: { linha: 7, mapeada: false, nome: "Baltazar Fidélis", lat: -23.3089, lng: -46.7246 },
+        714: { linha: 7, mapeada: false, nome: "Francisco Morato", lat: -23.2825, lng: -46.7431 },
+
+        /* ==== LINHA 8 - DIAMANTE ==== */
+        801: { linha: 8, mapeada: false, nome: "Júlio Prestes", lat: -23.5358, lng: -46.6385 },
+        802: { linha: 8, mapeada: false, nome: "Palmeiras-Barra Funda", lat: -23.5256, lng: -46.6640 },
+        803: { linha: 8, mapeada: false, nome: "Lapa", lat: -23.5215, lng: -46.7040 },
+        804: { linha: 8, mapeada: false, nome: "Domingos de Moraes", lat: -23.5234, lng: -46.7191 },
+        805: { linha: 8, mapeada: false, nome: "Imperatriz Leopoldina", lat: -23.5265, lng: -46.7323 },
+        806: { linha: 8, mapeada: false, nome: "Presidente Altino", lat: -23.5273, lng: -46.7588 },
+        807: { linha: 8, mapeada: false, nome: "Osasco", lat: -23.5264, lng: -46.7744 },
+        808: { linha: 8, mapeada: false, nome: "Comandante Sampaio", lat: -23.5222, lng: -46.7905 },
+        809: { linha: 8, mapeada: false, nome: "Quitaúna", lat: -23.5240, lng: -46.8068 },
+        810: { linha: 8, mapeada: false, nome: "General Miguel Costa", lat: -23.5255, lng: -46.8189 },
+        811: { linha: 8, mapeada: false, nome: "Carapicuíba", lat: -23.5229, lng: -46.8354 },
+        812: { linha: 8, mapeada: false, nome: "Santa Terezinha", lat: -23.5240, lng: -46.8480 },
+        813: { linha: 8, mapeada: false, nome: "Antonio João", lat: -23.5181, lng: -46.8585 },
+        814: { linha: 8, mapeada: false, nome: "Barueri", lat: -23.5097, lng: -46.8741 },
+        815: { linha: 8, mapeada: false, nome: "Jardim Belval", lat: -23.5085, lng: -46.8858 },
+        816: { linha: 8, mapeada: false, nome: "Jardim Silveira", lat: -23.5152, lng: -46.8978 },
+        817: { linha: 8, mapeada: false, nome: "Jandira", lat: -23.5263, lng: -46.9036 },
+        818: { linha: 8, mapeada: false, nome: "Sagrado Coração", lat: -23.5359, lng: -46.9189 },
+        819: { linha: 8, mapeada: false, nome: "Engenheiro Cardoso", lat: -23.5372, lng: -46.9329 },
+        820: { linha: 8, mapeada: false, nome: "Itapevi", lat: -23.5451, lng: -46.9333 },
+
+        /* ==== LINHA 9 - ESMERALDA ==== */
+        901: { linha: 9, mapeada: false, nome: "Osasco", lat: -23.5264, lng: -46.7744 },
+        902: { linha: 9, mapeada: false, nome: "Presidente Altino", lat: -23.5273, lng: -46.7588 },
+        903: { linha: 9, mapeada: false, nome: "Ceasa", lat: -23.5323, lng: -46.7419 },
+        904: { linha: 9, mapeada: false, nome: "Villa Lobos-Jaguaré", lat: -23.5411, lng: -46.7248 },
+        905: { linha: 9, mapeada: false, nome: "Cidade Universitária", lat: -23.5558, lng: -46.7056 },
+        906: { linha: 9, mapeada: false, nome: "Pinheiros", lat: -23.5665, lng: -46.7029 },
+        907: { linha: 9, mapeada: false, nome: "Hebraica-Rebouças", lat: -23.5824, lng: -46.6896 },
+        908: { linha: 9, mapeada: false, nome: "Cidade Jardim", lat: -23.5898, lng: -46.6833 },
+        909: { linha: 9, mapeada: false, nome: "Vila Olímpia", lat: -23.5950, lng: -46.6917 },
+        910: { linha: 9, mapeada: false, nome: "Berrini", lat: -23.6062, lng: -46.6953 },
+        911: { linha: 9, mapeada: false, nome: "Morumbi", lat: -23.6219, lng: -46.7001 },
+        912: { linha: 9, mapeada: false, nome: "Granja Julieta", lat: -23.6338, lng: -46.7121 },
+        913: { linha: 9, mapeada: false, nome: "João Dias", lat: -23.6429, lng: -46.7188 },
+        914: { linha: 9, mapeada: false, nome: "Santo Amaro", lat: -23.6525, lng: -46.7126 },
+        915: { linha: 9, mapeada: false, nome: "Socorro", lat: -23.6698, lng: -46.7088 },
+        916: { linha: 9, mapeada: false, nome: "Jurubatuba", lat: -23.6872, lng: -46.6961 },
+        917: { linha: 9, mapeada: false, nome: "Autódromo", lat: -23.7058, lng: -46.6986 },
+        918: { linha: 9, mapeada: false, nome: "Primavera-Interlagos", lat: -23.7165, lng: -46.6964 },
+        919: { linha: 9, mapeada: false, nome: "Grajaú", lat: -23.7431, lng: -46.6908 },
+        920: { linha: 9, mapeada: false, nome: "Mendes-Vila Natal", lat: -23.7709, lng: -46.6853 },
+        921: { linha: 9, mapeada: false, nome: "Varginha", lat: -23.7915, lng: -46.6800 },
+
+        /* ==== LINHA 10 - TURQUESA ==== */
+        1001: { linha: 10, mapeada: false, nome: "Luz", lat: -23.5385, lng: -46.6360 },
+        1002: { linha: 10, mapeada: false, nome: "Brás", lat: -23.5471, lng: -46.6164 },
+        1003: { linha: 10, mapeada: false, nome: "Juventus-Mooca", lat: -23.5574, lng: -46.5986 },
+        1004: { linha: 10, mapeada: false, nome: "Ipiranga", lat: -23.5826, lng: -46.5912 },
+        1005: { linha: 10, mapeada: false, nome: "Tamanduateí", lat: -23.5929, lng: -46.5895 },
+        1006: { linha: 10, mapeada: false, nome: "São Caetano do Sul", lat: -23.6125, lng: -46.5701 },
+        1007: { linha: 10, mapeada: false, nome: "Utinga", lat: -23.6268, lng: -46.5492 },
+        1008: { linha: 10, mapeada: false, nome: "Prefeito Saladino", lat: -23.6418, lng: -46.5393 },
+        1009: { linha: 10, mapeada: false, nome: "Santo André", lat: -23.6558, lng: -46.5273 },
+        1010: { linha: 10, mapeada: false, nome: "Capuava", lat: -23.6668, lng: -46.4916 },
+        1011: { linha: 10, mapeada: false, nome: "Mauá", lat: -23.6685, lng: -46.4608 },
+        1012: { linha: 10, mapeada: false, nome: "Guapituba", lat: -23.6766, lng: -46.4380 },
+        1013: { linha: 10, mapeada: false, nome: "Ribeirão Pires", lat: -23.7135, lng: -46.4137 },
+        1014: { linha: 10, mapeada: false, nome: "Rio Grande da Serra", lat: -23.7430, lng: -46.3917 },
+
+        /* ==== LINHA 11 - CORAL ==== */
+        1101: { linha: 11, mapeada: false, nome: "Luz", lat: -23.5385, lng: -46.6360 },
+        1102: { linha: 11, mapeada: false, nome: "Brás", lat: -23.5471, lng: -46.6164 },
+        1103: { linha: 11, mapeada: false, nome: "Corinthians-Itaquera", lat: -23.5424, lng: -46.4735 },
+        1104: { linha: 11, mapeada: false, nome: "Dom Bosco", lat: -23.5401, lng: -46.4526 },
+        1105: { linha: 11, mapeada: false, nome: "José Bonifácio", lat: -23.5413, lng: -46.4367 },
+        1106: { linha: 11, mapeada: false, nome: "Guaianases", lat: -23.5441, lng: -46.4177 },
+        1107: { linha: 11, mapeada: false, nome: "Antônio Gianetti Neto", lat: -23.5411, lng: -46.3908 },
+        1108: { linha: 11, mapeada: false, nome: "Ferraz de Vasconcelos", lat: -23.5358, lng: -46.3687 },
+        1109: { linha: 11, mapeada: false, nome: "Poá", lat: -23.5284, lng: -46.3458 },
+        1110: { linha: 11, mapeada: false, nome: "Calmon Viana", lat: -23.5282, lng: -46.3312 },
+        1111: { linha: 11, mapeada: false, nome: "Suzano", lat: -23.5323, lng: -46.3117 },
+        1112: { linha: 11, mapeada: false, nome: "Jundiapeba", lat: -23.5397, lng: -46.2570 },
+        1113: { linha: 11, mapeada: false, nome: "Braz Cubas", lat: -23.5372, lng: -46.2163 },
+        1114: { linha: 11, mapeada: false, nome: "Mogi das Cruzes", lat: -23.5235, lng: -46.1834 },
+        1115: { linha: 11, mapeada: false, nome: "Estudantes", lat: -23.5186, lng: -46.1738 },
+
+        /* ==== LINHA 12 - SAFIRA ==== */
+        1201: { linha: 12, mapeada: false, nome: "Brás", lat: -23.5471, lng: -46.6164 },
+        1202: { linha: 12, mapeada: false, nome: "Tatuapé", lat: -23.5398, lng: -46.5768 },
+        1203: { linha: 12, mapeada: false, nome: "Engenheiro Goulart", lat: -23.5015, lng: -46.5204 },
+        1204: { linha: 12, mapeada: false, nome: "USP Leste", lat: -23.4862, lng: -46.4950 },
+        1205: { linha: 12, mapeada: false, nome: "Comendador Ermelino", lat: -23.4839, lng: -46.4800 },
+        1206: { linha: 12, mapeada: false, nome: "São Miguel Paulista", lat: -23.4938, lng: -46.4474 },
+        1207: { linha: 12, mapeada: false, nome: "Jardim Helena-Vila Mara", lat: -23.4935, lng: -46.4258 },
+        1208: { linha: 12, mapeada: false, nome: "Itaim Paulista", lat: -23.4981, lng: -46.4011 },
+        1209: { linha: 12, mapeada: false, nome: "Jardim Romano", lat: -23.4891, lng: -46.3813 },
+        1210: { linha: 12, mapeada: false, nome: "Eng. Manoel Feio", lat: -23.4832, lng: -46.3533 },
+        1211: { linha: 12, mapeada: false, nome: "Itaquaquecetuba", lat: -23.4866, lng: -46.3406 },
+        1212: { linha: 12, mapeada: false, nome: "Aracaré", lat: -23.5065, lng: -46.3311 },
+        1213: { linha: 12, mapeada: false, nome: "Calmon Viana", lat: -23.5282, lng: -46.3312 },
+
+        /* ==== LINHA 13 - JADE ==== */
+        1301: { linha: 13, mapeada: false, nome: "Engenheiro Goulart", lat: -23.5015, lng: -46.5204 },
+        1302: { linha: 13, mapeada: false, nome: "Guarulhos-CECAP", lat: -23.4475, lng: -46.5161 },
+        1303: { linha: 13, mapeada: false, nome: "Aeroporto-Guarulhos", lat: -23.4326, lng: -46.4988 },
+
+        /* ==== LINHA 15 - PRATA ==== */
+        1501: { linha: 15, mapeada: false, nome: "Vila Prudente", lat: -23.5816, lng: -46.5817 },
+        1502: { linha: 15, mapeada: false, nome: "Oratório", lat: -23.5855, lng: -46.5647 },
+        1503: { linha: 15, mapeada: false, nome: "São Lucas", lat: -23.5898, lng: -46.5518 },
+        1504: { linha: 15, mapeada: false, nome: "Camilo Haddad", lat: -23.5936, lng: -46.5422 },
+        1505: { linha: 15, mapeada: false, nome: "Vila Tolstói", lat: -23.5977, lng: -46.5312 },
+        1506: { linha: 15, mapeada: false, nome: "Vila União", lat: -23.6033, lng: -46.5186 },
+        1507: { linha: 15, mapeada: false, nome: "Jardim Planalto", lat: -23.6083, lng: -46.5050 },
+        1508: { linha: 15, mapeada: false, nome: "Sapopemba", lat: -23.6141, lng: -46.4896 },
+        1509: { linha: 15, mapeada: false, nome: "Fazenda da Juta", lat: -23.6148, lng: -46.4789 },
+        1510: { linha: 15, mapeada: false, nome: "São Mateus", lat: -23.6136, lng: -46.4632 },
+        1511: { linha: 15, mapeada: false, nome: "Jardim Colonial", lat: -23.6105, lng: -46.4485 }
     },
 
+    // Traduções Completas
     dicionario: {
         'pt': { 
             modTitle: 'Aviso: Acessibilidade e Direitos', modText: 'O Porta Certa SP é, antes de tudo, uma ferramenta de ativismo. Nosso principal objetivo é garantir autonomia para pessoas com mobilidade reduzida. Chegar mais rápido é um benefício secundário. Se você está apenas com pressa, tenha empatia: deixe o espaço destas portas para quem realmente precisa e use os vagões das pontas, como o Metrô recomenda. O bom senso e a segurança vêm em primeiro lugar.', modCheck: 'Li e compreendi o propósito do guia', modBtn: 'Acessar o Guia', btnCalc: 'Qual é a Porta Certa?', lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa', titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha', selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', selEstAtivo: 'Agora, escolha a estação', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata', embTrecho: 'Em <b>{est}</b>, embarque na:', transfTrecho: 'Desembarque em <b>{est}</b> e faça transferência para a <b>{linha}</b>.', saidaFinal: 'No destino final (<b>{est}</b>), você sairá de frente para a <b>{tipo}</b>.', tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', pendente: 'A estação selecionada ainda não foi mapeada. Aguarde atualizações futuras.', txtPorta: 'Porta', txtVagao: 'Vagão',
@@ -328,7 +494,7 @@ const AppData = {
             accTitle: 'Derecho a la Accesibilidad', accText: 'La estación seleccionada no cuenta con el equipo de accesibilidad solicitado. Reclama mejoras en la defensoría del pueblo (FALA.SP).', accBtnFala: 'Reclamar en FALA.SP', accBtnClose: 'Cerrar', txtInexistente: 'Equipo no disponible.',
             gpsBtn: '🎯 Cerca de mí', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 ¡Hecho!', gpsErro: '❌ Sin estaciones'
         },
-        'fr': { modTitle: 'Avis : Accessibilité et Droits', modText: 'Le bon sens et la sécurité priment. Laissez l\'espace à ceux qui en ont besoin.', modCheck: 'J\'ai compris l\'objectif du guide', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accText: 'Équipement indisponible.', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible ici.', gpsBtn: '🎯 Près de moi', gpsBusca: '⏳ Recherche...', gpsFeito: '🎯 Fait!', gpsErro: '❌ Aucune station' },
+        'fr': { modTitle: 'Avis : Accessibilité et Droits', modText: 'Le bon sens et la sécurité priment. Laissez l\'espace à ceux qui en ont besoin.', modCheck: 'J\'ai compris l\'objectif du guide', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', typeElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accText: 'Équipement indisponible.', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible ici.', gpsBtn: '🎯 Près de moi', gpsBusca: '⏳ Recherche...', gpsFeito: '🎯 Fait!', gpsErro: '❌ Aucune station' },
         'zh': { modTitle: '提示：无障碍与权利', modText: '常识和安全必须始终放在第一位。请将空间留给需要的人。', modCheck: '我已阅读并理解指南的目的', modBtn: '进入', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '换乘 <b>{linha}</b>。', saidaFinal: '正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accText: '该站缺少无障碍设施。', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。', gpsBtn: '🎯 在我附近', gpsBusca: '⏳ 搜索中...', gpsFeito: '🎯 完成!', gpsErro: '❌ 未找到车站' },
         'ja': { modTitle: 'お知らせ：アクセシビリティと権利', modText: '利用者の安全と常識が常に最優先されます。必要な人のためにスペースを空けてください。', modCheck: 'ガイドの目的を理解しました', modBtn: 'ガイドへ', btnCalc: '正しいドアは？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{linha}</b>に乗換。', saidaFinal: '<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accText: '設備がありません。', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。', gpsBtn: '🎯 近くの駅', gpsBusca: '⏳ 検索中...', gpsFeito: '🎯 完了!', gpsErro: '❌ 駅が見つかりません' },
         'ko': { modTitle: '공지: 접근성 및 권리', modText: '안전에 대한 상식이 항상 최우선입니다. 필요한 사람을 위해 공간을 양보하세요.', modCheck: '가이드의 목적을 이해했습니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{linha}</b> 환승.', saidaFinal: '<b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accText: '장비 없음.', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음' },
@@ -338,7 +504,8 @@ const AppData = {
 
 /**
  * ==========================================
- * BLOCO 2: FORMATADOR DE DADOS E MOTOR MATEMÁTICO
+ * [BLOCO 4] JS: MOTOR DE FORMATAÇÃO (Formatter)
+ * Responsável por traduzir o texto bruto ("Porta 42") para múltiplos idiomas
  * ==========================================
  */
 const Formatter = {
@@ -366,7 +533,8 @@ const Formatter = {
 
 /**
  * ==========================================
- * BLOCO 3: MOTOR DE ROTEAMENTO (Router)
+ * [BLOCO 5] JS: MOTOR DE ROTEAMENTO (Router)
+ * Calcula a rota usando Busca em Largura (BFS) e Matemática de Portas
  * ==========================================
  */
 const Router = {
@@ -425,7 +593,8 @@ const Router = {
 
 /**
  * ==========================================
- * BLOCO 4: INTERFACE E EVENTOS (UI)
+ * [BLOCO 6] JS: INTERFACE E EVENTOS (UI)
+ * Controla os cliques, troca de idiomas e renderização gráfica HTML
  * ==========================================
  */
 const UI = {
@@ -631,7 +800,8 @@ const UI = {
 
 /**
  * ==========================================
- * BLOCO 5: MOTOR DE GEOLOCALIZAÇÃO
+ * [BLOCO 7] JS: MOTOR DE GEOLOCALIZAÇÃO
+ * Lê o GPS do usuário e utiliza a fórmula de Haversine para achar a estação
  * ==========================================
  */
 const GeoLocation = {
