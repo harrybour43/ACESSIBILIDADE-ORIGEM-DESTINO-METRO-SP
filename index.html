@@ -46,12 +46,14 @@
         select:focus { outline: none; border-color: #888; }
         select:disabled { opacity: 0.5; cursor: not-allowed; color: #666; }
         
-        /* Botões Base */
+        /* Botões Base e GPS */
         .btn-action { display: block; width: 100%; padding: 16px; margin-top: 10px; margin-bottom: 10px; background-color: var(--btn-color); color: #FFF; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s; text-decoration: none; text-align: center; }
         .btn-action:hover { background-color: #c92f27; }
         .btn-action:disabled { background-color: #555; color: #888; cursor: not-allowed; }
         .btn-secondary { background-color: #333; margin-top: 0; border: 1px solid #555; }
         .btn-secondary:hover { background-color: #444; }
+        .btn-gps { background: #333; color: #4CAF50; border: 1px solid #4CAF50; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
+        .btn-gps:hover { background: #4CAF50; color: #000; }
 
         /* Resultado e Rota */
         .result-box { background-color: #0A0A0A; border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
@@ -62,6 +64,19 @@
         .result-door { font-size: 1.8rem; font-weight: 900; margin: 8px 0; color: #FFF; line-height: 1.2; }
         .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); }
         .alert-warning { font-size: 0.95rem; color: #FFC107; margin-top: 10px; padding: 12px; background-color: rgba(255, 193, 7, 0.1); border-radius: 6px; border: 1px solid rgba(255, 193, 7, 0.3); }
+
+        /* ====== ANIMAÇÃO DO TREM 4.0.0 ====== */
+        .t-container { width: 100%; height: 85px; background-color: #050505; border: 1px solid #333; border-radius: 8px; overflow: hidden; position: relative; margin-top: 10px; margin-bottom: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
+        .t-track { position: absolute; height: 2px; width: 100%; bottom: 15px; background: #444; z-index: 0; }
+        .t-wrapper { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: center; gap: 6px; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; padding: 0 10px; }
+        .t-car { width: 85px; height: 32px; border: 2px solid; background: #1A1A1A; border-radius: 3px; display: flex; justify-content: space-evenly; align-items: flex-end; padding-bottom: 2px; position: relative; }
+        .t-car.front { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+        .t-car.back { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+        .t-car::after { content: attr(data-label); position: absolute; top: -20px; font-size: 0.65rem; color: #888; font-weight: bold; width: 100%; text-align: center; }
+        .t-door { width: 10px; height: 16px; background: #000; border: 1px solid #444; border-radius: 2px 2px 0 0; position: relative; }
+        .t-door.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 8px #4CAF50; }
+        .t-door.target::before { content: '▼'; position: absolute; top: -22px; left: -3px; color: #4CAF50; font-size: 14px; animation: bounce 1s infinite; text-shadow: 0 0 5px #000; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
         /* Rodapé de Idiomas */
         .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
@@ -103,10 +118,10 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * AUTOR: Harry Bour
- * VERSÃO: 3.5.0 (Data: 23/02/2026)
+ * VERSÃO: 4.1.0 (Data: 23/02/2026)
  * JUSTIFICATIVA: Ferramenta de ativismo para garantir a autonomia de pessoas
  * com deficiência. Chegar mais rápido é benefício secundário.
- * UPDATE: Inclusão do Menu de Ajuda/Tutorial embutido no cabeçalho.
+ * UPDATE: Motor de Geolocalização + Link MS Forms.
  * ============================================================================
  */
 </script>
@@ -132,17 +147,17 @@
         <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
 
         <h3>2. Origem e Destino</h3>
-        <p>Escolha a Linha e a Estação onde você vai embarcar. Depois, faça o mesmo para a estação onde você quer chegar. <br><em>Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas.</em></p>
+        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em>Nota: Estações "(Em breve)" estão bloqueadas porque ainda não foram mapeadas.</em></p>
 
         <h3>3. Calcule a rota</h3>
-        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo, incluindo as trocas de linha. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
-        <p>Basta procurar o adesivo 47 no alto da porta automática de vidro na plataforma. Se a estação não tiver portas de vidro, conte os vagões do trem (a Porta 1 do vagão é sempre a primeira no sentido em que o trem está indo).</p>
+        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
+        <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
 
         <h3>Recursos importantes:</h3>
         <ul>
             <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
             <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
-            <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho direto para a Ouvidoria do Estado. Cobre seus direitos.</li>
+            <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho para a Ouvidoria do Estado. Cobre seus direitos.</li>
             <li><strong>Ajude a mapear:</strong> Descobriu a porta exata de uma estação nova? Vá até o final da página e clique em "Contribuir com o Mapa" para nos enviar a informação.</li>
         </ul>
 
@@ -191,7 +206,10 @@
     </select>
 
     <div class="selection-group">
-        <div class="selection-title origem" id="title-origem">📍 PONTO DE PARTIDA</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div class="selection-title origem" id="title-origem" style="margin-bottom: 0; border: none; padding-left: 0;">📍 PONTO DE PARTIDA</div>
+            <button onclick="GeoLocation.findNearest()" class="btn-gps" id="btn-gps">🎯 Perto de mim</button>
+        </div>
         <select id="linha-origem" onchange="UI.atualizarEstacoes('origem')"></select>
         <select id="estacao-origem" disabled>
             <option value="0" disabled selected id="opt-default-est-origem">Primeiro, escolha a linha</option>
@@ -213,7 +231,7 @@
     <div style="background-color: #111; padding: 20px; border-radius: 8px; border: 1px dashed #4CAF50; margin-top: 25px; text-align: center;">
         <h3 style="color: #4CAF50; margin-top: 0; font-size: 1.1rem; margin-bottom: 8px;">Conhece a porta certa?</h3>
         <p style="font-size: 0.95rem; color: #CCC; margin-top: 0; margin-bottom: 15px; line-height: 1.4;">Ajude a mapear a rede! Sua informação garante a autonomia de outras pessoas.</p>
-        <a href="https://tally.so/r/687EGe" target="_blank" class="btn-action" style="background-color: #4CAF50; color: #000;">
+        <a href="https://forms.office.com/r/ByJS9dV1rP" target="_blank" class="btn-action" style="background-color: #4CAF50; color: #000;">
             🤝 Contribuir com o Mapa
         </a>
     </div>
@@ -279,10 +297,13 @@ const AppData = {
         310: { linha: 3, mapeada: true, nome: "Bresser-Mooca", elevadorBF: "Porta 65", elevadorIT: "Porta 63", rolanteBF: "Porta 47", rolanteIT: "Porta 42", fixaBF: "Porta 37", fixaIT: "Porta 32" },
         311: { linha: 3, mapeada: true, nome: "Brás", elevadorBF: "Vagão 5, Porta 3", elevadorIT: "Vagão 2, Porta 2", rolanteBF: "Vagão 6, Porta 3", rolanteIT: "Vagão 1, Porta 2", fixaBF: "Vagão 4, Porta 1", fixaIT: "Vagão 3, Porta 4" },
         312: { linha: 3, mapeada: true, nome: "Pedro II", elevadorBF: "Porta 32", elevadorIT: "Pendente", rolanteBF: "Porta 14", rolanteIT: "Pendente", fixaBF: "Porta 61", fixaIT: "Pendente" },
-        313: { linha: 3, mapeada: true, nome: "Sé", elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
+        
+        /* TESTE GPS - COORDENADAS ATIVAS NESTAS ESTAÇÕES */
+        313: { linha: 3, mapeada: true, nome: "Sé", lat: -23.5504, lng: -46.6334, elevadorBF: "Porta 25", elevadorIT: "Porta 33", rolanteBF: "Porta 57", rolanteIT: "Porta 52", fixaBF: "Porta 57", fixaIT: "Porta 52" },
         314: { linha: 3, mapeada: true, nome: "Anhangabaú", elevadorBF: "Vagão 6, Porta 4", elevadorIT: "Vagão 1, Porta 1", rolanteBF: "Vagão 1, Porta 1", rolanteIT: "Vagão 6, Porta 6", fixaBF: "Vagão 1, Porta 1", fixaIT: "Vagão 6, Porta 6" },
-        315: { linha: 3, mapeada: true, nome: "República", elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
-        316: { linha: 3, mapeada: true, nome: "Santa Cecília", elevadorBF: "Porta 45", elevadorIT: "Pendente", rolanteBF: "Inexistente", rolanteIT: "Inexistente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        315: { linha: 3, mapeada: true, nome: "República", lat: -23.5430, lng: -46.6425, elevadorBF: "Vagão 1, Porta 1", elevadorIT: "Vagão 6, Porta 4", rolanteBF: "Vagão 6, Porta 1", rolanteIT: "Vagão 1, Porta 4", fixaBF: "Vagão 6, Porta 4", fixaIT: "Vagão 1, Porta 1" },
+        316: { linha: 3, mapeada: true, nome: "Santa Cecília", lat: -23.5384, lng: -46.6488, elevadorBF: "Porta 45", elevadorIT: "Pendente", rolanteBF: "Inexistente", rolanteIT: "Inexistente", fixaBF: "Porta 33", fixaIT: "Pendente" },
+        
         317: { linha: 3, mapeada: true, nome: "Marechal Deodoro", elevadorBF: "Porta 37", elevadorIT: "Porta 37", rolanteBF: "Porta 36", rolanteIT: "Porta 36", fixaBF: "Porta 36", fixaIT: "Porta 36" },
         318: { linha: 3, mapeada: true, nome: "Palmeiras-Barra Funda", elevadorBF: "-", elevadorIT: "Porta 44", rolanteBF: "-", rolanteIT: "Porta 34", fixaBF: "-", fixaIT: "Porta 61" },
         
@@ -294,84 +315,51 @@ const AppData = {
     dicionario: {
         'pt': { 
             modTitle: 'Aviso: Acessibilidade e Direitos', modText: 'O Porta Certa SP é, antes de tudo, uma ferramenta de ativismo. Nosso principal objetivo é garantir autonomia para pessoas com mobilidade reduzida. Chegar mais rápido é um benefício secundário. Se você está apenas com pressa, tenha empatia: deixe o espaço destas portas para quem realmente precisa e use os vagões das pontas, como o Metrô recomenda. O bom senso e a segurança vêm em primeiro lugar.', modCheck: 'Li e compreendi o propósito do guia', modBtn: 'Acessar o Guia', btnCalc: 'Qual é a Porta Certa?', lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa', titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha', selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', selEstAtivo: 'Agora, escolha a estação', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata', embTrecho: 'Em <b>{est}</b>, embarque na:', transfTrecho: 'Desembarque em <b>{est}</b> e faça transferência para a <b>{linha}</b>.', saidaFinal: 'No destino final (<b>{est}</b>), você sairá de frente para a <b>{tipo}</b>.', tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', pendente: 'A estação selecionada ainda não foi mapeada. Aguarde atualizações futuras.', txtPorta: 'Porta', txtVagao: 'Vagão',
-            accTitle: 'Direito à Acessibilidade', accText: 'A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.', accBtnFala: 'Registrar Cobrança no FALA.SP', accBtnClose: 'Entendi', txtInexistente: 'Equipamento inexistente nesta estação.'
+            accTitle: 'Direito à Acessibilidade', accText: 'A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.', accBtnFala: 'Registrar Cobrança no FALA.SP', accBtnClose: 'Entendi', txtInexistente: 'Equipamento inexistente nesta estação.',
+            gpsBtn: '🎯 Perto de mim', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 Feito!', gpsErro: '❌ Sem estações próximas'
         },
         'en': { 
             modTitle: 'Notice: Accessibility and Rights', modText: 'Porta Certa SP is, first and foremost, an activism tool. Our main goal is to ensure autonomy for people with reduced mobility. Getting there faster is a secondary benefit. If you are just in a hurry, have empathy: leave the space at these doors for those who really need it and use the end cars, as the Subway recommends. Common sense and safety come first.', modCheck: 'I have read and understood the guide\'s purpose', modBtn: 'Access Guide', btnCalc: 'What is the Right Door?', lblPref: 'Your preferred exit at final destination:', optElevador: 'Elevator', optRolante: 'Escalator', optFixa: 'Stairs', titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Line', selLinhaDest: 'Select Line', selEstOr: 'Select a line first', selEstDest: 'Select a line first', selEstAtivo: 'Now, choose the station', listTitle: 'Mapped Stations', listDesc: 'Currently available at:', mesmaEstacao: 'You are already at the destination station.', trecho: 'Leg', emBreve: '(Soon)', l1: 'L1-Blue', l2: 'L2-Green', l3: 'L3-Red', l4: 'L4-Yellow', l5: 'L5-Lilac', l7: 'L7-Ruby', l8: 'L8-Diamond', l9: 'L9-Emerald', l10: 'L10-Turquoise', l11: 'L11-Coral', l12: 'L12-Sapphire', l13: 'L13-Jade', l15: 'L15-Silver', embTrecho: 'At <b>{est}</b>, board exactly at:', transfTrecho: 'Get off at <b>{est}</b> and transfer to <b>{linha}</b>.', saidaFinal: 'At final destination (<b>{est}</b>), you will exit facing the <b>{tipo}</b>.', tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs', pendente: 'The selected station has not been mapped yet. Please await future updates.', txtPorta: 'Door', txtVagao: 'Car',
-            accTitle: 'Accessibility Rights', accText: 'The selected station lacks the requested accessibility equipment. Full access is your right. Demand improvements through the official ombudsman (FALA.SP).', accBtnFala: 'Complain on FALA.SP', accBtnClose: 'Close', txtInexistente: 'Equipment not available here.'
+            accTitle: 'Accessibility Rights', accText: 'The selected station lacks the requested accessibility equipment. Full access is your right. Demand improvements through the official ombudsman (FALA.SP).', accBtnFala: 'Complain on FALA.SP', accBtnClose: 'Close', txtInexistente: 'Equipment not available here.',
+            gpsBtn: '🎯 Near me', gpsBusca: '⏳ Searching...', gpsFeito: '🎯 Done!', gpsErro: '❌ No stations found'
         },
         'es': { 
             modTitle: 'Aviso: Accesibilidad y Derechos', modText: 'Porta Certa SP es, ante todo, una herramienta de activismo. Nuestro principal objetivo es garantizar la autonomía de las personas con movilidad reducida. Llegar más rápido es un beneficio secundario. Si solo tienes prisa, ten empatía: deja el espacio de estas puertas para quienes realmente lo necesitan y usa los vagones de los extremos. El sentido común y la seguridad son lo primero.', modCheck: 'Leí y comprendí el propósito de la guía', modBtn: 'Acceder a la Guía', btnCalc: '¿Cuál es la Puerta Correcta?', lblPref: 'Tu preferencia de salida:', optElevador: 'Ascensor', optRolante: 'Escalera Mecánica', optFixa: 'Escalera Fija', titleOrigem: '📍 PUNTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Línea de Origen', selLinhaDest: 'Línea de Destino', selEstOr: 'Primero elige la línea', selEstDest: 'Primero elige la línea', selEstAtivo: 'Ahora, elige la estación', listTitle: 'Estaciones Mapeadas', listDesc: 'Precisión disponible en:', mesmaEstacao: 'Ya estás en la estación.', trecho: 'Tramo', emBreve: '(Pronto)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Roja', l4: 'L4-Amarilla', l5: 'L5-Lila', l7: 'L7-Rubí', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Zafiro', l13: 'L13-Jade', l15: 'L15-Plata', embTrecho: 'En <b>{est}</b>, sube en:', transfTrecho: 'Baja en <b>{est}</b> y transfiere a <b>{linha}</b>.', saidaFinal: 'En tu destino (<b>{est}</b>), saldrás frente a <b>{tipo}</b>.', tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija', pendente: 'La estación seleccionada aún no ha sido mapeada. Aguarda futuras actualizaciones.', txtPorta: 'Puerta', txtVagao: 'Vagón',
-            accTitle: 'Derecho a la Accesibilidad', accText: 'La estación seleccionada no cuenta con el equipo de accesibilidad solicitado. Reclama mejoras en la defensoría del pueblo (FALA.SP).', accBtnFala: 'Reclamar en FALA.SP', accBtnClose: 'Cerrar', txtInexistente: 'Equipo no disponible.'
+            accTitle: 'Derecho a la Accesibilidad', accText: 'La estación seleccionada no cuenta con el equipo de accesibilidad solicitado. Reclama mejoras en la defensoría del pueblo (FALA.SP).', accBtnFala: 'Reclamar en FALA.SP', accBtnClose: 'Cerrar', txtInexistente: 'Equipo no disponible.',
+            gpsBtn: '🎯 Cerca de mí', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 ¡Hecho!', gpsErro: '❌ Sin estaciones'
         },
-        'fr': { modTitle: 'Avis : Accessibilité et Droits', modText: 'Le bon sens et la sécurité priment. Laissez l\'espace à ceux qui en ont besoin.', modCheck: 'J\'ai compris l\'objectif du guide', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accText: 'Équipement indisponible.', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible ici.' },
-        'zh': { modTitle: '提示：无障碍与权利', modText: '常识和安全必须始终放在第一位。请将空间留给需要的人。', modCheck: '我已阅读并理解指南的目的', modBtn: '进入', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '换乘 <b>{linha}</b>。', saidaFinal: '正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accText: '该站缺少无障碍设施。', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。' },
-        'ja': { modTitle: 'お知らせ：アクセシビリティと権利', modText: '利用者の安全と常識が常に最優先されます。必要な人のためにスペースを空けてください。', modCheck: 'ガイドの目的を理解しました', modBtn: 'ガイドへ', btnCalc: '正しいドアは？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{linha}</b>に乗換。', saidaFinal: '<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accText: '設備がありません。', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。' },
-        'ko': { modTitle: '공지: 접근성 및 권리', modText: '안전에 대한 상식이 항상 최우선입니다. 필요한 사람을 위해 공간을 양보하세요.', modCheck: '가이드의 목적을 이해했습니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{linha}</b> 환승.', saidaFinal: '<b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accText: '장비 없음.', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.' },
-        'ar': { modTitle: 'إشعار: إمكانية الوصول والحقوق', modText: 'يجب أن يكون المنطق السليم وسلامتك دائمًا في المقام الأول. اترك المساحة لمن يحتاجها.', modCheck: 'لقد فهمت الغرض من الدليل', modBtn: 'دخول', btnCalc: 'الباب الصحيح؟', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', selEstAtivo: 'الآن، اختر المحطة', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', embTrecho: 'في <b>{est}</b> اصعد:', transfTrecho: 'إلى <b>{linha}</b>.', saidaFinal: 'أمام <b>{tipo}</b>.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم التعيين بعد.', txtPorta: 'باب', txtVagao: 'عربة', accTitle: 'إمكانية الوصول', accText: 'المعدات غير متوفرة.', accBtnFala: 'FALA.SP', accBtnClose: 'أغلق', txtInexistente: 'غير متوفر.' }
+        'fr': { modTitle: 'Avis : Accessibilité et Droits', modText: 'Le bon sens et la sécurité priment. Laissez l\'espace à ceux qui en ont besoin.', modCheck: 'J\'ai compris l\'objectif du guide', modBtn: 'Accéder', btnCalc: 'Quelle est la bonne porte ?', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', embTrecho: 'À <b>{est}</b>, montez à:', transfTrecho: 'À <b>{est}</b>, prenez <b>{linha}</b>.', saidaFinal: 'À <b>{est}</b>, face à <b>{tipo}</b>.', tipoElevador: 'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accText: 'Équipement indisponible.', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible ici.', gpsBtn: '🎯 Près de moi', gpsBusca: '⏳ Recherche...', gpsFeito: '🎯 Fait!', gpsErro: '❌ Aucune station' },
+        'zh': { modTitle: '提示：无障碍与权利', modText: '常识和安全必须始终放在第一位。请将空间留给需要的人。', modCheck: '我已阅读并理解指南的目的', modBtn: '进入', btnCalc: '正确的车门是哪个？', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', embTrecho: '在 <b>{est}</b> 上车:', transfTrecho: '换乘 <b>{linha}</b>。', saidaFinal: '正对<b>{tipo}</b>。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accText: '该站缺少无障碍设施。', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。', gpsBtn: '🎯 在我附近', gpsBusca: '⏳ 搜索中...', gpsFeito: '🎯 完成!', gpsErro: '❌ 未找到车站' },
+        'ja': { modTitle: 'お知らせ：アクセシビリティと権利', modText: '利用者の安全と常識が常に最優先されます。必要な人のためにスペースを空けてください。', modCheck: 'ガイドの目的を理解しました', modBtn: 'ガイドへ', btnCalc: '正しいドアは？', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', embTrecho: '<b>{est}</b>で乗車:', transfTrecho: '<b>{linha}</b>に乗換。', saidaFinal: '<b>{tipo}</b>の前。', tipoElevador: 'EV', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accText: '設備がありません。', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。', gpsBtn: '🎯 近くの駅', gpsBusca: '⏳ 検索中...', gpsFeito: '🎯 完了!', gpsErro: '❌ 駅が見つかりません' },
+        'ko': { modTitle: '공지: 접근성 및 권리', modText: '안전에 대한 상식이 항상 최우선입니다. 필요한 사람을 위해 공간을 양보하세요.', modCheck: '가이드의 목적을 이해했습니다', modBtn: '시작하기', btnCalc: '정확한 탑승 문은?', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', embTrecho: '<b>{est}</b>에서 탑승:', transfTrecho: '<b>{linha}</b> 환승.', saidaFinal: '<b>{tipo}</b> 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accText: '장비 없음.', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음' },
+        'ar': { modTitle: 'إشعار: إمكانية الوصول والحقوق', modText: 'يجب أن يكون المنطق السليم وسلامتك دائمًا في المقام الأول. اترك المساحة لمن يحتاجها.', modCheck: 'لقد فهمت الغرض من الدليل', modBtn: 'دخول', btnCalc: 'الباب الصحيح؟', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', selEstAtivo: 'الآن، اختر المحطة', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', embTrecho: 'في <b>{est}</b> اصعد:', transfTrecho: 'إلى <b>{linha}</b>.', saidaFinal: 'أمام <b>{tipo}</b>.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم التعيين بعد.', txtPorta: 'باب', txtVagao: 'عربة', accTitle: 'إمكانية الوصول', accText: 'المعدات غير متوفرة.', accBtnFala: 'FALA.SP', accBtnClose: 'أغلق', txtInexistente: 'غير متوفر.', gpsBtn: '🎯 بالقرب مني', gpsBusca: '⏳ جاري البحث...', gpsFeito: '🎯 تم!', gpsErro: '❌ لا توجد محطات' }
     }
 };
 
 /**
  * ==========================================
- * BLOCO 2: FORMATADOR DE DADOS (Formatter)
+ * BLOCO 2: FORMATADOR DE DADOS E MOTOR MATEMÁTICO
  * ==========================================
  */
 const Formatter = {
     formatarPorta: function(raw, sentido) {
         if (!raw || raw === "-" || raw === "Pendente" || raw === "Inexistente") return raw;
-
         let map = AppData.mapaPortas[sentido] || {};
         let t = AppData.dicionario[AppData.currentLang];
+        let parsed = Router.parseVagaoPorta(raw, sentido);
         
-        let numMatch = raw.match(/\d{2}/);
-        let vagaoMatch = raw.match(/Vagão \d, Porta \d/);
-        
-        let numPorta = "";
-        let vagaoStr = "";
-
-        if (numMatch && !raw.includes("Vagão")) {
-            numPorta = numMatch[0];
-            vagaoStr = map[numPorta] || ""; 
-        } else if (vagaoMatch) {
-            vagaoStr = vagaoMatch[0];
-            numPorta = Object.keys(map).find(k => map[k] === vagaoStr) || "";
-        }
-
-        if (numPorta && !vagaoStr) {
-            let d1 = parseInt(numPorta.charAt(0));
-            let d2 = parseInt(numPorta.charAt(1));
-            if (sentido === "BF") {
-                let p = (d2 >= 5 && d2 <= 8) ? (9 - d2) : "?";
-                vagaoStr = `Vagão ${d1}, Porta ${p}`;
-            } else {
-                let p = (d2 >= 1 && d2 <= 4) ? d2 : "?";
-                vagaoStr = `Vagão ${7 - d1}, Porta ${p}`;
-            }
-        } else if (vagaoStr && !numPorta) {
-            let vMatch = vagaoStr.match(/Vagão (\d), Porta (\d)/);
-            if (vMatch) {
-                let v = parseInt(vMatch[1]);
-                let p = parseInt(vMatch[2]);
-                numPorta = sentido === "BF" ? `${v}${9 - p}` : `${7 - v}${p}`;
-            }
-        }
-
         let res = [];
-        if (numPorta) {
+        if (parsed) {
+            let numPorta = sentido === "BF" ? `${parsed.v}${9 - parsed.p}` : `${7 - parsed.v}${parsed.p}`;
             res.push(['zh', 'ja', 'ko'].includes(AppData.currentLang) ? `${numPorta}${t.txtPorta}` : `${t.txtPorta} ${numPorta}`);
+            let tradVagao = `(${t.txtVagao} ${parsed.v}, ${t.txtPorta} ${parsed.p})`;
+            if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja' || AppData.currentLang === 'ko') {
+                tradVagao = `(${parsed.v}${t.txtVagao} ${parsed.p}${t.txtPorta})`;
+            }
+            res.push(tradVagao);
         } else if (raw.includes("Porta")) {
             res.push(raw.replace("Porta", t.txtPorta));
         }
-
-        if (vagaoStr) {
-            let tradVagao = vagaoStr.replace("Vagão", t.txtVagao).replace("Porta", t.txtPorta);
-            if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja' || AppData.currentLang === 'ko') {
-                tradVagao = vagaoStr.replace(/Vagão (\d), Porta (\d)/, `$1${t.txtVagao} $2${t.txtPorta}`);
-            }
-            res.push(`(${tradVagao})`);
-        }
-
         return res.length > 0 ? res.join(" ") : raw;
     }
 };
@@ -408,6 +396,30 @@ const Router = {
         let alvo = prefSaida === "elevador" ? nodeDestino.elevadorBF : (prefSaida === "rolante" ? nodeDestino.rolanteBF : nodeDestino.fixaBF);
         if (sentido === "IT") alvo = prefSaida === "elevador" ? nodeDestino.elevadorIT : (prefSaida === "rolante" ? nodeDestino.rolanteIT : nodeDestino.fixaIT);
         return alvo;
+    },
+    parseVagaoPorta: function(raw, sentido) {
+        if(!raw || raw === "-" || raw === "Pendente" || raw === "Inexistente") return null;
+        let map = AppData.mapaPortas[sentido] || {};
+        let numMatch = raw.match(/\d{2}/);
+        let vagaoMatch = raw.match(/Vagão \d, Porta \d/);
+        let numPorta = "", vagaoStr = "";
+
+        if (numMatch && !raw.includes("Vagão")) {
+            numPorta = numMatch[0]; vagaoStr = map[numPorta] || "";
+        } else if (vagaoMatch) {
+            vagaoStr = vagaoMatch[0]; numPorta = Object.keys(map).find(k => map[k] === vagaoStr) || "";
+        }
+
+        let v = 0, p = 0;
+        if (numPorta && !vagaoStr) {
+            let d1 = parseInt(numPorta.charAt(0)); let d2 = parseInt(numPorta.charAt(1));
+            if (sentido === "BF") { v = d1; p = (d2 >= 5 && d2 <= 8) ? (9 - d2) : 0; } 
+            else { v = 7 - d1; p = (d2 >= 1 && d2 <= 4) ? d2 : 0; }
+        } else if (vagaoStr) {
+            let vMatch = vagaoStr.match(/Vagão (\d), Porta (\d)/);
+            if (vMatch) { v = parseInt(vMatch[1]); p = parseInt(vMatch[2]); }
+        }
+        return (v >= 1 && v <= 6 && p >= 1 && p <= 4) ? {v, p} : null;
     }
 };
 
@@ -426,6 +438,7 @@ const UI = {
         AppData.linhas.forEach(l => { selLO.add(new Option(t['l'+l], l)); selLD.add(new Option(t['l'+l], l)); });
         this.atualizarEstacoes('origem', true); this.atualizarEstacoes('destino', true);
         this.popularListaMapeadas();
+        document.getElementById('btn-gps').innerText = t.gpsBtn;
     },
 
     atualizarEstacoes: function(tipo, forceReset = false) {
@@ -472,6 +485,7 @@ const UI = {
         
         document.getElementById('mod-acc-title').innerText = t.accTitle; document.getElementById('mod-acc-text').innerText = t.accText;
         document.getElementById('mod-acc-btn-fala').innerText = t.accBtnFala; document.getElementById('mod-acc-btn-close').innerText = t.accBtnClose;
+        document.getElementById('btn-gps').innerText = t.gpsBtn;
 
         const valLO = document.getElementById('linha-origem').value; const valEO = document.getElementById('estacao-origem').value;
         const valLD = document.getElementById('linha-destino').value; const valED = document.getElementById('estacao-destino').value;
@@ -498,6 +512,24 @@ const UI = {
                 let li = document.createElement('li'); li.innerText = AppData.estacoes[id].nome; ul.appendChild(li);
             }
         }
+    },
+
+    gerarTremHtml: function(linhaId, vTarget, pTarget) {
+        let corVar = `var(--l${linhaId})`;
+        let html = `<div class="t-container"><div class="t-track"></div><div class="t-wrapper">`;
+        for(let v=1; v<=6; v++) {
+            let carClass = "t-car";
+            if(v === 1) carClass += " front";
+            if(v === 6) carClass += " back";
+            html += `<div class="${carClass}" data-label="C${v}" style="border-color: ${corVar};">`;
+            for(let p=1; p<=4; p++) {
+                let isTarget = (v === vTarget && p === pTarget);
+                html += `<div class="t-door ${isTarget ? 'target' : ''}"></div>`;
+            }
+            html += `</div>`;
+        }
+        html += `</div></div>`;
+        return html;
     },
 
     iniciarCalculo: function() {
@@ -552,6 +584,8 @@ const UI = {
                     htmlFinal += `<div class="alert-warning" style="color:#FF3B30; border-color:#FF3B30;">🚫 ${t.txtInexistente}</div>`;
                 } else if (portaRaw && portaRaw !== "-" && portaRaw !== "Pendente") {
                     htmlFinal += `<div class="result-door" style="color:${corVar};">${Formatter.formatarPorta(portaRaw, sentidoCalculado)}</div>`;
+                    let parsed = Router.parseVagaoPorta(portaRaw, sentidoCalculado);
+                    if (parsed) htmlFinal += UI.gerarTremHtml(lAtual, parsed.v, parsed.p);
                 } else {
                     htmlFinal += `<div class="alert-warning">⏳ ${t.pendente}</div>`;
                 }
@@ -563,6 +597,8 @@ const UI = {
                 htmlFinal += `<div class="info-text" style="margin-top:15px;">${t.saidaFinal.replace('{est}', estNomeDesembarque).replace('{tipo}', tipoPrefTexto)}</div>`;
                 if (lAtual === 3 && portaRaw && !isFirst && portaRaw !== "-" && portaRaw !== "Pendente" && portaRaw !== "Inexistente") {
                     htmlFinal += `<div class="result-door" style="color:${corVar}; font-size:1.6rem; margin-top:5px;">${Formatter.formatarPorta(portaRaw, sentidoCalculado)}</div>`;
+                    let parsed = Router.parseVagaoPorta(portaRaw, sentidoCalculado);
+                    if (parsed) htmlFinal += UI.gerarTremHtml(lAtual, parsed.v, parsed.p);
                 } else if (lAtual === 3 && portaRaw === "Inexistente" && !isFirst) {
                     htmlFinal += `<div class="alert-warning" style="color:#FF3B30; border-color:#FF3B30;">🚫 ${t.txtInexistente}</div>`;
                 }
@@ -576,6 +612,87 @@ const UI = {
         if (ativouFaltaAcessibilidade) {
             setTimeout(() => { UI.abrirModalAcessibilidade(); }, 300);
         }
+
+        setTimeout(() => {
+            document.querySelectorAll('.t-wrapper').forEach(wrapper => {
+                let target = wrapper.querySelector('.t-door.target');
+                if(target) {
+                    let container = wrapper.parentElement;
+                    let cWidth = container.offsetWidth;
+                    let tOffset = target.getBoundingClientRect().left - wrapper.getBoundingClientRect().left;
+                    let tWidth = target.offsetWidth;
+                    let translateX = (cWidth / 2) - tOffset - (tWidth / 2);
+                    wrapper.style.transform = `translateX(${translateX}px)`;
+                }
+            });
+        }, 50);
+    }
+};
+
+/**
+ * ==========================================
+ * BLOCO 5: MOTOR DE GEOLOCALIZAÇÃO
+ * ==========================================
+ */
+const GeoLocation = {
+    findNearest: function() {
+        const btn = document.getElementById('btn-gps');
+        const t = AppData.dicionario[AppData.currentLang];
+        
+        if (!navigator.geolocation) {
+            alert("Seu navegador não suporta GPS.");
+            return;
+        }
+
+        btn.innerText = t.gpsBusca;
+        
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                let userLat = position.coords.latitude;
+                let userLng = position.coords.longitude;
+                
+                let closest = null;
+                let minDist = Infinity;
+
+                for (let id in AppData.estacoes) {
+                    let st = AppData.estacoes[id];
+                    if (st.lat && st.lng) {
+                        let dist = GeoLocation.haversine(userLat, userLng, st.lat, st.lng);
+                        if (dist < minDist) {
+                            minDist = dist;
+                            closest = { id: id, linha: st.linha };
+                        }
+                    }
+                }
+
+                if (closest) {
+                    document.getElementById('linha-origem').value = closest.linha;
+                    UI.atualizarEstacoes('origem');
+                    document.getElementById('estacao-origem').value = closest.id;
+                    btn.innerText = t.gpsFeito;
+                    setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
+                } else {
+                    btn.innerText = t.gpsErro;
+                    setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
+                }
+            },
+            (error) => {
+                btn.innerText = t.gpsBtn;
+                alert("Ative a permissão de localização do navegador para usar esta função.");
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+    },
+
+    haversine: function(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     }
 };
 
@@ -589,4 +706,3 @@ window.onload = function() {
 
 </body>
 </html>
-
