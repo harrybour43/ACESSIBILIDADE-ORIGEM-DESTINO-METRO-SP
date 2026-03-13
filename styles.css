@@ -75,6 +75,9 @@ body {
     box-shadow: 0 30px 60px rgba(0,0,0,0.5);
   }
   body.light-mode #app-container { border-color: #fff; box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
+  
+  /* FIX: No computador, o menu fica dentro do simulador */
+  .bottom-nav { position: absolute; }
 }
 
 button { font-family: inherit; border: none; outline: none; cursor: pointer; background: transparent; }
@@ -113,14 +116,15 @@ button { font-family: inherit; border: none; outline: none; cursor: pointer; bac
 }
 .secondary-view .main-content { padding-top: calc(env(safe-area-inset-top) + 90px); }
 
-/* GLOBAL BOTTOM NAV */
+/* GLOBAL BOTTOM NAV (Mobile: Travado na tela / PC: Dentro do simulador) */
 .bottom-nav {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: calc(var(--nav-height) + env(safe-area-inset-bottom, 15px));
+  position: fixed; /* FIX: Trava na tela real do celular */
+  bottom: 0; left: 0; right: 0;
+  height: calc(var(--nav-height) + env(safe-area-inset-bottom, 12px));
   background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--glass-border);
   display: flex; justify-content: space-around; align-items: center;
-  padding-bottom: env(safe-area-inset-bottom, 15px);
+  padding-bottom: env(safe-area-inset-bottom, 12px); z-index: 9999;
 }
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); width: 60px; transition: color 0.2s; }
 .nav-item svg { width: 24px; height: 24px; }
