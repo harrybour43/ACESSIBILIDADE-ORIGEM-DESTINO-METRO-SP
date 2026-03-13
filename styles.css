@@ -56,7 +56,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: var(--bg-color);
   display: flex; justify-content: center; align-items: center;
-  height: 100vh; width: 100vw; overflow: hidden;
+  height: 100vh; /* Fallback para navegadores antigos */
+  height: 100dvh; /* FIX: Impede que a barra do Android cubra o rodapé */
+  width: 100vw; 
+  overflow: hidden;
 }
 
 #app-container {
@@ -113,11 +116,11 @@ button { font-family: inherit; border: none; outline: none; cursor: pointer; bac
 /* GLOBAL BOTTOM NAV */
 .bottom-nav {
   position: absolute; bottom: 0; left: 0; right: 0;
-  height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+  height: calc(var(--nav-height) + env(safe-area-inset-bottom, 15px));
   background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--glass-border);
   display: flex; justify-content: space-around; align-items: center;
-  padding-bottom: env(safe-area-inset-bottom); z-index: 9999;
+  padding-bottom: env(safe-area-inset-bottom, 15px);
 }
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); width: 60px; transition: color 0.2s; }
 .nav-item svg { width: 24px; height: 24px; }
