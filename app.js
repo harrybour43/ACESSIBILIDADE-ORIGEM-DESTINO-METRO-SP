@@ -2,8 +2,8 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * ARQUIVO: app.js
- * DESCRIÇÃO: Motor Lógico Mobile-First (Simulador Desktop + Edição Não-Destrutiva)
- * VERSÃO: 6.2.1 (Correção de Linha de Carrossel)
+ * DESCRIÇÃO: Motor Lógico Mobile-First (Adaptado para o Dicionário Plano)
+ * VERSÃO: 6.2.2 (Correção de Mapeamento de JSON)
  * ============================================================================
  */
 
@@ -43,7 +43,9 @@ const GerenciadorFluxo = {
   selecionarPreferencia: function(pref) {
     AppState.rota.preferencia = pref;
     const t = AppState.dicionarioTextos[AppState.idiomaAtual];
-    let labelPref = pref === 'elevador' ? t.seletores.optElevador : (pref === 'rolante' ? t.seletores.optRolante : t.seletores.optFixa);
+    
+    // Agora lê corretamente direto da raiz do JSON
+    let labelPref = pref === 'elevador' ? t.optElevador : (pref === 'rolante' ? t.optRolante : t.optFixa);
     
     document.getElementById("stack-val-pref").innerText = labelPref;
     document.getElementById("step-pref").classList.add("hidden");
@@ -66,7 +68,7 @@ const GerenciadorFluxo = {
     const t = AppState.dicionarioTextos[AppState.idiomaAtual];
     
     document.getElementById("stack-origem").classList.remove("hidden");
-    document.getElementById("stack-val-origem").innerText = t.linhas["l"+idLinha];
+    document.getElementById("stack-val-origem").innerText = t["l"+idLinha];
     document.getElementById("step-linha-origem").classList.add("hidden");
     
     document.getElementById("step-estacao-origem").classList.remove("hidden");
@@ -78,7 +80,7 @@ const GerenciadorFluxo = {
     const nomeEstacao = MetroData.catalogoEstacoes[idEstacao].nome;
     const t = AppState.dicionarioTextos[AppState.idiomaAtual];
     
-    document.getElementById("stack-val-origem").innerText = `${t.linhas["l"+AppState.rota.linhaOrigem]} - ${nomeEstacao}`;
+    document.getElementById("stack-val-origem").innerText = `${t["l"+AppState.rota.linhaOrigem]} - ${nomeEstacao}`;
     document.getElementById("step-estacao-origem").classList.add("hidden");
     
     if (!AppState.rota.linhaDestino) {
@@ -98,7 +100,7 @@ const GerenciadorFluxo = {
     const t = AppState.dicionarioTextos[AppState.idiomaAtual];
     
     document.getElementById("stack-destino").classList.remove("hidden");
-    document.getElementById("stack-val-destino").innerText = t.linhas["l"+idLinha];
+    document.getElementById("stack-val-destino").innerText = t["l"+idLinha];
     document.getElementById("step-linha-destino").classList.add("hidden");
     
     document.getElementById("step-estacao-destino").classList.remove("hidden");
@@ -110,7 +112,7 @@ const GerenciadorFluxo = {
     const nomeEstacao = MetroData.catalogoEstacoes[idEstacao].nome;
     const t = AppState.dicionarioTextos[AppState.idiomaAtual];
     
-    document.getElementById("stack-val-destino").innerText = `${t.linhas["l"+AppState.rota.linhaDestino]} - ${nomeEstacao}`;
+    document.getElementById("stack-val-destino").innerText = `${t["l"+AppState.rota.linhaDestino]} - ${nomeEstacao}`;
     document.getElementById("step-estacao-destino").classList.add("hidden");
     
     this.verificarCalculoFinal();
@@ -170,13 +172,13 @@ const CalculadoraRota = {
       if (matchPosicao) return { v: parseInt(matchPosicao[1]), p: parseInt(matchPosicao[2]) };
     }
     return null;
-  },
+  }
 };
 
 const FormatadorUI = {
   montarTextoPorta: function (dadoBrutoBanco, sentidoViagem) {
     if (!dadoBrutoBanco || dadoBrutoBanco === "Pendente" || dadoBrutoBanco === "Inexistente") return dadoBrutoBanco;
-    const txt = AppState.dicionarioTextos[AppState.idiomaAtual].textos;
+    const t = AppState.dicionarioTextos[AppState.idiomaAtual];
     const posicaoFisica = CalculadoraRota.extrairVagaoEPorta(dadoBrutoBanco, sentidoViagem);
     let resultadoFormatado = [];
 
@@ -186,16 +188,16 @@ const FormatadorUI = {
       if (matchNum) numeroVisivel = matchNum[0];
       if (!numeroVisivel) numeroVisivel = sentidoViagem === "SENTIDO_POSITIVO" ? `${posicaoFisica.v}${9 - posicaoFisica.p}` : `${7 - posicaoFisica.v}${posicaoFisica.p}`;
       const langsInvertidas = ["zh", "ja", "ko"];
-      if (langsInvertidas.includes(AppState.idiomaAtual)) resultadoFormatado.push(`${numeroVisivel}${txt.porta}`);
-      else resultadoFormatado.push(`${txt.porta} ${numeroVisivel}`);
-      let textoVagao = `(${txt.vagao} ${posicaoFisica.v}, ${txt.porta} ${posicaoFisica.p})`;
-      if (langsInvertidas.includes(AppState.idiomaAtual)) textoVagao = `(${posicaoFisica.v}${txt.vagao} ${posicaoFisica.p}${txt.porta})`;
+      if (langsInvertidas.includes(AppState.idiomaAtual)) resultadoFormatado.push(`${numeroVisivel}${t.txtPorta}`);
+      else resultadoFormatado.push(`${t.txtPorta} ${numeroVisivel}`);
+      let textoVagao = `(${t.txtVagao} ${posicaoFisica.v}, ${t.txtPorta} ${posicaoFisica.p})`;
+      if (langsInvertidas.includes(AppState.idiomaAtual)) textoVagao = `(${posicaoFisica.v}${t.txtVagao} ${posicaoFisica.p}${t.txtPorta})`;
       resultadoFormatado.push(textoVagao);
     } else if (dadoBrutoBanco.includes("Porta")) {
-      resultadoFormatado.push(dadoBrutoBanco.replace("Porta", txt.porta));
+      resultadoFormatado.push(dadoBrutoBanco.replace("Porta", t.txtPorta));
     }
     return resultadoFormatado.length > 0 ? resultadoFormatado.join(" ") : dadoBrutoBanco;
-  },
+  }
 };
 
 const GerenciadorUI = {
@@ -270,7 +272,7 @@ const GerenciadorUI = {
       btn.style.margin = "10px 5px 25px 5px"; btn.style.borderRadius = "8px";
 
       const label = document.createElement("div");
-      label.innerText = t.linhas["l"+linha] || `L${linha}`;
+      label.innerText = t["l"+linha] || `L${linha}`;
       label.style.position = "absolute"; label.style.bottom = "-25px";
       label.style.left = "50%"; label.style.transform = "translateX(-50%)";
       label.style.fontSize = "0.75rem"; label.style.fontWeight = "bold";
@@ -300,8 +302,7 @@ const GerenciadorUI = {
     container.style.position = "relative";
     container.style.paddingTop = "20px";
 
-    // Cálculo exato para a linha ligar o meio do primeiro e último ponto
-    const larguraItem = 92; // 80px do minWidth + 12px do gap
+    const larguraItem = 92; 
     const totalLargura = (estacoes.length - 1) * larguraItem;
 
     const linhaFundo = document.createElement("div");
@@ -332,7 +333,7 @@ const GerenciadorUI = {
       dot.style.border = `4px solid ${varCor}`; dot.style.backgroundColor = "var(--bg-app)";
       
       const label = document.createElement("div");
-      label.innerText = est.nome + (est.mapeada ? "" : `\n${t.textos.emBreve}`);
+      label.innerText = est.nome + (est.mapeada ? "" : `\n${t.emBreve}`);
       label.style.fontSize = "0.75rem"; label.style.textAlign = "center"; label.style.fontWeight = "bold";
       label.style.color = "var(--text-main)"; label.style.whiteSpace = "pre-wrap";
 
@@ -357,7 +358,6 @@ const GerenciadorUI = {
 
   mudarIdioma: function (codigoIdioma) {
     AppState.idiomaAtual = codigoIdioma;
-    const t = AppState.dicionarioTextos[codigoIdioma];
     document.body.setAttribute("dir", codigoIdioma === "ar" ? "rtl" : "ltr");
     window.location.reload(); 
   },
@@ -423,7 +423,7 @@ const GerenciadorUI = {
     document.getElementById("step-calcular-final").classList.add("hidden");
 
     if (idOrigemSelecionada == idDestinoSelecionado) {
-      box.innerHTML = `<div class="alert-info" style="text-align:center;">${t.alertas.mesmaEstacao}</div>
+      box.innerHTML = `<div class="alert-info" style="text-align:center;">${t.mesmaEstacao}</div>
                        <button class="btn-action mt-30" onclick="GerenciadorFluxo.editarEtapa('destino')" style="background: var(--bg-app); color: var(--btn-color); border: 2px solid var(--btn-color); box-shadow: none;">🔄 Escolher outro destino</button>`;
       box.classList.remove("hidden");
       return;
@@ -434,15 +434,15 @@ const GerenciadorUI = {
     const trajetoLinhas = CalculadoraRota.encontrarCaminho(estacaoOrigem.linha, estacaoDestino.linha);
     
     let textoPreferencia = "";
-    if(preferenciaSaida === "elevador") textoPreferencia = t.textos.tipoElevador;
-    else if(preferenciaSaida === "rolante") textoPreferencia = t.textos.tipoRolante;
-    else textoPreferencia = t.textos.tipoFixa;
+    if(preferenciaSaida === "elevador") textoPreferencia = t.tipoElevador;
+    else if(preferenciaSaida === "rolante") textoPreferencia = t.tipoRolante;
+    else textoPreferencia = t.tipoFixa;
 
     let htmlFinalOutput = "";
     let precisaAlertaAcessibilidade = false;
 
     if (trajetoLinhas.length > 1) {
-      htmlFinalOutput += `<div class="alert-warning alert-info">ℹ️ <b>${t.textos.avisoRotaTitulo}</b><br>${t.textos.avisoRotaDescricao}</div>`;
+      htmlFinalOutput += `<div class="alert-warning alert-info">ℹ️ <b>${t.avisoRota}</b><br>${t.avisoRotaTexto}</div>`;
     }
 
     for (let i = 0; i < trajetoLinhas.length; i++) {
@@ -455,7 +455,7 @@ const GerenciadorUI = {
       let varCorLinhaAtual = `var(--l${idLinhaTrecho})`;
 
       htmlFinalOutput += `<div class="route-step" style="border-color: ${varCorLinhaAtual}; --step-color: ${varCorLinhaAtual};">`;
-      htmlFinalOutput += `<div class="step-title" style="color: ${varCorLinhaAtual};">📍 ${t.textos.trecho} ${i + 1}: ${t.linhas["l" + idLinhaTrecho]}</div>`;
+      htmlFinalOutput += `<div class="step-title" style="color: ${varCorLinhaAtual};">📍 ${t.trecho} ${i + 1}: ${t["l" + idLinhaTrecho]}</div>`;
 
       let portaAlvoBruta = null;
       let sentidoCalculado = "SENTIDO_POSITIVO";
@@ -495,10 +495,10 @@ const GerenciadorUI = {
         portaAlvoBruta = "Pendente";
       }
 
-      htmlFinalOutput += `<div class="info-text">${t.textos.embarqueTrecho.replace("{est}", `<b>${nomeEmbarqueTrecho}</b>`)}</div>`;
+      htmlFinalOutput += `<div class="info-text">${t.embTrecho.replace("{est}", `<b>${nomeEmbarqueTrecho}</b>`)}</div>`;
 
       if (portaAlvoBruta === "Inexistente") {
-        htmlFinalOutput += `<div class="alert-warning">🚫 ${t.alertas.inexistente}</div>`;
+        htmlFinalOutput += `<div class="alert-warning">🚫 ${t.txtInexistente}</div>`;
       } else if (portaAlvoBruta !== "Pendente") {
         htmlFinalOutput += `<div class="result-door" style="color:${varCorLinhaAtual};">${FormatadorUI.montarTextoPorta(portaAlvoBruta, sentidoCalculado)}</div>`;
         let dadosVagao = CalculadoraRota.extrairVagaoEPorta(portaAlvoBruta, sentidoCalculado);
@@ -506,14 +506,14 @@ const GerenciadorUI = {
           htmlFinalOutput += this.renderizarTremTopDown(idLinhaTrecho, dadosVagao.v, dadosVagao.p);
         }
       } else {
-        htmlFinalOutput += `<div class="alert-pendente" style="margin-top:8px;">⏳ ${t.alertas.pendente}</div>`;
+        htmlFinalOutput += `<div class="alert-pendente" style="margin-top:8px;">⏳ ${t.pendente}</div>`;
       }
 
       if (!isUltimaPerna) {
-        let proxLinhaNome = t.linhas["l" + trajetoLinhas[i + 1]] || `Linha ${trajetoLinhas[i + 1]}`;
-        htmlFinalOutput += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed var(--border-color); padding-top: 10px;">${t.textos.transferenciaTrecho.replace("{est}", `<b>${nomeDesembarqueTrecho}</b>`).replace("{linha}", `<b>${proxLinhaNome}</b>`)}</div>`;
+        let proxLinhaNome = t["l" + trajetoLinhas[i + 1]] || `Linha ${trajetoLinhas[i + 1]}`;
+        htmlFinalOutput += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed var(--border-color); padding-top: 10px;">${t.transfTrecho.replace("{est}", `<b>${nomeDesembarqueTrecho}</b>`).replace("{linha}", `<b>${proxLinhaNome}</b>`)}</div>`;
       } else {
-        htmlFinalOutput += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed var(--border-color); padding-top: 10px;">${t.textos.saidaFinal.replace("{est}", `<b>${nomeDesembarqueTrecho}</b>`).replace("{tipo}", `<b>${textoPreferencia}</b>`)}</div>`;
+        htmlFinalOutput += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed var(--border-color); padding-top: 10px;">${t.saidaFinal.replace("{est}", `<b>${nomeDesembarqueTrecho}</b>`).replace("{tipo}", `<b>${textoPreferencia}</b>`)}</div>`;
       }
 
       htmlFinalOutput += `</div>`;
@@ -580,29 +580,25 @@ const ServicoGPS = {
   },
 };
 
-// ==========================================
-// 6. INICIALIZAÇÃO DA APLICAÇÃO (Boot)
-// ==========================================
 window.onload = async function () {
   try {
     const resposta = await fetch("./dicionario.json");
     if (!resposta.ok) {
-      throw new Error(`Erro HTTP: ${resposta.status} - Dicionário não encontrado.`);
+      throw new Error(`Erro HTTP: ${resposta.status} - Arquivo não encontrado no servidor.`);
     }
 
     const dados = await resposta.json();
     AppState.dicionarioTextos = dados;
-    
-    // Inicia a UI. Se MetroData não existir, o erro vai estourar e cair no catch abaixo!
     GerenciadorUI.iniciar();
     
   } catch (erro) {
     console.error("Erro Crítico no Boot:", erro);
     document.body.innerHTML = `
       <div style='color:white; text-align:center; margin-top:50px; padding: 20px;'>
-        <h2>Erro de Execução do App</h2>
-        <p style='color:#ff453a; font-family:monospace; margin-top: 15px;'>${erro.message}</p>
-        <p style='color:#8e8e93; font-size:0.9rem; margin-top: 20px;'>Verifique se os arquivos dados.js e app.js estão atualizados na mesma versão.</p>
+        <h2>Erro de Conexão</h2>
+        <p>Não foi possível carregar o pacote de idiomas.</p>
+        <p style='color:#ff453a; font-family:monospace; margin-top: 15px;'>Detalhe: ${erro.message}</p>
+        <p style='color:#8e8e93; font-size:0.9rem; margin-top: 20px;'>Se você acabou de subir pro GitHub, aguarde 2 minutos e recarregue a página.</p>
       </div>
     `;
   }
