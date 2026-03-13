@@ -580,14 +580,32 @@ const ServicoGPS = {
   },
 };
 
+// ==========================================
+// 6. INICIALIZAÇÃO DA APLICAÇÃO (Boot)
+// ==========================================
 window.onload = async function () {
   try {
-    const resposta = await fetch("dicionario.json");
+    // O "./" obriga o GitHub a procurar o arquivo exatamente na mesma pasta do app.js
+    const resposta = await fetch("./dicionario.json");
+    
+    // Se o arquivo não existir (Erro 404), ele força a cair no catch
+    if (!resposta.ok) {
+      throw new Error(`Erro HTTP: ${resposta.status} - Arquivo não encontrado no servidor.`);
+    }
+
     const dados = await resposta.json();
     AppState.dicionarioTextos = dados;
     GerenciadorUI.iniciar();
+    
   } catch (erro) {
     console.error("Erro Crítico no Boot:", erro);
-    document.body.innerHTML = "<h2 style='color:white; text-align:center; margin-top:50px;'>Erro de Sistema. O App precisa rodar através de um servidor local.</h2>";
+    document.body.innerHTML = `
+      <div style='color:white; text-align:center; margin-top:50px; padding: 20px;'>
+        <h2>Erro de Conexão</h2>
+        <p>Não foi possível carregar o pacote de idiomas.</p>
+        <p style='color:#ff453a; font-family:monospace; margin-top: 15px;'>Detalhe: ${erro.message}</p>
+        <p style='color:#8e8e93; font-size:0.9rem; margin-top: 20px;'>Se você acabou de subir pro GitHub, aguarde 2 minutos e recarregue a página.</p>
+      </div>
+    `;
   }
 };
